@@ -16,7 +16,11 @@
   const T = text => I18N.t(text);
   const notice = text => { const el = document.getElementById('demoMessage'); if (el) el.textContent = T(text); };
   // Developer mode (play/?dev=1): start any Universe directly; runs are marked DEV everywhere.
-  const DEV = new URLSearchParams(location.search).has('dev');
+  // Remembered in this browser once opened with ?dev=1 (or #dev); turned off from the developer box.
+  const DEV = (() => {
+    const asked = new URLSearchParams(location.search).has('dev') || location.hash === '#dev';
+    try { if (asked) localStorage.setItem('tv-dev', '1'); return asked || localStorage.getItem('tv-dev') === '1'; } catch (_) { return asked; }
+  })();
   let game = null, snapshot = null, stopped = false, busy = false, worker = null, serial = 0;
   const waiters = new Map();
   const storage = new Promise((resolve, reject) => {
@@ -344,6 +348,11 @@
     if (DEV) {
       document.getElementById('devBox').hidden = false;
       document.getElementById('devStart').onclick = () => devRun(Number(document.getElementById('devUniverse').value), document.getElementById('devSkip').checked);
+      document.getElementById('devOff').onclick = event => {
+        event.preventDefault();
+        try { localStorage.removeItem('tv-dev'); } catch (_) {}
+        const url = new URL(location.href); url.searchParams.delete('dev'); url.hash = ''; location.href = url.toString();
+      };
     }
     document.getElementById('devJumpGo').onclick = () => devRun(Number(document.getElementById('devJumpUniverse').value), true);
     document.getElementById('demoShow').onclick = event => {

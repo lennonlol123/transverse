@@ -69,6 +69,11 @@ def main():
     # The export intentionally exposes no game-server routes and uses no CDN.
     assert 'await fetch(path, opts)' not in html
     assert '<title>TransVerse</title>' in html
+    # Cache-busting: GitHub Pages lets browsers keep files for 10 minutes; a content hash in the script URL
+    # makes a new release take effect on the next load.
+    api_hash = hashlib.sha256((ROOT / 'src/local-api.js').read_bytes()).hexdigest()[:10]
+    assert html.count('<script src="src/local-api.js"></script>') == 1
+    html = html.replace('<script src="src/local-api.js"></script>', f'<script src="src/local-api.js?v={api_hash}"></script>')
     (OUT / 'index.html').write_text(html)
     (DIST / '.nojekyll').touch()
     shutil.copyfile(ROOT / 'THIRD_PARTY.md', DIST / 'THIRD_PARTY.md')
