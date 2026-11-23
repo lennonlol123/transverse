@@ -116,8 +116,14 @@ main{flex:1 1 auto}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 
 /* Language switch. */
-.lang-switch{position:fixed;top:24px;right:32px;font-size:13px;font-weight:700;letter-spacing:.16em;text-decoration:none}
 .bar-right{display:flex;align-items:center;gap:24px}
 html[lang="zh-CN"] .hero p,html[lang="zh-CN"] .split p,html[lang="zh-CN"] .door p,html[lang="zh-CN"] .step p,html[lang="zh-CN"] .how-hero p{line-height:1.75}
 html[lang="zh-CN"] .nav a,html[lang="zh-CN"] .small-caps,html[lang="zh-CN"] .eyebrow,html[lang="zh-CN"] .btn{letter-spacing:.08em}
 html[lang="zh-CN"] h1,html[lang="zh-CN"] h2,html[lang="zh-CN"] h3{font-weight:700;letter-spacing:.02em}
+
+/* EN / 中文 — always the last item, top right. The current language is bold and underlined. */
+.lang-toggle{display:inline-flex;align-items:center;gap:12px;font-size:13px;font-weight:700;letter-spacing:.12em;white-space:nowrap}
+.lang-toggle b{color:var(--ink);border-bottom:2px solid var(--ink);padding-bottom:2px}
+.lang-toggle a{color:#8A8A8A;text-decoration:none;padding-bottom:4px}
+.lang-toggle a:hover{color:var(--ink)}
+.lang-corner{position:fixed;top:26px;right:32px;z-index:5}

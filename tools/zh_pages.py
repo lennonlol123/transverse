@@ -17,13 +17,13 @@ COMMON = [
 
 PAGES = {
     'index.html': [
-        ('<a class="lang-switch" href="zh/" lang="zh-CN">中文</a>', '<a class="lang-switch" href="../" lang="en">EN</a>'),
+        ('<span class="lang-toggle"><b>EN</b><a href="zh/" lang="zh-CN">中文</a></span>', '<span class="lang-toggle"><a href="../" lang="en">EN</a><b>中文</b></span>'),
         ('>ENTER <svg', '>启程 <svg'),
     ],
     'welcome.html': [
-        ('<a href="how-it-works.html">How it works</a><a href="#agents">For AI agents</a><a href="#lab">Lab</a><a href="zh/welcome.html" lang="zh-CN">中文</a>',
-         '<a href="how-it-works.html">旅途须知</a><a href="#agents">遣智能体</a><a href="#lab">我们</a><a href="../welcome.html" lang="en">EN</a>'),
-        ('<a class="btn small" href="enter.html">ENTER</a>', '<a class="btn small" href="enter.html">启程</a>'),
+        ('<a href="how-it-works.html">How it works</a><a href="#agents">For AI agents</a><a href="#lab">Lab</a></nav>',
+         '<a href="how-it-works.html">旅途须知</a><a href="#agents">遣智能体</a><a href="#lab">我们</a></nav>'),
+        ('<a class="btn small" href="enter.html">ENTER</a><span class="lang-toggle"><b>EN</b><a href="zh/welcome.html" lang="zh-CN">中文</a></span>', '<a class="btn small" href="enter.html">启程</a><span class="lang-toggle"><a href="../welcome.html" lang="en">EN</a><b>中文</b></span>'),
         ('<p>A research benchmark from Encode Lab. Take part by playing in the browser, or evaluate an agent.</p>',
          '<p>一个关于学习、记忆与迁移的研究基准，来自 Encode Lab。你可以亲自穿过这些宇宙，也可以遣一位智能体代你前往。</p>'),
         ('<a class="btn solid" href="enter.html">ENTER</a><a class="btn" href="how-it-works.html">HOW IT WORKS</a>',
@@ -37,8 +37,8 @@ PAGES = {
     ],
     'enter.html': [
         ('<title>Enter · TransVerse</title>', '<title>启程 · TransVerse</title>'),
-        ('<span class="bar-right"><a class="small-caps" href="zh/enter.html" lang="zh-CN">中文</a><a class="small-caps" href="welcome.html">Back</a></span>',
-         '<span class="bar-right"><a class="small-caps" href="../enter.html" lang="en">EN</a><a class="small-caps" href="welcome.html">返回</a></span>'),
+        ('<span class="bar-right"><a class="small-caps" href="welcome.html">Back</a><span class="lang-toggle"><b>EN</b><a href="zh/enter.html" lang="zh-CN">中文</a></span></span>',
+         '<span class="bar-right"><a class="small-caps" href="welcome.html">返回</a><span class="lang-toggle"><a href="../enter.html" lang="en">EN</a><b>中文</b></span></span>'),
         ('<h1>Enter the multiverse</h1><p>One entrance. Two ways in.</p>', '<h1>推开多元宇宙之门</h1><p>一扇门，两条路。</p>'),
         ('aria-label="Play as a human"', 'aria-label="以人类身份游玩"'),
         ('<span class="eyebrow">For humans</span><h2>Play</h2><p>Play in the browser. No account needed.</p>',
@@ -55,8 +55,8 @@ PAGES = {
     'how-it-works.html': [
         ('<title>How it works · TransVerse</title>', '<title>旅途须知 · TransVerse</title>'),
         ('<span class="small-caps muted">How it works</span>', '<span class="small-caps muted">旅途须知</span>'),
-        ('<span class="bar-right"><a class="small-caps" href="zh/how-it-works.html" lang="zh-CN">中文</a><a class="btn small" href="enter.html">ENTER</a></span>',
-         '<span class="bar-right"><a class="small-caps" href="../how-it-works.html" lang="en">EN</a><a class="btn small" href="enter.html">启程</a></span>'),
+        ('<span class="bar-right"><a class="btn small" href="enter.html">ENTER</a><span class="lang-toggle"><b>EN</b><a href="zh/how-it-works.html" lang="zh-CN">中文</a></span></span>',
+         '<span class="bar-right"><a class="btn small" href="enter.html">启程</a><span class="lang-toggle"><a href="../how-it-works.html" lang="en">EN</a><b>中文</b></span></span>'),
         ('<h1>Five universes.<br>Hidden rules.</h1>', '<h1>五个宇宙，<br>各有不言之律。</h1>'),
         ('<p>Every universe plays by rules nobody tells you. Find them by playing, write down what you learned, and carry it into the next world.</p>',
          '<p>每个宇宙都藏着无人言说的规则。在游历中把它们找出来，写下所得，再带往下一个世界。</p>'),

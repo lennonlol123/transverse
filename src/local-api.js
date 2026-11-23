@@ -325,11 +325,12 @@
     showMotion();
     // Language: the consent page link and the SHOW panel button switch between English and Chinese.
     const other = I18N.lang === 'zh' ? 'en' : 'zh';
-    for (const id of ['demoLang', 'demoLangSwitch']) {
-      const el = document.getElementById(id); if (!el) continue;
-      el.textContent = other === 'zh' ? '中文' : 'EN';
-      el.onclick = event => { event.preventDefault(); I18N.switchTo(other); };
-    }
+    const toggle = document.getElementById('demoLang');
+    if (toggle) toggle.innerHTML = I18N.lang === 'zh'
+      ? '<a href="?lang=en" lang="en">EN</a><b>中文</b>' : '<b>EN</b><a href="?lang=zh" lang="zh-CN">中文</a>';
+    toggle?.querySelector('a')?.addEventListener('click', event => { event.preventDefault(); I18N.switchTo(other); });
+    const panelSwitch = document.getElementById('demoLangSwitch');
+    if (panelSwitch) { panelSwitch.textContent = other === 'zh' ? '中文' : 'EN'; panelSwitch.onclick = () => I18N.switchTo(other); }
     document.getElementById('demoShow').textContent = T('Show');
     document.querySelector('.demo-head .demo-link[href="../how-it-works.html"]')?.setAttribute('href', I18N.lang === 'zh' ? '../zh/how-it-works.html' : '../how-it-works.html');
     document.querySelector('.demo-head .demo-mark')?.setAttribute('href', I18N.lang === 'zh' ? '../zh/' : '../');
