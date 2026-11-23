@@ -22,6 +22,9 @@
       <linearGradient id="thWood" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#2B2622"/><stop offset=".5" stop-color="#3C352F"/><stop offset="1" stop-color="#28231F"/></linearGradient>
       <linearGradient id="thLeafFill" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F1EDE5"/><stop offset="1" stop-color="#D9D3C8"/></linearGradient>
       <!-- The traveller: a small hooded walker with a staff and a satchel, seen as a silhouette. Facing right. -->
+      <linearGradient id="thVelvet" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3B2F2C"/><stop offset="1" stop-color="#241C1A"/></linearGradient>
+      <linearGradient id="thVelvetFold" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#000" stop-opacity=".28"/><stop offset=".45" stop-color="#fff" stop-opacity=".05"/><stop offset="1" stop-color="#000" stop-opacity=".3"/></linearGradient>
+      <pattern id="thVelvetFolds" width="96" height="940" patternUnits="userSpaceOnUse"><rect width="96" height="940" fill="url(#thVelvetFold)"/></pattern>
       <linearGradient id="thCape" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#232B4C"/><stop offset=".55" stop-color="#34416F"/><stop offset="1" stop-color="#46578F"/></linearGradient>
       <linearGradient id="thHood" x1="0" y1="0" x2="1" y2=".3"><stop offset="0" stop-color="#26305A"/><stop offset="1" stop-color="#4A5C96"/></linearGradient>
       <radialGradient id="thFaceLight" cx=".6" cy=".8" r=".7"><stop offset="0" stop-color="#FFF1D2"/><stop offset="1" stop-color="#EAD9C6"/></radialGradient>
@@ -72,6 +75,9 @@
 
     <!-- The door, stage right: a free-standing frame with depth, a lintel and a stone sill. The doorway
          holds the next Universe's painting; a line of its light shows at the gap and spills on the floor. -->
+    <!-- Doors already passed, standing upstage: one per Universe crossed, each still showing its world. -->
+    <g id="thPast" class="th-past"></g>
+
     <g class="th-door">
       <path d="M1250 290 L1296 300 L1296 728 L1250 732 Z" fill="#000" opacity=".16" filter="url(#thSoft)"/>
       <path class="th-spill" d="M1094 726 L1224 726 L1250 834 L960 834 Z" fill="url(#thSpill)" filter="url(#thSofter)"/>
@@ -114,15 +120,33 @@
     <path class="th-floorshadow" d="M520 820 L604 820 L770 640 L700 640 Z" fill="#2B2825" opacity=".2" filter="url(#thSoft)"/>
 
     <!-- The traveller, lit from the front, holding the letter. When the door opens, they walk to it. -->
-    <g class="th-walker">
+    <g class="th-walker"><g class="th-bobber"><g class="th-tilt">
       <use href="#thWalker" x="452" y="532" width="200" height="300"/>
+      <g id="thPatches"></g>
       <use href="#thLetterHeld" x="452" y="532" width="200" height="300"/>
-    </g>
+      <circle class="th-glowpulse" cx="598" cy="668" r="40" fill="url(#thLetter)"/>
+      <circle id="thSeal" class="th-seal" cx="598" cy="669" r="5"/>
+    </g></g></g>
+
+    <!-- Finale: the five doors of the journey side by side. Filled when all five Universes are crossed. -->
+    <g id="thFinale" class="th-finale"></g>
 
     <rect width="1440" height="900" fill="url(#thDim)"/>
+
+    <!-- Front curtain: rises at the very first entrance, falls at the end of the journey. -->
+    <g class="th-front">
+      <rect x="0" y="-20" width="1440" height="940" fill="url(#thVelvet)"/>
+      <rect x="0" y="-20" width="1440" height="940" fill="url(#thVelvetFolds)"/>
+      <path d="M0 900 H1440" stroke="#1A1413" stroke-width="10"/>
+    </g>
   </svg>
   <div class="th-ui">
     <div class="th-top"><span class="th-mark">TRANSVERSE</span><span class="th-where" id="thresholdTitle">Universe I</span></div>
+    <div class="th-end" id="thEnd" hidden>
+      <h2>The journey ends here</h2>
+      <p>Thank you for travelling through the five universes.</p>
+      <div class="th-end-actions"><button id="thExport" type="button">Export your record</button><a href="../">Back to the start</a><button id="thClose" type="button">Back to the game</button></div>
+    </div>
     <div class="th-bottom"><button id="thresholdOpen" type="button">Open the door</button></div>
   </div>
 </section>

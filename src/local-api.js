@@ -68,6 +68,11 @@
     // Persist the acknowledged action before showing its consequences.
     await stored(candidate);
     game = candidate; snapshot = result; stopped = false; notice(''); sync();
+    if (snapshot?.complete && game.universe === 5 && !game.finaleShown) {
+      game = {...game, finaleShown: true};
+      await stored(game);
+      finale();
+    }
   }
   async function launch(newGame = false, explicitCandidate = null, confirmed = false) {
     if (busy) return;
@@ -102,28 +107,112 @@
     setTimeout(() => URL.revokeObjectURL(url),1000);
     return {message:'Save downloaded to your device.'};
   }
-  // Threshold: shown before entering a Universe. Resolves when the player opens the door.
+  // Threshold stage: the story between Universes. Beats (each marks a change, none says how the game works):
+  // the front curtain rises (first entrance only); the traveller walks on and stops; from Universe II on they
+  // seal the letter with the colour of the Universe just left; they look at the letter; the gap of the door
+  // lights; the player opens the door and the traveller walks through. Patches on the cape and the doors
+  // standing upstage are the Universes already crossed. After Universe V: the finale.
   const ROMAN = ['I', 'II', 'III', 'IV', 'V'];
-  function threshold(universe) {
+  const HUE = ['#4F8A5B', '#D2442A', '#3D6496', '#B8902F', '#2E86C8'];
+  const SVGNS = 'http://www.w3.org/2000/svg';
+  const REDUCE = () => window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const wait = ms => new Promise(r => setTimeout(r, REDUCE() ? 0 : ms));
+  function el(tag, attrs, parent) {
+    const node = document.createElementNS(SVGNS, tag);
+    for (const [k, v] of Object.entries(attrs)) node.setAttribute(k, v);
+    if (parent) parent.append(node);
+    return node;
+  }
+  function smallDoor(parent, x, base, w, h, universe, cls) {
+    const g = el('g', {class: cls}, parent);
+    const id = `thClip${cls}${universe}`;
+    const clip = el('clipPath', {id}, g); el('rect', {x, y: base - h, width: w, height: h}, clip);
+    el('rect', {x, y: base - h, width: w, height: h, fill: '#151412'}, g);
+    el('image', {href: `art/u${universe}-scene.webp`, x: x - w, y: base - h, width: w * 3, height: h, preserveAspectRatio: 'xMidYMid slice', 'clip-path': `url(#${id})`, class: cls + '-art'}, g);
+    el('rect', {x: x - 3, y: base - h, width: 8, height: h, fill: HUE[universe - 1], filter: 'url(#thSoft)', class: cls + '-glow'}, g);
+    el('path', {d: `M${x - 6} ${base} V${base - h - 6} H${x + w + 6} V${base}`, fill: 'none', stroke: '#2A2522', 'stroke-width': 6}, g);
+    el('rect', {x: x - 10, y: base - h - 12, width: w + 20, height: 7, fill: '#2E2925'}, g);
+    el('rect', {x: x - 10, y: base, width: w + 20, height: 6, fill: '#3A3530'}, g);
+    return g;
+  }
+  function journeyMarks(crossed, fresh) {
+    const past = document.getElementById('thPast'), patches = document.getElementById('thPatches');
+    past.replaceChildren(); patches.replaceChildren();
+    for (let u = 1; u <= crossed; u++) smallDoor(past, 120 + (u - 1) * 96, 640, 46, 120, u, 'th-past-door');
+    const spots = [[570, 704], [548, 726], [586, 734], [538, 700], [560, 684]];
+    for (let u = 1; u <= crossed; u++) {
+      const [x, y] = spots[u - 1];
+      const g = el('g', {class: 'th-patch' + (fresh && u === crossed ? ' th-new' : '')}, patches);
+      el('circle', {cx: x, cy: y, r: 6.5, fill: 'none', stroke: '#E9DFC8', 'stroke-width': 1, 'stroke-dasharray': '1.6 1.6', opacity: '.7'}, g);
+      el('path', {d: `M${x} ${y - 5} L${x + 1.6} ${y - 1.6} L${x + 5} ${y} L${x + 1.6} ${y + 1.6} L${x} ${y + 5} L${x - 1.6} ${y + 1.6} L${x - 5} ${y} L${x - 1.6} ${y - 1.6} Z`, fill: HUE[u - 1]}, g);
+    }
+  }
+  async function stageIn(stage, first) {
+    stage.classList.remove('is-open', 'th-ready', 'th-walkin', 'th-walking', 'th-look', 'th-sealed', 'th-curtain-up', 'th-lit');
+    stage.classList.toggle('th-curtain-down', first);
+    stage.classList.add('th-pre');
+    stage.hidden = false;
+    void stage.getBoundingClientRect();
+    if (first) { await wait(500); stage.classList.add('th-curtain-up'); await wait(1300); }
+    stage.classList.add('th-walkin', 'th-walking');
+    await wait(2250);
+    stage.classList.remove('th-walking');
+  }
+  async function threshold(universe) {
     const stage = document.getElementById('threshold');
-    if (!stage) return Promise.resolve();
+    if (!stage) return;
+    const crossed = universe - 1;
+    stage.classList.remove('th-finale-mode');
+    document.getElementById('thEnd').hidden = true;
+    document.getElementById('thFinale').replaceChildren();
     stage.dataset.next = String(universe);
-    stage.classList.remove('is-open');
     document.getElementById('thresholdTitle').textContent = 'Universe ' + ROMAN[universe - 1];
     document.getElementById('thNextArt').setAttribute('href', `art/u${universe}-scene.webp`);
+    document.getElementById('thSeal').setAttribute('fill', crossed ? HUE[crossed - 1] : 'none');
+    journeyMarks(crossed, true);
     const button = document.getElementById('thresholdOpen');
-    button.disabled = false;
-    stage.hidden = false;
-    button.focus();
-    return new Promise(resolve => {
-      button.onclick = () => {
-        button.disabled = true;
-        stage.classList.add('is-open');
-        const reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
-        setTimeout(() => { stage.hidden = true; resolve(); }, reduce ? 0 : 1900);
-      };
-    });
+    button.disabled = true;
+    await stageIn(stage, universe === 1);
+    if (crossed) { stage.classList.add('th-sealed'); await wait(900); }
+    stage.classList.add('th-look'); await wait(1500);
+    stage.classList.add('th-ready');
+    button.disabled = false; button.focus();
+    await new Promise(resolve => { button.onclick = resolve; });
+    button.disabled = true;
+    stage.classList.add('is-open', 'th-walking');
+    await wait(1900);
+    stage.hidden = true;
+    stage.classList.remove('th-walking');
   }
+  async function finale() {
+    const stage = document.getElementById('threshold');
+    if (!stage) return;
+    stage.classList.add('th-finale-mode');
+    stage.dataset.next = '5';
+    document.getElementById('thresholdTitle').textContent = 'The journey';
+    document.getElementById('thSeal').setAttribute('fill', HUE[4]);
+    journeyMarks(5, false);
+    const doors = document.getElementById('thFinale');
+    doors.replaceChildren();
+    [250, 470, 690, 910, 1130].forEach((x, i) => {
+      const g = smallDoor(doors, x, 640, 84, 230, i + 1, 'th-fdoor');
+      g.querySelector('.th-fdoor-art').style.transitionDelay = g.querySelector('.th-fdoor-glow').style.transitionDelay = (i * 0.55) + 's';
+    });
+    document.getElementById('thEnd').hidden = false;
+    document.getElementById('thresholdOpen').disabled = true;
+    await stageIn(stage, false);
+    stage.classList.add('th-sealed', 'th-lit');
+    await wait(3600);
+    stage.classList.remove('th-curtain-up');
+    stage.classList.add('th-curtain-down');
+    await new Promise(resolve => {
+      document.getElementById('thExport').onclick = () => { try { exportSave(); } catch (e) { notice(e.message); } };
+      document.getElementById('thClose').onclick = resolve;
+    });
+    stage.hidden = true;
+    stage.classList.remove('th-finale-mode', 'th-curtain-down');
+  }
+  window.TVStage = {threshold, finale};
   window.TVLocal = {
     runId: () => game?.runId || null,
     async request(path, body) {

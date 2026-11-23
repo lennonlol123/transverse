@@ -70,3 +70,52 @@
 .threshold.is-open .th-shadow{transform:translateX(760px);opacity:0}
 .threshold.is-open .th-floorshadow{transform:translateX(610px);opacity:0}
 @media(prefers-reduced-motion:reduce){.th-walker,.th-shadow,.th-floorshadow{transition:none}}
+
+/* Story beats on the threshold (2026-11-24). Every beat marks a change: arriving, looking at the
+   letter, sealing it, the marks of the journey, the end. Nothing here concerns how the game works. */
+.th-front{transition:transform 1.6s cubic-bezier(.6,0,.3,1);transform:translateY(-102%)}
+.threshold.th-curtain-down .th-front{transform:none}
+.threshold.th-curtain-down.th-curtain-up .th-front{transform:translateY(-102%)}
+.threshold.th-pre .th-walker{transform:translateX(-640px);transition:none}
+.threshold.th-pre .th-shadow{transform:translateX(-800px);transition:none}
+.threshold.th-pre .th-floorshadow{transform:translateX(-640px);transition:none}
+.threshold.th-pre.th-walkin .th-walker,.threshold.th-pre.th-walkin .th-shadow,.threshold.th-pre.th-walkin .th-floorshadow{transform:none;transition:transform 2.2s cubic-bezier(.25,.1,.3,1)}
+.threshold.th-pre.th-walkin.is-open .th-walker{transform:translateX(610px);opacity:0;transition:transform 1.7s cubic-bezier(.45,.05,.4,1),opacity .5s ease 1.3s}
+.threshold.th-pre.th-walkin.is-open .th-shadow{transform:translateX(760px);opacity:0;transition:transform 1.7s cubic-bezier(.45,.05,.4,1),opacity .5s ease 1.3s}
+.threshold.th-pre.th-walkin.is-open .th-floorshadow{transform:translateX(610px);opacity:0;transition:transform 1.7s cubic-bezier(.45,.05,.4,1),opacity .5s ease 1.3s}
+.threshold.th-walking .th-bobber{animation:th-bob .42s ease-in-out infinite alternate}
+@keyframes th-bob{from{transform:translateY(0)}to{transform:translateY(-4px)}}
+.th-tilt{transform-box:fill-box;transform-origin:50% 100%}
+.threshold.th-look .th-tilt{animation:th-look 1.5s ease-in-out 1}
+@keyframes th-look{0%{transform:none}35%,70%{transform:rotate(4deg)}100%{transform:none}}
+.th-glowpulse{opacity:0}
+.threshold.th-look .th-glowpulse{animation:th-glow 1.5s ease-in-out 1}
+@keyframes th-glow{0%,100%{opacity:0}45%,70%{opacity:.9}}
+.th-seal{opacity:0;transform-box:fill-box;transform-origin:center;transform:scale(2.2)}
+.threshold.th-sealed .th-seal{opacity:1;transform:none;transition:transform .35s cubic-bezier(.3,1.6,.5,1),opacity .2s ease}
+.threshold:not(.th-ready) .th-glow{opacity:0}
+.threshold.th-ready .th-glow{transition:opacity 1s ease}
+.th-bottom{transition:opacity .6s ease}
+.threshold:not(.th-ready) .th-bottom{opacity:0;pointer-events:none}
+.th-past .th-past-door{opacity:.6}
+.th-patch{transform-box:fill-box;transform-origin:center}
+.th-patch.th-new{animation:th-stitch .8s ease-out 1 both;animation-delay:.6s}
+@keyframes th-stitch{from{opacity:0;transform:scale(.2)}to{opacity:1;transform:none}}
+/* Finale. */
+.threshold.th-finale-mode .th-door,.threshold.th-finale-mode .th-past{display:none}
+.th-finale .th-fdoor-art{opacity:.15;transition:opacity 1s ease}
+.th-finale .th-fdoor-glow{opacity:0;transition:opacity 1s ease}
+.threshold.th-lit .th-finale .th-fdoor-art{opacity:.95}
+.threshold.th-lit .th-finale .th-fdoor-glow{opacity:.8}
+.threshold.th-finale-mode.th-pre.th-walkin .th-walker{transform:translateX(150px)}
+.threshold.th-finale-mode.th-pre.th-walkin .th-shadow{transform:translateX(190px)}
+.threshold.th-finale-mode.th-pre.th-walkin .th-floorshadow{transform:translateX(150px)}
+.th-end{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;text-align:center;color:#F2EFE8;opacity:0;transition:opacity 1.2s ease .8s}
+.th-end[hidden]{display:none}
+.threshold.th-curtain-down .th-end{opacity:1}
+.th-end h2{margin:0;font:400 clamp(36px,6vw,64px)/1.05 Anton,Impact,sans-serif;letter-spacing:.04em}
+.th-end p{margin:0;font:400 17px/1.5 "Space Grotesk","Helvetica Neue",sans-serif;color:#D8D2C8}
+.th-end-actions{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:18px}
+.th-end-actions button,.th-end-actions a{font:700 13px/1 "Space Grotesk","Helvetica Neue",sans-serif;letter-spacing:.2em;text-transform:uppercase;padding:15px 26px;border:2px solid #F2EFE8;background:transparent;color:#F2EFE8;text-decoration:none;cursor:pointer}
+.th-end-actions button:first-child{background:#F2EFE8;color:#111}
+@media(prefers-reduced-motion:reduce){.threshold *{animation:none!important;transition:none!important}}
