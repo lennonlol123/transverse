@@ -1,8 +1,9 @@
 /* Only opaque cosmetic coordinates and already-public labels enter this module.
- * Interface version: transverse-white-v5 (v2 = v1 + change-only motion, input held in place while computing;
+ * Interface version: transverse-white-v6 (v2 = v1 + change-only motion, input held in place while computing;
  * v3 = v2 + fixed panel heights, centred opponent, darker secondary text #716E68, Space Grotesk for buttons and labels;
  * v4 = v3 + a letterboxed reveal on the first Encounter of each Universe, input inert until the panels return;
- * v5 = v4 + between Encounters the prompt sits above the note field (same words), the opponent leaves, note field focused).
+ * v5 = v4 + between Encounters the prompt sits above the note field (same words), the opponent leaves, note field focused;
+ * v6 = v5 + notes between Encounters are written on a record sheet that unfolds from the Record and files back).
  * - Each Universe has one painting and one opponent figure. The same figure stands in
  *   every Encounter of that Universe, so appearance can never covary with a mechanism.
  * - Each card shows an abstract sign. Signs are bound to card NAMES (never to what a
@@ -35,7 +36,7 @@
   }
   // Trail mark: one per Encounter already played in this Episode. Neutral, the same everywhere.
   const MARK = 'data:image/svg+xml;base64,' + btoa('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40"><circle cx="20" cy="20" r="11" fill="#FFFFFF" fill-opacity=".92" stroke="#161616" stroke-width="3"/></svg>');
-  const INTERFACE = 'transverse-white-v5';
+  const INTERFACE = 'transverse-white-v6';
   let context = {universe:1, episode:1, encounter:0};
   const classes = [
     ['.bevel,.hud,.tray,.hud-side,.hud-turn', 'tv-panel'],
@@ -149,6 +150,7 @@
       dialogue.setAttribute('aria-label', inEncounter ? 'Latest feedback' : 'Context');
     }
     endOfEncounter(phase);
+    sheet(phase);
     focusNote(phase);
     const viewport = document.getElementById('viewport');
     if (viewport) {
@@ -377,6 +379,56 @@
     }
     if (phase !== lastPhase) lastPhase = phase;
   }
+  // The record sheet. A note asked for between Encounters is written on its own sheet: it unfolds out of the
+  // Record into the middle of the stage, and when it is submitted it folds into a thin card and slides back
+  // into the Record. The working note during an Encounter stays the plain field it is. Same words, same
+  // field, same submission; only where and how the field is shown changes.
+  let sheetFor = null, sheetToken = 0;
+  function sheet(phase) {
+    const tray = document.getElementById('inputArea'), journal = document.querySelector('.journal');
+    const form = document.getElementById('noteForm');
+    if (!tray || !form) return;
+    // While the engine works out the next step after a submission, leave everything as it is (the sheet is
+    // filing itself away); decide only once the next prompt is actually on screen.
+    if (form.classList.contains('tv-hold') || !document.getElementById('waiting').hidden) return;
+    const visible = phase === 'note' && !form.hidden;
+    if (!visible) {
+      if (document.body.dataset.sheet) delete document.body.dataset.sheet;
+      if (tray.classList.contains('tv-filed') || tray.getAnimations().length) { tray.classList.remove('tv-filed'); tray.getAnimations().forEach(x => x.cancel()); }
+      sheetFor = null; sheetToken++; return;
+    }
+    const prompt = (document.getElementById('context') || {}).textContent || '';
+    const caption = (document.querySelector('.tv-caption') || {}).textContent || '';
+    if (tray.dataset.sheetTitle !== caption) tray.dataset.sheetTitle = caption;
+    document.body.dataset.sheet = '1';
+    if (sheetFor === prompt) return;
+    sheetFor = prompt;
+    const token = ++sheetToken;
+    tray.classList.remove('tv-filed');
+    tray.getAnimations().forEach(x => x.cancel());
+    if (REDUCED() || !journal) return;
+    requestAnimationFrame(() => {
+      if (token !== sheetToken || !document.body.dataset.sheet || form.hidden || form.classList.contains('tv-hold')) return;
+      const J = journal.getBoundingClientRect(), T = tray.getBoundingClientRect();
+      if (!T.width || !T.height) return;
+      tray.animate([
+        {transformOrigin: 'top left', opacity: .2, transform: `translate(${J.left - T.left}px, ${J.top + 60 - T.top}px) scale(${Math.min(1, J.width / T.width)}, ${40 / T.height})`},
+        {transformOrigin: 'top left', opacity: 1, transform: 'none'}], {duration: 520, easing: 'cubic-bezier(.45,0,.25,1)'});
+    });
+  }
+  document.addEventListener('submit', event => {
+    const tray = document.getElementById('inputArea'), journal = document.querySelector('.journal');
+    if (event.target.id !== 'noteForm' || !document.body.dataset.sheet || !tray || !journal || REDUCED()) return;
+    sheetToken++;                                   // a pending unfold must not play over the filing
+    tray.getAnimations().forEach(x => x.cancel());
+    const J = journal.getBoundingClientRect(), T = tray.getBoundingClientRect();
+    const filing = tray.animate([
+      {transformOrigin: 'top left', opacity: 1, transform: 'none'},
+      {transformOrigin: 'top left', opacity: .9, offset: .45, transform: `translate(0px, ${T.height * .45}px) scale(1, .08)`},
+      {transformOrigin: 'top left', opacity: 0, transform: `translate(${J.left + 16 - T.left}px, ${J.top + 64 - T.top}px) scale(${(J.width - 32) / T.width}, ${30 / T.height})`}],
+      {duration: 480, easing: 'cubic-bezier(.45,0,.25,1)', fill: 'forwards'});
+    filing.finished.then(() => tray.classList.add('tv-filed')).catch(() => {});
+  }, true);
   // The note field takes the focus when a note is asked for; Cmd/Ctrl + Enter submits it.
   let focusedFor = null;
   function focusNote(phase) {

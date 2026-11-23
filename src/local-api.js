@@ -2,7 +2,7 @@
 (() => {
   'use strict';
   const VERSION = 'public-browser-demo-v1';
-  const INTERFACE = 'transverse-white-v5';
+  const INTERFACE = 'transverse-white-v6';
   const CONSENT = 'transverse-consent-1';
   const DB = 'transverse-v1';
   const PLAYED = 'tv-has-played-v1';
@@ -131,7 +131,7 @@
     const welcome = document.getElementById('demoWelcome'); welcome.classList.add('tv-leaving');
     const anim = box.animate([
       {left: r.left + 'px', top: r.top + 'px', width: r.width + 'px', height: r.height + 'px', borderWidth: '2px'},
-      {left: (1078 * k + ox) + 'px', top: (280 * k + oy) + 'px', width: (162 * k) + 'px', height: (448 * k) + 'px', borderWidth: Math.max(3, 7 * k) + 'px'}],
+      {left: (1086 * k + ox) + 'px', top: (384 * k + oy) + 'px', width: (146 * k) + 'px', height: (446 * k) + 'px', borderWidth: Math.max(3, 8 * k) + 'px', borderColor: '#5E5A55'}],
       {duration: 600, easing: 'cubic-bezier(.45,0,.25,1)', fill: 'forwards'});
     const skip = () => anim.finish();
     addEventListener('pointerdown', skip, {once: true}); addEventListener('keydown', skip, {once: true});
@@ -151,18 +151,17 @@
     const g = el('g', {class: cls}, parent);
     const id = `thClip${cls}${universe}`;
     const clip = el('clipPath', {id}, g); el('rect', {x, y: base - h, width: w, height: h}, clip);
-    el('rect', {x, y: base - h, width: w, height: h, fill: '#151412'}, g);
+    el('rect', {x: x - 14, y: base - h - 14, width: w + 28, height: h + 14, fill: '#E2DED6'}, g);
+    el('rect', {x, y: base - h, width: w, height: h, fill: '#2E2B28'}, g);
     el('image', {href: `art/u${universe}-scene.webp`, x: x - w, y: base - h, width: w * 3, height: h, preserveAspectRatio: 'xMidYMid slice', 'clip-path': `url(#${id})`, class: cls + '-art'}, g);
-    el('rect', {x: x - 3, y: base - h, width: 8, height: h, fill: HUE[universe - 1], filter: 'url(#thSoft)', class: cls + '-glow'}, g);
-    el('path', {d: `M${x - 6} ${base} V${base - h - 6} H${x + w + 6} V${base}`, fill: 'none', stroke: '#2A2522', 'stroke-width': 6}, g);
-    el('rect', {x: x - 10, y: base - h - 12, width: w + 20, height: 7, fill: '#2E2925'}, g);
-    el('rect', {x: x - 10, y: base, width: w + 20, height: 6, fill: '#3A3530'}, g);
+    el('rect', {x: x - 2, y: base - h, width: 7, height: h, fill: HUE[universe - 1], filter: 'url(#thSoft)', class: cls + '-glow'}, g);
+    el('path', {d: `M${x - 4} ${base} V${base - h - 4} H${x + w + 4} V${base}`, fill: 'none', stroke: '#5E5A55', 'stroke-width': 6}, g);
     return g;
   }
   function journeyMarks(crossed, fresh) {
     const past = document.getElementById('thPast');
     past.replaceChildren();
-    for (let u = 1; u <= crossed; u++) smallDoor(past, 120 + (u - 1) * 96, 640, 46, 120, u, 'th-past-door');
+    // The poster shows no past doors; the label in the corner counts the Universes.
   }
   async function stageIn(stage, first) {
     stage.classList.remove('is-open', 'th-ready', 'th-walkin', 'th-walking', 'th-look', 'th-sealed', 'th-curtain-up', 'th-lit');
@@ -175,11 +174,11 @@
     await wait(1250);
     stage.classList.remove('th-walking');
   }
-  // The doorway's rectangle on screen (stage viewBox 1440 × 900, xMidYMid slice; opening 1094–1224 × 298–726).
+  // The doorway's rectangle on screen (stage viewBox 1440 × 900, xMidYMid slice; opening 1094–1224 × 392–830).
   function doorway() {
     const W = innerWidth, H = innerHeight, k = Math.max(W / 1440, H / 900);
     const ox = (W - 1440 * k) / 2, oy = (H - 900 * k) / 2;
-    return {left: 1094 * k + ox, top: 298 * k + oy, right: 1224 * k + ox, bottom: 726 * k + oy};
+    return {left: 1094 * k + ox, top: 392 * k + oy, right: 1224 * k + ox, bottom: 830 * k + oy};
   }
   // Wait until the game shows the given Universe (welcome closed, a screen drawn), at most 10 s.
   async function drawn(universe) {
@@ -199,7 +198,7 @@
     document.getElementById('thEnd').hidden = true;
     document.getElementById('thFinale').replaceChildren();
     stage.dataset.next = String(universe);
-    document.getElementById('thresholdTitle').textContent = 'Universe ' + ROMAN[universe - 1];
+    document.getElementById('thresholdTitle').textContent = `UNIVERSE 0${universe} / 05`;
     document.getElementById('thNextArt').setAttribute('href', `art/u${universe}-scene.webp`);
     document.getElementById('thSeal').setAttribute('fill', crossed ? HUE[crossed - 1] : 'none');
     journeyMarks(crossed, true);
@@ -233,13 +232,13 @@
     if (!stage) return;
     stage.classList.add('th-finale-mode');
     stage.dataset.next = '5';
-    document.getElementById('thresholdTitle').textContent = 'The journey';
+    document.getElementById('thresholdTitle').textContent = 'UNIVERSE 05 / 05';
     document.getElementById('thSeal').setAttribute('fill', HUE[4]);
     journeyMarks(5, false);
     const doors = document.getElementById('thFinale');
     doors.replaceChildren();
-    [250, 470, 690, 910, 1130].forEach((x, i) => {
-      const g = smallDoor(doors, x, 640, 84, 230, i + 1, 'th-fdoor');
+    [230, 460, 690, 920, 1150].forEach((x, i) => {
+      const g = smallDoor(doors, x, 830, 96, 330, i + 1, 'th-fdoor');
       g.querySelector('.th-fdoor-art').style.transitionDelay = g.querySelector('.th-fdoor-glow').style.transitionDelay = (i * 0.55) + 's';
     });
     document.getElementById('thEnd').hidden = false;

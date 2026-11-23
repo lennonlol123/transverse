@@ -1,119 +1,71 @@
 <section id="threshold" class="threshold" aria-labelledby="thresholdTitle" hidden>
+  <!-- A minimal stage poster (2026-11-24): a flat wall, one thin floor line, and only four subjects —
+       the traveller, the letter, the door, the shadow. Light comes from the audience, low and to the left,
+       so the traveller's shadow falls large on the wall behind them, up and to the right. -->
   <svg class="th-stage" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
     <defs>
-      <linearGradient id="thFold" x1="0" y1="0" x2="1" y2="0">
-        <stop offset="0" stop-color="#C9C4BA"/><stop offset=".32" stop-color="#E8E5DE"/><stop offset=".58" stop-color="#D6D1C7"/><stop offset="1" stop-color="#BEB8AD"/>
-      </linearGradient>
-      <pattern id="thCurtain" width="72" height="640" patternUnits="userSpaceOnUse"><rect width="72" height="640" fill="url(#thFold)"/></pattern>
-      <linearGradient id="thHem" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".22"/></linearGradient>
-      <radialGradient id="thSpot" cx=".5" cy=".5" r=".5">
-        <stop offset="0" stop-color="#FFFDF6" stop-opacity=".92"/><stop offset=".72" stop-color="#FFF9EC" stop-opacity=".7"/><stop offset="1" stop-color="#FFF9EC" stop-opacity="0"/>
-      </radialGradient>
-      <radialGradient id="thDim" cx=".46" cy=".5" r=".78">
-        <stop offset=".42" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".6"/>
-      </radialGradient>
-      <linearGradient id="thFloor" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#A29A8E"/><stop offset="1" stop-color="#6A645B"/></linearGradient>
-      <radialGradient id="thPool" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#FFF4DE" stop-opacity=".7"/><stop offset="1" stop-color="#FFF4DE" stop-opacity="0"/></radialGradient>
+      <radialGradient id="thPool" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#FFFBF2" stop-opacity=".85"/><stop offset="1" stop-color="#FFFBF2" stop-opacity="0"/></radialGradient>
       <radialGradient id="thLetter" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#FFE7A8" stop-opacity=".9"/><stop offset="1" stop-color="#FFE7A8" stop-opacity="0"/></radialGradient>
       <linearGradient id="thSpill" x1="0" y1="0" x2="0" y2="1"><stop offset="0" class="th-spill-a"/><stop offset="1" class="th-spill-b"/></linearGradient>
       <filter id="thSoft" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="7"/></filter>
       <filter id="thSofter" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="16"/></filter>
-      <clipPath id="thDoorway"><rect x="1094" y="298" width="130" height="428"/></clipPath>
-      <linearGradient id="thWood" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#2B2622"/><stop offset=".5" stop-color="#3C352F"/><stop offset="1" stop-color="#28231F"/></linearGradient>
-      <linearGradient id="thLeafFill" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#DCD7CE"/><stop offset="1" stop-color="#C4BEB3"/></linearGradient>
-      <!-- The traveller: a small hooded walker with a staff and a satchel, seen as a silhouette. Facing right. -->
-      <linearGradient id="thVelvet" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3B2F2C"/><stop offset="1" stop-color="#241C1A"/></linearGradient>
-      <linearGradient id="thVelvetFold" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#000" stop-opacity=".28"/><stop offset=".45" stop-color="#fff" stop-opacity=".05"/><stop offset="1" stop-color="#000" stop-opacity=".3"/></linearGradient>
-      <pattern id="thVelvetFolds" width="96" height="940" patternUnits="userSpaceOnUse"><rect width="96" height="940" fill="url(#thVelvetFold)"/></pattern>
-      <filter id="thShadowF" x="-20%" y="-20%" width="140%" height="140%">
-        <feColorMatrix type="matrix" values="0 0 0 0 .17  0 0 0 0 .16  0 0 0 0 .15  0 0 0 1 0"/><feGaussianBlur stdDeviation="13"/>
+      <!-- The shadow: the traveller's own outline, warm near-black, edges only slightly softened. -->
+      <filter id="thShadowF" x="-10%" y="-10%" width="120%" height="120%">
+        <feColorMatrix type="matrix" values="0 0 0 0 .282  0 0 0 0 .263  0 0 0 0 .243  0 0 0 1 0"/><feGaussianBlur stdDeviation="2.6"/>
       </filter>
+      <clipPath id="thDoorway"><rect x="1094" y="392" width="130" height="438"/></clipPath>
     </defs>
 
-    <!-- Back wall: curtain with a hem, and a follow-spot pool. -->
-    <rect x="0" y="0" width="1440" height="640" fill="url(#thCurtain)"/>
-    <rect x="0" y="560" width="1440" height="80" fill="url(#thHem)"/>
-    <ellipse cx="660" cy="400" rx="340" ry="300" fill="url(#thSpot)"/>
+    <!-- Wall and floor. -->
+    <rect x="0" y="0" width="1440" height="900" fill="#ECE9E3"/>
+    <rect x="0" y="830" width="1440" height="70" fill="#D8D3CA"/>
+    <path d="M0 830 H1440" stroke="#BDB7AD" stroke-width="1.5"/>
+    <ellipse cx="560" cy="842" rx="300" ry="34" fill="url(#thPool)"/>
 
-    <!-- Stage floor. -->
-    <path d="M0 640 L1440 640 L1440 900 L0 900 Z" fill="url(#thFloor)"/>
-    <g stroke="#5A544B" stroke-width="1.1" opacity=".4"><path d="M0 672 H1440"/><path d="M0 712 H1440"/><path d="M0 762 H1440"/><path d="M0 824 H1440"/></g>
-    <path d="M0 640 H1440" stroke="#4A4540" stroke-width="2"/>
-    <ellipse cx="560" cy="796" rx="280" ry="56" fill="url(#thPool)"/>
-
-    <!-- The door, stage right: a free-standing frame with depth, a lintel and a stone sill. The doorway
-         holds the next Universe's painting; a line of its light shows at the gap and spills on the floor. -->
-    <!-- Doors already passed, standing upstage: one per Universe crossed, each still showing its world. -->
+    <!-- Kept for the script (crossed Universes); the poster shows none of them. -->
     <g id="thPast" class="th-past"></g>
 
+    <!-- The door: a dark outline; its only colour is the next Universe's light at the gap. -->
     <g class="th-door">
-      <path d="M1250 290 L1296 300 L1296 728 L1250 732 Z" fill="#000" opacity=".16" filter="url(#thSoft)"/>
-      <path class="th-spill" d="M1094 726 L1224 726 L1250 834 L960 834 Z" fill="url(#thSpill)" filter="url(#thSofter)"/>
-      <rect x="1094" y="298" width="130" height="428" fill="#151412"/>
+      <rect x="1076" y="374" width="166" height="456" fill="#E2DED6"/>
+      <path class="th-spill" d="M1094 830 L1224 830 L1256 900 L1000 900 Z" fill="url(#thSpill)" filter="url(#thSofter)"/>
+      <rect x="1094" y="392" width="130" height="438" fill="#2E2B28"/>
       <g clip-path="url(#thDoorway)">
-        <image id="thNextArt" href="" x="960" y="298" width="400" height="428" preserveAspectRatio="xMidYMid slice"/>
-        <rect x="1094" y="298" width="130" height="428" fill="#FFF8E6" opacity=".1"/>
+        <image id="thNextArt" href="" x="960" y="392" width="400" height="438" preserveAspectRatio="xMidYMid slice"/>
       </g>
-      <rect class="th-glow" x="1092" y="300" width="14" height="424" filter="url(#thSoft)" opacity=".85"/>
-      <path d="M1064 288 L1078 280 L1078 728 L1064 734 Z" fill="#1A1815"/>
-      <path fill-rule="evenodd" d="M1078 280 H1240 V728 H1078 Z M1094 298 H1224 V726 H1094 Z" fill="url(#thWood)"/>
-      <path d="M1094 298 V726" stroke="#574F47" stroke-width="1.6"/>
-      <path d="M1094 298 H1224" stroke="#141210" stroke-width="2"/>
-      <path d="M1080 282 V726" stroke="#4A433C" stroke-width="1.2"/>
-      <rect x="1066" y="266" width="186" height="16" fill="url(#thWood)"/>
-      <path d="M1066 266 H1252" stroke="#625950" stroke-width="1.6"/>
-      <rect x="1060" y="258" width="198" height="9" fill="#2E2925"/>
-      <path d="M1060 258 H1258" stroke="#6A6157" stroke-width="1.2"/>
+      <rect class="th-glow" x="1092" y="394" width="12" height="434" filter="url(#thSoft)" opacity=".9"/>
       <g class="th-leaf">
-        <rect x="1094" y="298" width="130" height="428" fill="url(#thLeafFill)"/>
-        <rect x="1094" y="298" width="5" height="428" fill="#B9B2A6"/>
-        <g fill="#D3CDC3">
-          <rect x="1110" y="318" width="98" height="186"/><rect x="1110" y="524" width="98" height="184"/>
-        </g>
-        <g fill="none" stroke-width="2">
-          <path d="M1110 504 V318 H1208" stroke="#FFFFFF" opacity=".45"/><path d="M1208 318 V504 H1110" stroke="#A79F92"/>
-          <path d="M1110 708 V524 H1208" stroke="#FFFFFF" opacity=".45"/><path d="M1208 524 V708 H1110" stroke="#A79F92"/>
-          <path d="M1118 496 V326 H1200" stroke="#C9C2B6" stroke-width="1.2"/><path d="M1118 700 V532 H1200" stroke="#C9C2B6" stroke-width="1.2"/>
-        </g>
-        <rect x="1217" y="330" width="7" height="20" rx="1" fill="#857A6B"/><rect x="1217" y="676" width="7" height="20" rx="1" fill="#857A6B"/>
-        <rect x="1102" y="498" width="9" height="34" rx="3" fill="#8E7D5F"/>
-        <circle cx="1116" cy="515" r="5.5" fill="#6B5C45"/><circle cx="1114.5" cy="513.5" r="1.8" fill="#D9C79F"/>
+        <rect x="1094" y="392" width="130" height="438" fill="#D6D2CB"/>
+        <rect x="1094" y="392" width="3" height="438" fill="#C4BFB6"/>
+        <circle cx="1108" cy="618" r="4.5" fill="#5E5A55"/>
       </g>
-      <rect x="1058" y="726" width="202" height="13" fill="#3A3530"/>
-      <path d="M1058 726 H1260" stroke="#6A6258" stroke-width="1.6"/>
+      <path d="M1090 830 V388 H1228 V830" fill="none" stroke="#5E5A55" stroke-width="8"/>
     </g>
 
-    <!-- The traveller's shadow on the curtain: light from the front, low and to the left; larger, behind and up to the right. -->
-    <g class="th-shadow" opacity=".17" filter="url(#thShadowF)"><image href="art/traveller.webp" x="542" y="131" width="374" height="551"/></g>
-    <path class="th-floorshadow" d="M520 820 L604 820 L770 640 L700 640 Z" fill="#2B2825" opacity=".2" filter="url(#thSoft)"/>
-
-    <!-- The traveller, lit from the front, holding the letter. When the door opens, they walk to it. -->
-    <g class="th-walker"><g class="th-bobber"><g class="th-tilt">
-      <image href="art/traveller.webp" x="442.5" y="538" width="197" height="290"/>
-      <circle cx="601" cy="663" r="30" fill="url(#thLetter)" opacity=".55"/>
-      <circle class="th-glowpulse" cx="601" cy="663" r="40" fill="url(#thLetter)"/>
-      <circle id="thSeal" class="th-seal" cx="605" cy="671" r="5.6"/>
-    </g></g></g>
-
-    <!-- Finale: the five doors of the journey side by side. Filled when all five Universes are crossed. -->
+    <!-- Finale: the five doors of the journey side by side, behind the shadow and the traveller. Filled when all five Universes are crossed. -->
     <g id="thFinale" class="th-finale"></g>
 
-    <rect width="1440" height="900" fill="url(#thDim)"/>
+    <!-- The shadow on the wall: larger than the traveller, behind them, up and to the right. -->
+    <g class="th-shadow" opacity=".7" filter="url(#thShadowF)"><image href="art/traveller.webp" x="566" y="286" width="370" height="544"/></g>
 
-    <!-- Front curtain: rises at the very first entrance, falls at the end of the journey. -->
-    <g class="th-front">
-      <rect x="0" y="-20" width="1440" height="940" fill="url(#thVelvet)"/>
-      <rect x="0" y="-20" width="1440" height="940" fill="url(#thVelvetFolds)"/>
-      <path d="M0 900 H1440" stroke="#1A1413" stroke-width="10"/>
-    </g>
+    <!-- The traveller, lit from the front, holding the letter. -->
+    <g class="th-walker"><g class="th-bobber"><g class="th-tilt">
+      <image href="art/traveller.webp" x="442.5" y="542" width="197" height="290"/>
+      <circle cx="601" cy="667" r="30" fill="url(#thLetter)" opacity=".55"/>
+      <circle class="th-glowpulse" cx="601" cy="667" r="44" fill="url(#thLetter)"/>
+      <circle id="thSeal" class="th-seal" cx="605" cy="675" r="5.6"/>
+    </g></g></g>
+
+    <!-- Closing panel (finale only): falls over the stage at the end of the journey. -->
+    <g class="th-front"><rect x="0" y="-20" width="1440" height="940" fill="#24221F"/></g>
   </svg>
   <div class="th-ui">
-    <div class="th-top"><span class="th-mark">TRANSVERSE</span><span class="th-where" id="thresholdTitle">Universe I</span></div>
+    <div class="th-top"><span class="th-mark">TRANSVERSE</span><span class="th-sub">BETWEEN UNIVERSES</span></div>
     <div class="th-end" id="thEnd" hidden>
       <h2>The journey ends here</h2>
       <p>Thank you for travelling through the five universes.</p>
       <div class="th-end-actions"><button id="thExport" type="button">Export your record</button><a href="../">Back to the start</a><button id="thClose" type="button">Back to the game</button></div>
     </div>
-    <div class="th-bottom"><button id="thresholdOpen" type="button">Open the door</button></div>
+    <div class="th-bottom"><span class="th-where" id="thresholdTitle">UNIVERSE 01 / 05</span><button id="thresholdOpen" type="button">Open the door</button></div>
   </div>
 </section>

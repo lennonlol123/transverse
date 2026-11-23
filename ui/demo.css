@@ -124,7 +124,7 @@
 .threshold.th-pre .th-shadow{transform:translateX(-250px);opacity:0}
 .threshold.th-pre .th-floorshadow{transform:translateX(-200px);opacity:0}
 .threshold.th-pre.th-walkin .th-walker,.threshold.th-pre.th-walkin .th-floorshadow{transform:none;opacity:1;transition:transform 1.2s var(--tv-ease),opacity .7s var(--tv-ease)}
-.threshold.th-pre.th-walkin .th-shadow{transform:none;opacity:.17;transition:transform 1.2s var(--tv-ease),opacity .7s var(--tv-ease)}
+.threshold.th-pre.th-walkin .th-shadow{transform:none;opacity:.7;transition:transform 1.2s var(--tv-ease),opacity .7s var(--tv-ease)}
 .threshold.th-pre.th-walkin .th-floorshadow{opacity:.2}
 .threshold.th-walking .th-bobber{animation:none}
 .threshold.th-look .th-tilt{animation:none}
@@ -139,3 +139,17 @@ html.tv-reduced *,html.tv-reduced *::before,html.tv-reduced *::after{animation:n
 .demo-welcome.tv-leaving .demo-card,.demo-welcome.tv-leaving .demo-head,.demo-welcome.tv-leaving .demo-feet{opacity:0;transition:opacity .35s var(--tv-ease)}
 .threshold{transition:opacity .55s var(--tv-ease)}
 .threshold.th-fadein{opacity:0;transition:none}
+
+/* Minimal stage poster: light wall, dark ink, labels in the four corners, the door opened by a word. */
+.threshold{background:#ECE9E3}
+.th-past{display:none}
+.th-ui{color:#4A4640}
+.th-top{flex-direction:column;align-items:flex-start;justify-content:flex-start;gap:10px}
+.th-mark{font:500 20px/1 "Space Grotesk","Helvetica Neue",sans-serif;letter-spacing:.32em;color:#3E3A35}
+.th-sub{font:500 13px/1 "Space Grotesk","Helvetica Neue",sans-serif;letter-spacing:.26em;color:#6E6A63}
+.th-bottom{justify-content:space-between;align-items:center}
+.th-where{font:500 14px/1 "Space Grotesk","Helvetica Neue",sans-serif;letter-spacing:.2em;color:#4A4640}
+#thresholdOpen{font:500 14px/1 "Space Grotesk","Helvetica Neue",sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#3E3A35;background:none;border:0;padding:10px 0;cursor:pointer;border-bottom:1px solid transparent;transition:border-color .25s var(--tv-ease)}
+#thresholdOpen:hover,#thresholdOpen:focus-visible{background:none;border-bottom-color:#3E3A35;outline:none}
+#thresholdOpen:disabled{opacity:.35}
+.th-end{color:#F2EFE8}

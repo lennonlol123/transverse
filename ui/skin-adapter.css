@@ -241,3 +241,16 @@ body[data-universe] #inputArea .note-form { margin-top:0; }
 body[data-universe] .dialogue.tv-between { flex:0 0 auto; }
 body[data-universe] #inputArea:has(.tv-between) .note-form { flex:1 1 auto; min-height:0; }
 body[data-universe] #inputArea:has(.tv-between) .note-form .note-input { flex:1 1 auto; min-height:64px; }
+
+/* Record sheet (notes between Encounters): a light page in the middle of the stage, over the resting world. */
+body[data-universe][data-sheet] .stage { position:relative; }
+body[data-universe][data-sheet] .tray { position:absolute; inset:0; margin:auto; z-index:20; width:min(640px,92%); height:fit-content; max-height:90%;
+  padding:24px 30px 24px; gap:14px; overflow:auto; background:#FBF8F1; border:1px solid #E4DED2; border-radius:3px;
+  box-shadow:0 1px 0 rgba(0,0,0,.03), 0 26px 60px -26px rgba(45,35,25,.4); }
+body[data-universe][data-sheet] .tray::before { content:attr(data-sheet-title); display:block; padding-bottom:12px; border-bottom:1px solid #E4DED2;
+  font:600 13px/1 var(--tv-font-display); letter-spacing:.14em; text-transform:uppercase; color:var(--tv-sub); }
+body[data-universe][data-sheet] .dialogue.tv-between { border:0!important; background:transparent!important; padding:0!important; max-height:min(30vh,260px)!important;
+  font:13px/1.6 var(--tv-font-mono); color:#3A3833; animation:none!important; }
+body[data-universe][data-sheet] .note-form .note-input { min-height:140px; background:#FFFDF8; border:1px solid #E1DACC; border-radius:2px; font-size:14px!important; line-height:1.7!important; }
+body[data-universe][data-sheet] .note-actions { justify-content:flex-end; }
+body[data-universe] .tray.tv-filed { opacity:0; pointer-events:none; }
