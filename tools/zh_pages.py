@@ -37,8 +37,8 @@ PAGES = {
         ('<a class="btn solid" href="enter.html">ENTER <svg class="door-icon"', '<a class="btn solid" href="enter.html">启程 <svg class="door-icon"'),
         ('<a class="btn" href="how-it-works.html">HOW IT WORKS</a>', '<a class="btn" href="how-it-works.html">旅途须知</a>'),
         ('<span class="eyebrow">Made by</span>', '<span class="eyebrow">我们</span>'),
-        ('<p>Westlake University. We study how people and machines learn. Taking part is voluntary and anonymous.</p>',
-         '<p>西湖大学。我们研究人与机器如何学习。参与全凭自愿，不留姓名。</p>'),
+        ('<p>We’re at Westlake University, working on AI evaluation and efficient AI. Join our experiment and help take AI one step further.</p>',
+         '<p>我们来自西湖大学，研究 AI 评测与高效 AI。加入我们的实验，让 AI 的智能更进一步。</p>'),
     ],
     'enter.html': [
         ('<title>Enter · TransVerse</title>', '<title>启程 · TransVerse</title>'),
