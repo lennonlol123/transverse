@@ -1,0 +1,82 @@
+<section id="threshold" class="threshold" aria-labelledby="thresholdTitle" hidden>
+  <svg class="th-stage" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+    <defs>
+      <linearGradient id="thFold" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0" stop-color="#C9C4BA"/><stop offset=".32" stop-color="#E8E5DE"/><stop offset=".58" stop-color="#D6D1C7"/><stop offset="1" stop-color="#BEB8AD"/>
+      </linearGradient>
+      <pattern id="thCurtain" width="72" height="640" patternUnits="userSpaceOnUse"><rect width="72" height="640" fill="url(#thFold)"/></pattern>
+      <linearGradient id="thHem" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".22"/></linearGradient>
+      <radialGradient id="thSpot" cx=".5" cy=".5" r=".5">
+        <stop offset="0" stop-color="#FFFDF6" stop-opacity=".92"/><stop offset=".72" stop-color="#FFF9EC" stop-opacity=".7"/><stop offset="1" stop-color="#FFF9EC" stop-opacity="0"/>
+      </radialGradient>
+      <radialGradient id="thDim" cx=".46" cy=".5" r=".78">
+        <stop offset=".42" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".6"/>
+      </radialGradient>
+      <linearGradient id="thFloor" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#A29A8E"/><stop offset="1" stop-color="#6A645B"/></linearGradient>
+      <radialGradient id="thPool" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#FFF4DE" stop-opacity=".7"/><stop offset="1" stop-color="#FFF4DE" stop-opacity="0"/></radialGradient>
+      <radialGradient id="thLetter" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#FFE7A8" stop-opacity=".9"/><stop offset="1" stop-color="#FFE7A8" stop-opacity="0"/></radialGradient>
+      <linearGradient id="thSpill" x1="0" y1="0" x2="0" y2="1"><stop offset="0" class="th-spill-a"/><stop offset="1" class="th-spill-b"/></linearGradient>
+      <filter id="thSoft" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="7"/></filter>
+      <filter id="thSofter" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="16"/></filter>
+      <clipPath id="thDoorway"><rect x="1092" y="300" width="132" height="422"/></clipPath>
+      <!-- The traveller: a small cloaked walker with a staff and a satchel, seen only as a silhouette. -->
+      <symbol id="thWalker" viewBox="0 0 200 300">
+        <path d="M104 40 C118 40 126 52 125 66 C124 74 120 80 117 84 L120 92 C132 100 138 120 140 146 C142 170 146 200 150 222 C136 228 112 230 92 226 C78 224 64 220 52 214 C64 190 74 160 80 128 C84 104 82 84 84 66 C86 50 92 40 104 40 Z"/>
+        <path d="M92 44 C84 46 76 52 72 60 C80 58 86 58 90 60 Z"/>
+        <path d="M126 220 L138 254 L146 282" fill="none" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M140 278 L160 282 Q167 292 158 294 L137 294 Z"/>
+        <path d="M104 220 L95 252 L84 279" fill="none" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M78 274 L93 281 L91 293 L70 291 Q66 284 78 274 Z"/>
+        <path d="M134 138 Q146 146 151 160" fill="none" stroke-width="10" stroke-linecap="round"/>
+        <path d="M148 112 L170 294" fill="none" stroke-width="4" stroke-linecap="round"/>
+        <rect x="62" y="150" width="28" height="32" rx="7"/>
+      </symbol>
+    </defs>
+
+    <!-- Back wall: curtain with a hem, and a follow-spot pool. -->
+    <rect x="0" y="0" width="1440" height="640" fill="url(#thCurtain)"/>
+    <rect x="0" y="560" width="1440" height="80" fill="url(#thHem)"/>
+    <ellipse cx="660" cy="400" rx="340" ry="300" fill="url(#thSpot)"/>
+
+    <!-- Stage floor. -->
+    <path d="M0 640 L1440 640 L1440 900 L0 900 Z" fill="url(#thFloor)"/>
+    <g stroke="#5A544B" stroke-width="1.1" opacity=".4"><path d="M0 672 H1440"/><path d="M0 712 H1440"/><path d="M0 762 H1440"/><path d="M0 824 H1440"/></g>
+    <path d="M0 640 H1440" stroke="#4A4540" stroke-width="2"/>
+    <ellipse cx="560" cy="796" rx="280" ry="56" fill="url(#thPool)"/>
+
+    <!-- The door, stage right. The doorway holds the next Universe's painting; its light spills on the floor. -->
+    <g class="th-door">
+      <path class="th-spill" d="M1092 722 L1224 722 L1250 830 L960 830 Z" fill="url(#thSpill)" filter="url(#thSofter)"/>
+      <rect x="1092" y="300" width="132" height="422" fill="#1A1917"/>
+      <g clip-path="url(#thDoorway)">
+        <image id="thNextArt" href="" x="960" y="300" width="400" height="422" preserveAspectRatio="xMidYMid slice"/>
+        <rect x="1092" y="300" width="132" height="422" fill="#FFF8E6" opacity=".12"/>
+      </g>
+      <path d="M1084 726 L1084 290 L1232 290 L1232 726" fill="none" stroke="#1D1B19" stroke-width="7"/>
+      <path d="M1074 726 H1242" stroke="#1D1B19" stroke-width="4"/>
+      <g class="th-leaf">
+        <path d="M1092 300 L1224 300 L1224 722 L1092 722 Z" fill="#E4E0D7" stroke="#1D1B19" stroke-width="2"/>
+        <path d="M1108 318 H1208 V500 H1108 Z M1108 522 H1208 V704 H1108 Z" fill="none" stroke="#B4AEA3" stroke-width="2"/>
+        <circle cx="1110" cy="512" r="5" fill="#1D1B19"/>
+      </g>
+    </g>
+
+    <!-- The traveller's shadow on the curtain: light from the front, low and to the left; larger, behind and up to the right. -->
+    <g class="th-shadow" fill="#2B2825" stroke="#2B2825" opacity=".34" filter="url(#thSoft)">
+      <use href="#thWalker" x="560" y="120" width="380" height="570"/>
+    </g>
+    <path d="M520 820 L604 820 L770 640 L700 640 Z" fill="#2B2825" opacity=".22" filter="url(#thSoft)"/>
+
+    <!-- The traveller, lit from the front: a dark figure with one point of warm light, the letter. -->
+    <g fill="#24221F" stroke="#24221F"><use href="#thWalker" x="452" y="532" width="200" height="300"/></g>
+    <circle cx="526" cy="686" r="26" fill="url(#thLetter)"/>
+    <rect x="515" y="679" width="20" height="13" rx="1.5" fill="#F7EBC8" transform="rotate(-12 525 685)"/>
+    <path d="M515 680 L525 687 L535 678" fill="none" stroke="#C8B78E" stroke-width="1.2" transform="rotate(-12 525 685)"/>
+
+    <rect width="1440" height="900" fill="url(#thDim)"/>
+  </svg>
+  <div class="th-ui">
+    <div class="th-top"><span class="th-mark">TRANSVERSE</span><span class="th-where" id="thresholdTitle">Universe I</span></div>
+    <div class="th-bottom"><button id="thresholdOpen" type="button">Open the door</button></div>
+  </div>
+</section>

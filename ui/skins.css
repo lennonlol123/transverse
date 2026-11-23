@@ -1,0 +1,27 @@
+/* TransVerse white interface (interface version transverse-white-v1).
+ * One quiet white frame for every Universe; the paintings carry the colour.
+ * Only the accent changes per Universe. Layout, order and content of every
+ * panel are those of the research interface; nothing here adds or removes text. */
+
+body[data-universe] {
+  --tv-ground: #FFFFFF;
+  --tv-paper: #FFFFFF;
+  --tv-soft: #FAFAF8;
+  --tv-ink: #161616;
+  --tv-sub: #8A877F;
+  --tv-rule: #E7E5E0;
+  --tv-rule-soft: #F1EFEA;
+  --tv-font-body: "Helvetica Neue", Helvetica, Arial, system-ui, sans-serif;
+  --tv-font-display: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+  --tv-font-mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+}
+/* Accents follow the five colours of "Multiverse" on the welcome page. */
+body[data-universe="1"] { --tv-accent: #3E6B48; }
+body[data-universe="2"] { --tv-accent: #C42E18; }
+body[data-universe="3"] { --tv-accent: #2C4A6E; }
+body[data-universe="4"] { --tv-accent: #94742A; }
+body[data-universe="5"] { --tv-accent: #1F6FAE; }
+
+body { background: var(--tv-ground); color: var(--tv-ink); font-family: var(--tv-font-body); }
+.tv-display { font-family: var(--tv-font-display); }
+.tv-mono, .tv-record, .tv-value { font-family: var(--tv-font-mono); }

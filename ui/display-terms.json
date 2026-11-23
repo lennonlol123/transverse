@@ -1,0 +1,134 @@
+{
+ "version": "display-terms-universe-episode-encounter-v1",
+ "source": "agii core/gui_skins.py TERMS (research interface, 2026-11-20)",
+ "terms": [
+  [
+   "\\[layer (\\d+)\\]",
+   "[Step {1}]"
+  ],
+  [
+   "\\bWorld (\\d+)",
+   "Universe {1}"
+  ],
+  [
+   "\\bLife (\\d+)",
+   "Episode {1}"
+  ],
+  [
+   "\\ba life\\b",
+   "an episode"
+  ],
+  [
+   "\\bA life\\b",
+   "An episode"
+  ],
+  [
+   "\\ba fight\\b",
+   "an encounter"
+  ],
+  [
+   "\\bA fight\\b",
+   "An encounter"
+  ],
+  [
+   "\\ba battle\\b",
+   "an encounter"
+  ],
+  [
+   "\\bA battle\\b",
+   "An encounter"
+  ],
+  [
+   "\\bLIVES\\b",
+   "EPISODES"
+  ],
+  [
+   "\\bLives\\b",
+   "Episodes"
+  ],
+  [
+   "\\blives\\b",
+   "episodes"
+  ],
+  [
+   "\\bLIFE\\b",
+   "EPISODE"
+  ],
+  [
+   "\\bLife\\b",
+   "Episode"
+  ],
+  [
+   "\\blife\\b",
+   "episode"
+  ],
+  [
+   "\\bFights\\b",
+   "Encounters"
+  ],
+  [
+   "\\bfights\\b",
+   "encounters"
+  ],
+  [
+   "\\bFight\\b",
+   "Encounter"
+  ],
+  [
+   "\\bfight\\b",
+   "encounter"
+  ],
+  [
+   "\\bBattles\\b",
+   "Encounters"
+  ],
+  [
+   "\\bbattles\\b",
+   "encounters"
+  ],
+  [
+   "\\bBattle\\b",
+   "Encounter"
+  ],
+  [
+   "\\bbattle\\b",
+   "encounter"
+  ],
+  [
+   "\\bLayers\\b",
+   "Encounters"
+  ],
+  [
+   "\\blayers\\b",
+   "encounters"
+  ],
+  [
+   "\\bLayer\\b",
+   "Encounter"
+  ],
+  [
+   "\\blayer\\b",
+   "encounter"
+  ],
+  [
+   "\\bWORLD\\b",
+   "UNIVERSE"
+  ],
+  [
+   "\\bWorlds\\b",
+   "Universes"
+  ],
+  [
+   "\\bworlds\\b",
+   "universes"
+  ],
+  [
+   "\\bWorld\\b",
+   "Universe"
+  ],
+  [
+   "\\bworld\\b",
+   "universe"
+  ]
+ ]
+}

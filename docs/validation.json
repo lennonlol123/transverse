@@ -1,0 +1,30 @@
+{
+  "version": "public-browser-demo-v1",
+  "native_universes": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "wasm": [
+    "camp",
+    "camp_note",
+    "first_encounter",
+    "deterministic_refresh",
+    "complete_u1_native_event_parity",
+    "u2_letter_handoff"
+  ],
+  "browser_checks": [
+    "start",
+    "leave_camp",
+    "submit_note",
+    "refresh",
+    "continue_saved_game",
+    "end_turn_advances",
+    "title_and_wordmark",
+    "feedback_in_record"
+  ],
+  "paid_model_requests": 0,
+  "scope": "Local engine and browser validation; live publication status is reported by GitHub Actions."
+}

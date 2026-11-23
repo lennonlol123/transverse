@@ -1,0 +1,23 @@
+<section id="demoWelcome" class="demo-welcome" aria-labelledby="demoTitle">
+  <header class="demo-head"><a class="demo-mark" href="../">TRANSVERSE</a><a class="demo-link" href="../how-it-works.html">How it works</a></header>
+  <div class="demo-card">
+    <p class="demo-eyebrow">Before you start</p>
+    <h1 id="demoTitle">Taking part</h1>
+    <p>TransVerse is a research benchmark from Encode Lab, Westlake University. This page lets you play it in your browser.</p>
+    <ul class="demo-facts">
+      <li><strong>What is kept.</strong> The moves you make, the notes you write, what was on screen and the time of each step. This play version keeps them only in this browser. Nothing is sent to us; you can export a copy and decide whether to share it.</li>
+      <li><strong>Anonymous.</strong> Your playthrough gets a random ID. No name, account or contact details are asked for. Please keep names and other identifying details out of your notes.</li>
+      <li><strong>Voluntary.</strong> You can stop at any time. A new playthrough replaces the one saved here.</li>
+    </ul>
+    <form id="demoConsent" class="demo-consent">
+      <label><input type="checkbox" id="demoAdult" required> I am 18 or older.</label>
+      <label><input type="checkbox" id="demoAgree" required> I have read the above and agree to take part.</label>
+    </form>
+    <div class="demo-buttons"><button id="demoNew" type="button" disabled>Start playing</button><button id="demoContinue" type="button" hidden>Continue saved game</button><button id="demoBackup" type="button">Export saved game</button></div>
+    <p id="demoMessage" role="status" aria-live="polite"></p>
+    <p class="demo-foot">The first start downloads the game runtime (about 20 MB). A desktop or laptop browser is recommended.</p>
+  </div>
+  <footer class="demo-feet"><img src="../assets/westlake_logo_two_line.png" alt="Westlake University"><span>Encode Lab</span></footer>
+</section>
+<nav class="demo-navigation" aria-label="Run"><span id="demoPosition">Five Universes</span><span id="demoFinish" hidden>All five Universes complete. Export your save to keep a copy.</span><span class="demo-nav-actions"><button id="demoNext" type="button" hidden>Continue</button><button id="demoShow" type="button" aria-expanded="false" aria-controls="demoDetails">Show</button></span></nav>
+<div id="demoDetails" class="demo-details" hidden><span>Run <b id="demoRunId">–</b></span><span>Interface <b id="demoInterface">transverse-white-v1</b></span><span>Saved in this browser only</span></div>

@@ -1,0 +1,160 @@
+/* White frame over the research GUI. Same grid, same panels, same order, same text.
+ * Changes are surfaces, type and proportions only. */
+html { background: #FFFFFF; }
+body[data-universe] {
+  --w-bg:#FFFFFF!important; --w-panel:#FFFFFF!important;
+  --w-ink:var(--tv-ink)!important; --w-muted:var(--tv-sub)!important;
+  --w-accent:var(--tv-accent)!important; --w-accent2:var(--tv-accent)!important;
+  --world-font:var(--tv-font-mono)!important;
+  --world-text-size:17px!important; --world-line-height:1.4!important;
+  --world-letter-spacing:0px!important; --world-radius:2px!important;
+  --tag:11px!important; --small:13px!important;
+  --metal:#FFFFFF; --metal-dark:var(--tv-rule); --hi:var(--tv-rule); --lo:var(--tv-rule); --well:#FFFFFF;
+  background:#FFFFFF;
+}
+body[data-universe] .tv-value, body[data-universe] .tv-record,
+body[data-universe] input, body[data-universe] select, body[data-universe] textarea { font-family:var(--tv-font-mono)!important; }
+
+/* Shell and top bar. */
+body[data-universe] .shell { max-width:1480px; padding:0 24px 16px; gap:14px; }
+body[data-universe] .topbar { height:64px; padding:0; border:0; border-bottom:1px solid var(--tv-rule); border-radius:0; background:transparent; box-shadow:none; }
+body[data-universe] .brand { gap:12px; }
+body[data-universe] .brand-emblem { width:10px; height:10px; border:0; box-shadow:none; background:var(--tv-accent); }
+body[data-universe] .wordmark { font:500 28px/1 var(--tv-font-display)!important; letter-spacing:.01em; color:var(--tv-ink); text-shadow:none; }
+body[data-universe] .lamp { min-height:0; padding:0 6px; gap:9px; border:0; background:transparent; font:600 11px/1 var(--tv-font-body); letter-spacing:.24em; color:var(--tv-ink); }
+body[data-universe] .lamp-dot { width:6px; height:6px; border-radius:50%; background:var(--tv-accent); box-shadow:none; }
+body[data-universe] .lamp[data-busy="true"] { color:var(--tv-sub); }
+body[data-universe] .lamp[data-busy="true"] .lamp-dot { background:var(--tv-sub); }
+body[data-universe] .topbar-actions { gap:10px; }
+body[data-universe] .notice { border:1px solid var(--tv-rule); border-left:3px solid var(--tv-accent); background:#FFFFFF; font:14px/1.5 var(--tv-font-body); }
+
+/* Buttons. */
+body[data-universe] .tv-button { font:500 11px/1 var(--tv-font-body)!important; letter-spacing:.22em; text-transform:uppercase; color:var(--tv-ink);
+  background:#FFFFFF; border:1px solid #DAD7D0!important; border-radius:2px; padding:11px 16px; min-height:38px; box-shadow:none; transition:border-color .15s ease; }
+body[data-universe] .tv-button.small { padding:7px 12px; min-height:30px; }
+body[data-universe] .tv-button:hover:not(:disabled), body[data-universe] .tv-button:focus-visible:not(:disabled) { background:#FFFFFF; color:var(--tv-ink); border-color:var(--tv-ink)!important; filter:none; }
+body[data-universe] .tv-button:active:not(:disabled) { transform:none; background:var(--tv-soft); }
+body[data-universe] .tv-end { background:var(--tv-ink)!important; color:#FFFFFF!important; border-color:var(--tv-ink)!important; font-weight:600!important; letter-spacing:.26em; min-width:96px; }
+body[data-universe] .tv-end:hover:not(:disabled) { background:#000000!important; color:#FFFFFF!important; }
+body[data-universe] .key.primary { background:var(--tv-ink); color:#FFFFFF; border-color:var(--tv-ink)!important; }
+body[data-universe] .key.primary:hover:not(:disabled) { background:#000; color:#FFF; }
+
+/* Workspace: stage on the left, Record on the right, divided by a hairline. */
+body[data-universe] .workspace { grid-template-columns:minmax(0,1fr) 330px; gap:0; }
+body[data-universe] .stage { padding:4px 28px 0 0; gap:14px; border:0; border-radius:0; background:transparent; box-shadow:none; }
+
+/* Scene: the painting fills the frame; the opponent is the subject. */
+body[data-universe] .tv-scene { flex:1 1 0; min-height:200px; border:0; border-radius:3px; background-color:#1C2326;
+  background-size:cover; background-position:center 62%; background-repeat:no-repeat; box-shadow:0 1px 2px rgba(0,0,0,.06); }
+body[data-universe] .tv-scene>.world-backdrop { visibility:hidden; }
+body[data-universe] .tv-scene::after { box-shadow:inset 0 0 0 1px rgba(0,0,0,.06); background:linear-gradient(180deg,rgba(0,0,0,0) 62%,rgba(0,0,0,.16)); }
+body[data-universe] .idol { left:58%; bottom:4%; width:clamp(150px,32%,420px); height:88%; }
+body[data-universe] .idol:not(.training-post)::before { content:""; position:absolute; z-index:-1; left:50%; bottom:-2%; width:62%; height:9%;
+  transform:translateX(-50%); border-radius:50%; background:radial-gradient(closest-side,rgba(0,0,0,.42),rgba(0,0,0,0)); }
+body[data-universe] .idol.training-post { left:50%; height:58%; width:clamp(90px,14%,150px); }
+body[data-universe] .tv-monster { width:100%; height:100%; object-fit:contain; object-position:center bottom; image-rendering:auto;
+  filter:drop-shadow(0 10px 14px rgba(0,0,0,.28)); }
+body[data-universe] .title-card { background:rgba(255,255,255,.0); }
+body[data-universe] .title-word { font:400 64px/1 var(--tv-font-display)!important; letter-spacing:.02em; background:rgba(255,255,255,.92); border:0; text-shadow:none; padding:18px 34px; }
+body[data-universe] .title-card p { border:0; background:rgba(255,255,255,.92); font:600 11px/1 var(--tv-font-body); letter-spacing:.24em; padding:9px 16px; }
+
+/* Episode · Encounter tag and dialogue panels over the painting. */
+body[data-universe] .tv-tag { border:0; background:transparent; border-radius:0; }
+body[data-universe] .dialogue { color:var(--tv-ink); background:rgba(255,255,255,.95); border:0; border-radius:2px;
+  box-shadow:0 1px 0 rgba(0,0,0,.04),0 12px 32px -12px rgba(0,0,0,.35); font:15px/1.55 var(--tv-font-mono); }
+body[data-universe] .dialogue.tv-feedback { position:static; inset:auto; transform:none; flex:0 0 auto; width:auto;
+  max-height:min(180px,25vh); padding:12px 18px; margin:0; overflow:auto; border:0; border-bottom:1px solid var(--tv-rule);
+  border-radius:0; background:#FFFFFF; box-shadow:none; color:var(--tv-ink); font:14px/1.6 var(--tv-font-mono); letter-spacing:0; }
+
+/* YOU | TURN | THEM. */
+body[data-universe] .hud { gap:0; padding:0; background:transparent; border:0; border-top:1px solid var(--tv-rule); border-bottom:1px solid var(--tv-rule); border-radius:0; box-shadow:none; }
+body[data-universe] .hud-side, body[data-universe] .hud-turn { border:0; border-radius:0; background:transparent!important; box-shadow:none; }
+body[data-universe] .hud-side { min-height:70px; padding:12px 4px 12px 0; gap:7px; }
+body[data-universe] .hud-side:last-child { padding-left:20px; }
+body[data-universe] .hud-turn { min-width:112px; padding:10px 18px; border-left:1px solid var(--tv-rule-soft); border-right:1px solid var(--tv-rule-soft); }
+body[data-universe] .hud-tag { font:500 11px/1 var(--tv-font-body); letter-spacing:.26em; color:var(--tv-sub); }
+body[data-universe] .hud-name { font:600 18px/1.15 var(--tv-font-display)!important; letter-spacing:.01em; color:var(--tv-ink); }
+body[data-universe] .slot, body[data-universe] .tv-value { font-size:17px; line-height:1.35; letter-spacing:0; color:var(--tv-ink); }
+body[data-universe] .slots.transient .slot { color:var(--tv-accent); }
+body[data-universe] .hud-turn-n { font:400 36px/1 var(--tv-font-display)!important; color:var(--tv-ink); text-shadow:none; }
+body[data-universe] .hud-turn-left { font:500 10px/1 var(--tv-font-body); letter-spacing:.2em; color:var(--tv-sub); }
+
+/* Tray: hand, END and console, working note. */
+body[data-universe] .tray { padding:0 0 14px; gap:12px; background:transparent; border:0; border-radius:0; box-shadow:none; }
+body[data-universe] .hand { gap:14px; padding:6px 2px 10px; }
+
+/* A card is a small physical object: paper, an inner frame, a coloured abstract sign. */
+body[data-universe] .tv-card { flex:0 0 108px; min-height:136px; padding:16px 8px 12px; gap:10px; justify-content:center;
+  color:var(--tv-ink); border:1px solid #E2DFD8!important; border-radius:7px;
+  background:
+    radial-gradient(120% 70% at 50% 0%, color-mix(in srgb,var(--tv-accent) 7%,transparent), transparent 70%),
+    repeating-linear-gradient(115deg, rgba(0,0,0,.012) 0 2px, transparent 2px 5px),
+    #FFFEFB!important;
+  box-shadow:inset 0 0 0 4px #FFFEFB, inset 0 0 0 5px color-mix(in srgb,var(--tv-accent) 16%,#ECE9E2),
+    0 1px 0 rgba(0,0,0,.04), 0 8px 18px -12px rgba(0,0,0,.30);
+  transition:transform .16s ease, box-shadow .16s ease; font:15px/1.2 var(--tv-font-mono)!important; }
+body[data-universe] .tv-card:hover:not(:disabled), body[data-universe] .tv-card:focus-visible:not(:disabled) {
+  transform:translateY(-3px); outline:none;
+  box-shadow:inset 0 0 0 4px #FFFEFB, inset 0 0 0 5px color-mix(in srgb,var(--tv-accent) 38%,#ECE9E2),
+    0 1px 0 rgba(0,0,0,.04), 0 14px 24px -12px rgba(0,0,0,.34); }
+body[data-universe] .tv-card:active:not(:disabled) { transform:translateY(-1px); }
+body[data-universe] .tv-card.is-selected { box-shadow:inset 0 0 0 4px #FFFEFB, inset 0 0 0 6px var(--tv-accent), 0 8px 18px -12px rgba(0,0,0,.3); }
+body[data-universe] .options .tv-card { flex:1 1 200px; min-height:56px; padding:12px 16px; border-radius:4px; font:15px/1.35 var(--tv-font-mono)!important; }
+body[data-universe] .card-art { width:46px; height:46px; color:var(--tv-accent); }
+body[data-universe] .card-art svg { width:100%; height:100%; overflow:visible; }
+body[data-universe] .card-name { font-size:15px; color:var(--tv-ink); }
+body[data-universe] .card-mark { font-size:13px; color:var(--tv-sub); }
+
+body[data-universe] .console { gap:14px; }
+body[data-universe] .commands { gap:10px; }
+body[data-universe] .tv-field { border:1px solid #E2DFD8; border-radius:2px; background:#FFFFFF; color:var(--tv-ink); }
+body[data-universe] .tv-field:focus, body[data-universe] .tv-field:focus-within { border-color:var(--tv-ink); }
+body[data-universe] .raw-form { border:0!important; border-bottom:1px solid var(--tv-ink)!important; border-radius:0; padding:2px 2px 2px 4px; background:transparent; }
+body[data-universe] .raw-form::before { color:var(--tv-sub); font:16px/1 var(--tv-font-mono); }
+body[data-universe] #rawInput { border:0; font-size:16px; }
+body[data-universe] .field-label { font:500 11px/1 var(--tv-font-body); letter-spacing:.26em; color:var(--tv-sub); margin-bottom:8px; }
+body[data-universe] .work-note { margin-top:4px; }
+body[data-universe] .note-input { font-size:14px!important; line-height:1.6!important; padding:12px 14px; }
+body[data-universe] .work-note .note-input { min-height:3.6em; }
+body[data-universe] .waiting { font:600 11px/1 var(--tv-font-body); letter-spacing:.24em; color:var(--tv-sub); }
+body[data-universe] .waiting::before { width:6px; height:6px; border-radius:50%; background:var(--tv-sub); }
+
+/* Record. */
+body[data-universe] .journal { border:0; border-left:1px solid var(--tv-rule); border-radius:0; background:var(--tv-soft); box-shadow:none; }
+body[data-universe] .journal .plate, body[data-universe] .plate { display:flex; align-items:center; justify-content:space-between; padding:18px 22px 14px;
+  background:transparent; border:0; border-bottom:1px solid var(--tv-rule-soft); }
+body[data-universe] .plate-text { font:600 20px/1 var(--tv-font-display)!important; letter-spacing:.02em; text-transform:none; color:var(--tv-ink); }
+body[data-universe] .tv-record { padding:14px 22px 24px; background:transparent!important; }
+body[data-universe] .tv-record pre, body[data-universe] .transcript-item pre { font:13px/1.7 var(--tv-font-mono); color:var(--tv-sub); }
+body[data-universe] .transcript-item:last-child pre { color:var(--tv-ink); }
+body[data-universe] .transcript hr { border-top:1px solid var(--tv-rule); }
+body[data-universe] .transcript-empty { font:600 11px/1 var(--tv-font-body); letter-spacing:.24em; }
+
+@media (max-width:850px) {
+  body[data-universe] .shell { padding:0 16px 16px; }
+  body[data-universe] .stage { padding-right:0; }
+  body[data-universe] .journal { border-left:0; border-top:1px solid var(--tv-rule); }
+}
+@media (prefers-reduced-motion:reduce) {
+  body[data-universe] .tv-card, body[data-universe] .tv-button { transition:none; }
+  body[data-universe] .tv-card:hover:not(:disabled) { transform:none; }
+}
+
+/* Story layer, ported from the research interface (scene-story-v2): Episode light, sun or moon,
+ * trail of Encounters already played, Episode · Encounter caption. Only the scene box changes. */
+body[data-universe] .tv-story { position:absolute; inset:0; pointer-events:none; }
+body[data-universe] .tv-trail { position:absolute; left:1.6%; bottom:5%; width:22%; display:flex; flex-wrap:nowrap; gap:3px; z-index:3; }
+body[data-universe] .tv-trail img { width:13%; min-width:14px; max-width:22px; aspect-ratio:1/1; }
+body[data-universe] .tv-caption { position:absolute; left:12px; top:12px; z-index:4; padding:4px 10px;
+  font:12px/1.5 var(--tv-font-mono); letter-spacing:.02em; color:var(--tv-ink); background:rgba(255,255,255,.9); border-radius:2px; }
+body[data-universe] .tv-light { position:absolute; inset:0; z-index:2; mix-blend-mode:multiply; }
+body[data-universe] .tv-story[data-episode="1"] .tv-light { background:rgba(255,214,160,.26); }
+body[data-universe] .tv-story[data-episode="2"] .tv-light { background:transparent; }
+body[data-universe] .tv-story[data-episode="3"] .tv-light { background:rgba(240,150,90,.28); }
+body[data-universe] .tv-story[data-episode="4"] .tv-light { background:rgba(70,80,140,.38); }
+body[data-universe] .tv-sky { position:absolute; width:24px; height:24px; border-radius:50%; z-index:3; top:14%; right:6%; }
+body[data-universe] .tv-story[data-episode="1"] .tv-sky { background:#F6C35B; top:34%; right:84%; box-shadow:0 0 0 6px rgba(246,195,91,.25); }
+body[data-universe] .tv-story[data-episode="2"] .tv-sky { background:#F8D774; top:10%; right:46%; box-shadow:0 0 0 6px rgba(248,215,116,.25); }
+body[data-universe] .tv-story[data-episode="3"] .tv-sky { background:#E8794A; top:46%; right:5%; box-shadow:0 0 0 6px rgba(232,121,74,.25); }
+body[data-universe] .tv-story[data-episode="4"] .tv-sky { background:#F3EED8; top:10%; right:8%; box-shadow:inset -8px -3px 0 0 rgba(0,0,0,.18); }
+body[data-universe] .idol { z-index:2; }
