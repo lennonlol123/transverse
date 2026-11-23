@@ -187,11 +187,11 @@
   // Motion only marks change (hand-over rule 9): a value that changed, a card newly in hand,
   // an opponent arriving, a new trail mark. The same quiet mark for every change, rising or
   // falling, good or bad; nothing plays on a hit, a seal or a win.
-  const REDUCED = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const REDUCED = () => (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) || document.documentElement.classList.contains('tv-reduced');
   const seen = new WeakSet();
   let prevValues = null, prevHand = null, prevEncounter = '';
   function motion() {
-    if (REDUCED) return;
+    if (REDUCED()) return;
     const hud = document.getElementById('hud');
     if (hud && !hud.hidden) {
       const values = {}, nodes = {};

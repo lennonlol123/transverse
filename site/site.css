@@ -2,7 +2,7 @@
 @font-face{font-family:Anton;src:url(assets/fonts/Anton-Regular.ttf) format('truetype');font-weight:400;font-style:normal;font-display:swap}
 @font-face{font-family:'Space Grotesk';src:url(assets/fonts/SpaceGrotesk-wght.ttf) format('truetype');font-weight:300 700;font-style:normal;font-display:swap}
 /* Outer pages: white, black type, hairline rules. No Universe's style is used here. */
-:root{--ink:#111111;--sub:#4A4A4A;--mute:#6B6B6B;--rule:#E4E4E4;--display:Anton,Impact,"Haettenschweiler","Arial Narrow Bold",sans-serif;
+:root{--tv-ease:cubic-bezier(.45,0,.25,1);--ink:#111111;--sub:#4A4A4A;--mute:#6B6B6B;--rule:#E4E4E4;--display:Anton,Impact,"Haettenschweiler","Arial Narrow Bold",sans-serif;
 --body:"Space Grotesk","Helvetica Neue",Helvetica,Arial,system-ui,sans-serif;color-scheme:light}
 *{box-sizing:border-box}
 html,body{margin:0;background:#FFFFFF;color:var(--ink)}
@@ -98,3 +98,19 @@ main{flex:1 1 auto}
 .stack8{display:flex;flex-direction:column;gap:8px}
 .plain-link{font-size:14px;font-weight:700}
 .muted{color:var(--mute)}
+
+/* Motion (one easing site-wide; nothing loops). Portal: the title gathers from a wider tracking, then
+   ENTER fades in; the arrow moves 4 px on hover. Welcome: the five segments of "Multiverse" take their
+   colours one after another. How it works: a light lift on the paintings. */
+@keyframes tv-gather{from{letter-spacing:.22em;opacity:0}to{letter-spacing:.08em;opacity:1}}
+@keyframes tv-fade{from{opacity:0}to{opacity:1}}
+@keyframes tv-colour{from{color:var(--ink)}}
+.portal h1{animation:tv-gather .65s var(--tv-ease) both}
+.portal .btn{animation:tv-fade .45s var(--tv-ease) .7s both}
+.btn svg{transition:transform .25s var(--tv-ease)}
+.btn:hover svg,.btn:focus-visible svg{transform:translateX(4px)}
+.mv span{animation:tv-colour .45s var(--tv-ease) both}
+.mv .mv1{animation-delay:.35s}.mv .mv2{animation-delay:.44s}.mv .mv3{animation-delay:.53s}.mv .mv4{animation-delay:.62s}.mv .mv5{animation-delay:.71s}
+.world img{transition:transform .35s var(--tv-ease),filter .35s var(--tv-ease)}
+.world:hover img{transform:translateY(-3px);filter:saturate(1.08)}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}

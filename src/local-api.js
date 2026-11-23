@@ -114,7 +114,32 @@
   const ROMAN = ['I', 'II', 'III', 'IV', 'V'];
   const HUE = ['#4F8A5B', '#D2442A', '#3D6496', '#B8902F', '#2E86C8'];
   const SVGNS = 'http://www.w3.org/2000/svg';
-  const REDUCE = () => window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // Reduced motion: the system setting, or the player's own switch under SHOW (kept in this browser).
+  const MOTION_KEY = 'tv-motion';
+  const motionOff = () => { try { return localStorage.getItem(MOTION_KEY) === 'off'; } catch (_) { return false; } };
+  document.documentElement.classList.toggle('tv-reduced', motionOff());
+  const REDUCE = () => (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) || document.documentElement.classList.contains('tv-reduced');
+  // Button -> door: the rectangle of the button the player pressed grows into the frame of the stage door,
+  // then the stage opens around it. About 0.9 s; a click or a key finishes it at once.
+  function morph(from) {
+    if (REDUCE() || !from) return Promise.resolve();
+    const r = from.getBoundingClientRect();
+    const W = innerWidth, H = innerHeight, k = Math.max(W / 1440, H / 900);
+    const ox = (W - 1440 * k) / 2, oy = (H - 900 * k) / 2;
+    const box = document.createElement('div'); box.className = 'tv-morph';
+    document.body.append(box);
+    const welcome = document.getElementById('demoWelcome'); welcome.classList.add('tv-leaving');
+    const anim = box.animate([
+      {left: r.left + 'px', top: r.top + 'px', width: r.width + 'px', height: r.height + 'px', borderWidth: '2px'},
+      {left: (1078 * k + ox) + 'px', top: (280 * k + oy) + 'px', width: (162 * k) + 'px', height: (448 * k) + 'px', borderWidth: Math.max(3, 7 * k) + 'px'}],
+      {duration: 850, easing: 'cubic-bezier(.45,0,.25,1)', fill: 'forwards'});
+    const skip = () => anim.finish();
+    addEventListener('pointerdown', skip, {once: true}); addEventListener('keydown', skip, {once: true});
+    return anim.finished.catch(() => {}).then(() => {
+      removeEventListener('pointerdown', skip); removeEventListener('keydown', skip);
+      return box;
+    });
+  }
   const wait = ms => new Promise(r => setTimeout(r, REDUCE() ? 0 : ms));
   function el(tag, attrs, parent) {
     const node = document.createElementNS(SVGNS, tag);
@@ -150,7 +175,7 @@
     await wait(2250);
     stage.classList.remove('th-walking');
   }
-  async function threshold(universe) {
+  async function threshold(universe, opts = {}) {
     const stage = document.getElementById('threshold');
     if (!stage) return;
     const crossed = universe - 1;
@@ -164,7 +189,13 @@
     journeyMarks(crossed, true);
     const button = document.getElementById('thresholdOpen');
     button.disabled = true;
-    await stageIn(stage, universe === 1);
+    if (opts.morph) {
+      stage.classList.add('th-fadein'); stage.hidden = false; void stage.getBoundingClientRect();
+      stage.classList.remove('th-fadein');
+      opts.morph.classList.add('tv-morph-out'); setTimeout(() => opts.morph.remove(), 600);
+      document.getElementById('demoWelcome').classList.remove('tv-leaving');
+    }
+    await stageIn(stage, universe === 1 && !opts.morph);
     if (crossed) { stage.classList.add('th-sealed'); await wait(900); }
     stage.classList.add('th-look'); await wait(1500);
     stage.classList.add('th-ready');
@@ -173,6 +204,7 @@
     button.disabled = true;
     stage.classList.add('is-open', 'th-walking');
     await wait(1900);
+    if (opts.until) await opts.until;      // the next Universe is computed while the stage plays
     stage.hidden = true;
     stage.classList.remove('th-walking');
   }
@@ -251,9 +283,18 @@
     document.getElementById('demoNew').onclick = async () => {
       if (!(adult.checked && agree.checked)) return;
       if (game && !confirm('Start a new playthrough? This replaces the saved playthrough on this browser. Export it first if you want to keep it.')) return;
-      await threshold(1);
-      launch(true, null, true);
+      const box = await morph(document.getElementById('demoNew'));
+      let ready; const until = new Promise(r => { ready = r; });
+      threshold(1, {morph: box || null, until});
+      await launch(true, null, true); ready();
     };
+    const motionButton = document.getElementById('demoMotion');
+    const showMotion = () => { motionButton.textContent = 'Motion: ' + (motionOff() ? 'reduced' : 'on'); };
+    motionButton.onclick = () => {
+      try { localStorage.setItem(MOTION_KEY, motionOff() ? 'on' : 'off'); } catch (_) {}
+      document.documentElement.classList.toggle('tv-reduced', motionOff()); showMotion();
+    };
+    showMotion();
     document.getElementById('demoShow').onclick = event => {
       const details = document.getElementById('demoDetails');
       details.hidden = !details.hidden;
@@ -266,8 +307,9 @@
       if (busy || !snapshot?.complete || game.universe >= 5) return;
       const candidate = {...game, universe:game.universe+1, actions:[], baseline:snapshot.files,
         history:[...game.history,{universe:game.universe,actions:game.actions}]};
-      await threshold(candidate.universe);
-      await launch(false, candidate);
+      let ready; const until = new Promise(r => { ready = r; });
+      threshold(candidate.universe, {until});
+      await launch(false, candidate); ready();
     };
   });
 })();
