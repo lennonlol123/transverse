@@ -218,7 +218,8 @@
     const W = innerWidth, H = innerHeight, k = Math.min(W / r.width, H / r.height);   // contain: same composition at every size
     const sw = r.width * k, sh = r.height * k, sl = (W - sw) / 2, st = (H - sh) / 2;
     const body = document.body, input = document.getElementById('inputArea');
-    const opponent = !!document.querySelector('#idol:not([hidden]):not(.training-post) img.tv-monster');
+    // Whatever stands in the scene (the opponent, or the training post in the camp) arrives after the pull-back.
+    const opponent = !!document.querySelector('#idol:not([hidden]) > *');
     revealing = true;
     body.style.setProperty('--rv-tx', (W / 2 - (r.left + r.width / 2)) + 'px');
     body.style.setProperty('--rv-ty', (H / 2 - (r.top + r.height / 2)) + 'px');
