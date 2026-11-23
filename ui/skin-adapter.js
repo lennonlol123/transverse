@@ -11,7 +11,8 @@
  *      the card's tint and fade; the sheet stays visible to the end, also after the Universe letter;
  * v9 = v8 + the next opponent waits until the note is filed and enters once (no second entrance after the
  *      first-Encounter reveal); an overflowing prompt on the sheet opens at its question; filing leg 1 covers
- *      the engine's usual reply, so the card does not stall).
+ *      the engine's usual reply, so the card does not stall; the opponent is set off from the painting: own
+ *      colours with a thin edge and soft halo, the painting softened and darkened at the edges behind it).
  * - Each Universe has one painting and one opponent figure. The same figure stands in
  *   every Encounter of that Universe, so appearance can never covary with a mechanism.
  * - Each card shows an abstract sign. Signs are bound to card NAMES (never to what a
@@ -163,7 +164,7 @@
     const viewport = document.getElementById('viewport');
     if (viewport) {
       const value = 'url("' + world().scene + '")';
-      if (viewport.style.backgroundImage !== value) viewport.style.backgroundImage = value;
+      if (viewport.style.backgroundImage !== value) { viewport.style.backgroundImage = value; viewport.style.setProperty('--tv-scene-art', value); }
     }
     story(viewport);
     const host = document.getElementById('idol');

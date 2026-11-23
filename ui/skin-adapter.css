@@ -195,12 +195,20 @@ body[data-universe] .work-note .note-input { flex:1 1 auto; min-height:44px; hei
 body[data-universe] .idol, body[data-universe] .tv-scene .idol:not(.training-post) { left:50%; z-index:1; bottom:5%; height:84%; width:clamp(150px,34%,440px); }
 body[data-universe] .idol:not(.training-post)::before { z-index:-1; bottom:-1%; width:58%; height:7%;
   background:radial-gradient(closest-side, rgba(0,0,0,.5), rgba(0,0,0,.18) 60%, rgba(0,0,0,0)); mix-blend-mode:multiply; }
-body[data-universe] .tv-monster { filter:none; }
-body[data-universe="1"] .tv-monster { filter:brightness(.84) saturate(.9) contrast(.97) drop-shadow(0 0 18px rgba(120,190,170,.18)); }
-body[data-universe="2"] .tv-monster { filter:brightness(.9) contrast(1.02); }
-body[data-universe="3"] .tv-monster { filter:sepia(.12) saturate(.88) brightness(.97); mix-blend-mode:multiply; }
-body[data-universe="4"] .tv-monster { filter:saturate(.92) brightness(.97) sepia(.06); }
-body[data-universe="5"] .tv-monster { filter:sepia(.14) saturate(.86) brightness(.9) contrast(.98); }
+/* Opponent separation (2026-11-24, user: the opponent now melts into the painting). The figure keeps its own
+ * colours, a thin light edge and a soft dark halo; behind it, during an Encounter, the painting softens and darkens
+ * towards the edges (a shallow depth of field), so the eye finds the opponent first. Same picture, same place. */
+body[data-universe] .tv-monster { filter:contrast(1.04) saturate(1.04) drop-shadow(0 0 1px rgba(255,255,255,.45)) drop-shadow(0 6px 22px rgba(0,0,0,.38)); }
+body[data-universe="2"] .tv-monster { filter:contrast(1.06) drop-shadow(0 0 1.5px rgba(255,255,255,.5)) drop-shadow(0 0 26px rgba(235,235,228,.42)); }
+body[data-universe="4"] .tv-monster { filter:contrast(1.05) saturate(1.06) drop-shadow(0 0 1px rgba(60,40,30,.35)) drop-shadow(0 8px 24px rgba(70,40,30,.38)); }
+body[data-universe] .tv-scene { overflow:hidden; }
+body[data-universe] .tv-scene::before { content:""; position:absolute; inset:-8px; z-index:0; pointer-events:none; opacity:0;
+  background-image:radial-gradient(ellipse 46% 62% at 50% 58%, rgba(0,0,0,0) 40%, rgba(0,0,0,.34) 100%), var(--tv-scene-art);
+  background-size:cover; background-position:center; filter:blur(2.4px) saturate(.82); transition:opacity .6s var(--tv-ease); }
+body[data-universe][data-phase="act"] .tv-scene:has(#idol:not([hidden]):not(.training-post) img.tv-monster)::before { opacity:1; }
+/* Universe II is dark on fog: the fog behind the figure lifts instead of darkening. */
+body[data-universe="2"] .tv-scene::before { background-image:radial-gradient(ellipse 30% 55% at 50% 52%, rgba(232,232,226,.28) 0%, rgba(232,232,226,0) 70%), radial-gradient(ellipse 46% 62% at 50% 58%, rgba(0,0,0,0) 45%, rgba(0,0,0,.3) 100%), var(--tv-scene-art); }
+@media (prefers-reduced-motion:reduce) { body[data-universe] .tv-scene::before { transition:none; } }
 
 /* Cinematic reveal (first Encounter of each Universe; see reveal() in skin-adapter.js). The scene box is
    scaled up to cover the window and eased back into place; nothing is rebuilt. */
