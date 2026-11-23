@@ -43,7 +43,8 @@ main{flex:1 1 auto}
 .hero h1{max-width:1100px;font-size:clamp(40px,6.4vw,72px);line-height:1.04;letter-spacing:.02em}
 .hero p{max-width:560px;font-size:19px;color:var(--sub)}
 .row{display:flex;flex-wrap:wrap;gap:14px}
-.mv{white-space:nowrap}.mv1{color:#3E6B48}.mv2{color:#E8361C}.mv3{color:#2C4A6E}.mv4{color:#A8842F}.mv5{color:#1F7AC0}
+.mv{white-space:nowrap}/* One colour per world, taken from its painting (2026-11-24): teal forest, graphite fog, seal vermilion, rose sky, brass. */
+.mv1{color:#2F6F7E}.mv2{color:#64676B}.mv3{color:#B4462F}.mv4{color:#B9718A}.mv5{color:#94723F}
 .split{padding:56px 0 72px;border-top:1px solid var(--rule);display:flex;flex-wrap:wrap;gap:48px}
 .split>div{min-width:0;display:flex;flex-direction:column;gap:16px}
 .split h2{font-size:40px;letter-spacing:.04em}

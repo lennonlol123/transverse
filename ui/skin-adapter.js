@@ -1,5 +1,5 @@
 /* Only opaque cosmetic coordinates and already-public labels enter this module.
- * Interface version: transverse-white-v9 (v2 = v1 + change-only motion, input held in place while computing;
+ * Interface version: transverse-white-v10 (v2 = v1 + change-only motion, input held in place while computing;
  * v3 = v2 + fixed panel heights, centred opponent, darker secondary text #716E68, Space Grotesk for buttons and labels;
  * v4 = v3 + a letterboxed reveal on the first Encounter of each Universe, input inert until the panels return;
  * v5 = v4 + between Encounters the prompt sits above the note field (same words), the opponent leaves, note field focused;
@@ -13,7 +13,9 @@
  *      first-Encounter reveal); an overflowing prompt on the sheet opens at its question; filing leg 1 covers
  *      the engine's usual reply, so the card does not stall; the opponent is set off from the painting: own
  *      colours with a thin edge and soft halo, the painting softened and darkened at the edges behind it;
- *      after the letter of Universes I–IV the scene dims ("Universe N · End") and the stage follows by itself).
+ *      after the letter of Universes I–IV the scene dims ("Universe N · End") and the stage follows by itself;
+ * v10 = v9 + world accent colours taken from each painting (teal, graphite, vermilion, rose, brass), the same on
+ *      the site, in the game and on the letter's seal).
  * - Each Universe has one painting and one opponent figure. The same figure stands in
  *   every Encounter of that Universe, so appearance can never covary with a mechanism.
  * - Each card shows an abstract sign. Signs are bound to card NAMES (never to what a
@@ -46,7 +48,7 @@
   }
   // Trail mark: one per Encounter already played in this Episode. Neutral, the same everywhere.
   const MARK = 'data:image/svg+xml;base64,' + btoa('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40"><circle cx="20" cy="20" r="11" fill="#FFFFFF" fill-opacity=".92" stroke="#161616" stroke-width="3"/></svg>');
-  const INTERFACE = 'transverse-white-v9';
+  const INTERFACE = 'transverse-white-v10';
   let context = {universe:1, episode:1, encounter:0};
   const classes = [
     ['.bevel,.hud,.tray,.hud-side,.hud-turn', 'tv-panel'],
