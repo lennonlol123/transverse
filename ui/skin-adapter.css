@@ -257,5 +257,15 @@ body[data-universe][data-sheet] .note-actions { justify-content:flex-end; }
 body[data-universe] .tray.tv-filed { opacity:0; pointer-events:none; }
 /* Record entries that arrive while the sheet is filing wait, then appear as it lands. */
 body[data-universe] .transcript-item.tv-held { opacity:0; }
-body[data-universe] .transcript-item.tv-landed { animation:tv-landed .26s var(--tv-ease) both; }
-@keyframes tv-landed { from { opacity:0; } to { opacity:1; } }
+/* Where it landed: the entry fades in; the paragraph holding the note wears the card's tint and an accent edge,
+   which fade out. */
+body[data-universe] .transcript-item.tv-shown { animation:tv-shown .22s ease-out both; }
+@keyframes tv-shown { from { opacity:0; } to { opacity:1; } }
+body[data-universe] .tv-note-mark.tv-landed-note { background:#F4ECDA; box-shadow:0 0 0 3px #F4ECDA; -webkit-box-decoration-break:clone; box-decoration-break:clone;
+  border-radius:1px; color:var(--tv-ink); }
+body[data-universe] .tv-note-mark.tv-landed-note.tv-landing { animation:tv-note-landed 1.8s var(--tv-ease) .25s both; }
+@keyframes tv-note-landed { from { background:#F4ECDA; box-shadow:0 0 0 3px #F4ECDA; } to { background:transparent; box-shadow:0 0 0 3px transparent; } }
+/* While filing, the card keeps a darker edge so it stays visible over the white Record. */
+body[data-universe][data-sheet] .tray.tv-filing { border-color:#C2B8A6; box-shadow:0 12px 26px -16px rgba(45,35,25,.4); }
+/* After the Universe letter the GUI hides the input area at once; the sheet still finishes its way to the Record. */
+body[data-universe][data-sheet] .tray.tv-filing[hidden] { display:flex!important; }
