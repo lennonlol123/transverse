@@ -72,6 +72,8 @@ PAGES = {
         ('aria-label="Universes"', 'aria-label="宇宙"'),
         ('<h2>Five universes</h2>', '<h2>五个宇宙</h2>'),
         ('src="play/art/', 'src="../play/art/'),
+        ('href="play/art/', 'href="../play/art/'),
+        ('aria-label="A dotted path winds through the five universes; the traveller is just setting out."', 'aria-label="一条点线小路蜿蜒穿过五个宇宙，旅人刚刚启程。"'),
         ('<span>UNIVERSE I</span><span>Firefly Thicket</span>', '<span>宇宙 I</span><span>流萤秘林</span>'),
         ('<span>UNIVERSE II</span><span>Silent Silhouettes</span>', '<span>宇宙 II</span><span>无声剪影</span>'),
         ('<span>UNIVERSE III</span><span>Ink-Mist Mountains</span>', '<span>宇宙 III</span><span>墨岚山水</span>'),

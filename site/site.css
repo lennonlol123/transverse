@@ -132,6 +132,14 @@ main{flex:1 1 auto}
 .world:hover img{transform:translateY(-3px);filter:saturate(1.08)}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 
+/* The path (How it works): a dotted road through the five worlds, the traveller at its start. On load the worlds
+   appear one after another along the road; still under reduced motion. */
+.pathway{margin:0 0 40px}
+.pathway svg{display:block;width:100%;height:auto}
+.pathway .pw-num{font:400 24px/1 var(--display)}
+.pathway .pw{animation:tv-fade .6s var(--tv-ease) both}
+.pathway .pw1{animation-delay:.3s}.pathway .pw2{animation-delay:.5s}.pathway .pw3{animation-delay:.7s}.pathway .pw4{animation-delay:.9s}.pathway .pw5{animation-delay:1.1s}
+.pathway .pw-path{animation:tv-fade .9s var(--tv-ease) .1s both}
 /* Five universes (How it works): where the browser supports scroll-driven animation, the paintings start pale and
    grey and take their colour one after another as the list scrolls by, I to V. Otherwise they are simply in colour. */
 @supports (animation-timeline: view()){
