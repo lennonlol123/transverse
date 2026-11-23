@@ -1,5 +1,5 @@
 /* Only opaque cosmetic coordinates and already-public labels enter this module.
- * Interface version: transverse-white-v8 (v2 = v1 + change-only motion, input held in place while computing;
+ * Interface version: transverse-white-v9 (v2 = v1 + change-only motion, input held in place while computing;
  * v3 = v2 + fixed panel heights, centred opponent, darker secondary text #716E68, Space Grotesk for buttons and labels;
  * v4 = v3 + a letterboxed reveal on the first Encounter of each Universe, input inert until the panels return;
  * v5 = v4 + between Encounters the prompt sits above the note field (same words), the opponent leaves, note field focused;
@@ -8,7 +8,10 @@
  *      at ~560 ms), the sheet files as a folding frame whose words fade first, and the new Record entry appears
  *      when the sheet arrives; lighter sheet shadow;
  * v8 = v7 + filing lands the sheet on the note's own lines in the Record (scrolled into view in step), which take
- *      the card's tint and fade; the sheet stays visible to the end, also after the Universe letter).
+ *      the card's tint and fade; the sheet stays visible to the end, also after the Universe letter;
+ * v9 = v8 + the next opponent waits until the note is filed and enters once (no second entrance after the
+ *      first-Encounter reveal); an overflowing prompt on the sheet opens at its question; filing leg 1 covers
+ *      the engine's usual reply, so the card does not stall).
  * - Each Universe has one painting and one opponent figure. The same figure stands in
  *   every Encounter of that Universe, so appearance can never covary with a mechanism.
  * - Each card shows an abstract sign. Signs are bound to card NAMES (never to what a
@@ -41,7 +44,7 @@
   }
   // Trail mark: one per Encounter already played in this Episode. Neutral, the same everywhere.
   const MARK = 'data:image/svg+xml;base64,' + btoa('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40"><circle cx="20" cy="20" r="11" fill="#FFFFFF" fill-opacity=".92" stroke="#161616" stroke-width="3"/></svg>');
-  const INTERFACE = 'transverse-white-v8';
+  const INTERFACE = 'transverse-white-v9';
   let context = {universe:1, episode:1, encounter:0};
   const classes = [
     ['.bevel,.hud,.tray,.hud-side,.hud-turn', 'tv-panel'],
@@ -258,6 +261,8 @@
     const end = () => {
       timers.forEach(clearTimeout); open();
       removeEventListener('pointerdown', end, true); removeEventListener('keydown', end, true);
+      // The reveal brought the opponent in; an entrance held back during it must not play a second time.
+      document.querySelectorAll('#idol img.tv-enter').forEach(img => img.classList.remove('tv-enter'));
       body.classList.remove('tv-reveal', 'tv-rv-door', 'tv-rv-open', 'tv-rv-1', 'tv-rv-2', 'tv-rv-3', 'tv-rv-4');
       if (input) input.inert = false;
       revealing = false; done();
@@ -411,6 +416,10 @@
     document.body.dataset.sheet = '1';
     if (sheetFor === prompt) return;
     sheetFor = prompt;
+    // The question is always the prompt's last lines; if the prompt overflows, open it there (it can be
+    // scrolled back up). Only where the prompt shows is changed, not what it says.
+    const asked = document.querySelector('.dialogue.tv-between');
+    if (asked && asked.scrollHeight > asked.clientHeight + 1) asked.scrollTop = asked.scrollHeight;
     const token = ++sheetToken;
     tray.classList.remove('tv-filed');
     tray.getAnimations({subtree: true}).forEach(x => x.cancel());
@@ -452,11 +461,12 @@
     try { tray.animate(fade, {...quick, pseudoElement: '::before'}); } catch (_) {}
     holdRecord(true);
     tray.classList.add('tv-filing');
+    document.body.classList.add('tv-filing-now');      // the next opponent waits until the note is filed
     const tint = {backgroundColor: '#F4ECDA', borderColor: '#C2B8A6'};
     const legOne = tray.animate([
       {transformOrigin: 'top left', opacity: 1, transform: 'none'},
       {transformOrigin: 'top left', opacity: 1, transform: place(near, T), ...tint}],
-      {duration: 440, easing: 'cubic-bezier(.45,0,.35,1)', fill: 'forwards'});
+      {duration: 600, easing: 'cubic-bezier(.4,0,.2,1)', fill: 'forwards'});   // long enough to cover the engine's usual reply
     const run = filing = {};
     const finish = () => {
       if (filing !== run) return;
@@ -464,6 +474,13 @@
       tray.getAnimations({subtree: true}).forEach(x => x.cancel());
       for (const k of ['inset', 'margin', 'left', 'top', 'width', 'height']) tray.style.removeProperty(k);
       tray.classList.remove('tv-filing'); tray.classList.add('tv-filed');
+      document.body.classList.remove('tv-filing-now');
+      const idol = document.querySelector('#idol img.tv-monster');
+      if (idol && document.body.dataset.phase === 'act' && !revealing) {   // its entrance plays now, not behind the card
+                                                                        // (during a reveal, the reveal brings it in)
+        idol.classList.remove('tv-enter'); void idol.offsetWidth; idol.classList.add('tv-enter');
+        idol.addEventListener('animationend', () => idol.classList.remove('tv-enter'), {once: true});
+      }
       holdRecord(false); decorate();
     };
     Promise.all([legOne.finished, heldArrival(1400).then(() => quiet(80, 400))]).then(() => {
@@ -478,7 +495,7 @@
         if (P.bottom > view.bottom - 12) delta = P.bottom - (view.bottom - 12);
         if (P.top - delta < view.top + 12) delta = P.top - (view.top + 12);
         const to = Math.max(0, Math.min(max, record.scrollTop + delta)); delta = to - record.scrollTop;
-        if (delta && box.height) glide(record, to, 420);
+        if (delta && box.height) glide(record, to, 380);
         const top = Math.max(view.top, P.top - delta), bottom = Math.min(view.bottom, P.bottom - delta);
         if (bottom - top > 8) { rect = {left: P.left, top, width: P.width, height: bottom - top}; target.classList.add('tv-landed-note'); }
         else unmark(target);
@@ -486,7 +503,7 @@
       const legTwo = tray.animate([
         {transformOrigin: 'top left', opacity: 1, transform: place(near, T), ...tint},
         {transformOrigin: 'top left', opacity: 1, transform: place(rect, T, 3, 3), ...tint}],
-        {duration: 420, easing: EASE, fill: 'forwards'});
+        {duration: 380, easing: EASE, fill: 'forwards'});
       return legTwo.finished.then(() => {
         // Settle onto the words exactly where they are now (the Record may have shifted a few pixels), fading.
         let final = rect;
@@ -494,7 +511,7 @@
           const Q = target.getBoundingClientRect(), top = Math.max(view.top, Q.top), bottom = Math.min(view.bottom, Q.bottom);
           if (bottom - top > 8) final = {left: Q.left, top, width: Q.width, height: bottom - top};
         }
-        reveal();
+        releaseRecord();
         return tray.animate([
           {transformOrigin: 'top left', opacity: 1, transform: place(rect, T, 3, 3), ...tint},
           {transformOrigin: 'top left', opacity: 0, transform: place(final, T, 3, 3), ...tint}],
@@ -555,9 +572,9 @@
   function holdRecord(on) {
     holding = on; clearTimeout(holdTimer);
     if (on) { holdTimer = setTimeout(() => holdRecord(false), 2400); return; }
-    reveal();
+    releaseRecord();
   }
-  function reveal() {
+  function releaseRecord() {
     const record = document.getElementById('transcript'); if (!record) return;
     for (const item of record.querySelectorAll('.tv-held')) {
       item.classList.remove('tv-held'); item.classList.add('tv-shown');

@@ -18,7 +18,7 @@ def main():
     html = (ROOT / 'dist/play/index.html').read_text()
     assert '<title>TransVerse</title>' in html
     assert '<span class="wordmark">TransVerse</span>' in html
-    assert 'transverse-white-v8' in html, 'interface version marker missing'
+    assert 'transverse-white-v9' in html, 'interface version marker missing'
     for page in ['index.html', 'welcome.html', 'how-it-works.html', 'enter.html']:
         assert (ROOT / 'dist' / page).is_file(), page
         assert (ROOT / 'dist' / 'zh' / page).is_file(), 'zh/' + page

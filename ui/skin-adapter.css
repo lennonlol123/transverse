@@ -269,3 +269,4 @@ body[data-universe] .tv-note-mark.tv-landed-note.tv-landing { animation:tv-note-
 body[data-universe][data-sheet] .tray.tv-filing { border-color:#C2B8A6; box-shadow:0 12px 26px -16px rgba(45,35,25,.4); }
 /* After the Universe letter the GUI hides the input area at once; the sheet still finishes its way to the Record. */
 body[data-universe][data-sheet] .tray.tv-filing[hidden] { display:flex!important; }
+body.tv-filing-now #idol img.tv-monster { opacity:0!important; animation:none!important; }
