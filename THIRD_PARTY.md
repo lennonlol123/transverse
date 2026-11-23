@@ -25,3 +25,7 @@ recorded SHA-256 hashes in the runtime manifest.
 - Anton, Copyright 2020 The Anton Project Authors (https://github.com/googlefonts/AntonFont). SIL Open Font License 1.1, `site/assets/fonts/Anton-OFL.txt`.
 - Space Grotesk, Copyright 2020 The Space Grotesk Project Authors (https://github.com/floriankarsten/space-grotesk). SIL Open Font License 1.1, `site/assets/fonts/SpaceGrotesk-OFL.txt`.
 Both files are unmodified copies from https://github.com/google/fonts (ofl/anton, ofl/spacegrotesk), downloaded 2026-11-24.
+
+## Traveller illustration
+
+- `ui/art/traveller.webp`: the threshold traveller, supplied by the project owner on 2026-11-24 (resized to 400 × 600 from the 1024 × 1536 original, otherwise unchanged).
