@@ -107,7 +107,13 @@ main{flex:1 1 auto}
 @keyframes tv-fade{from{opacity:0}to{opacity:1}}
 @keyframes tv-colour{from{color:var(--ink)}}
 .portal h1{animation:tv-gather 1.8s var(--tv-ease) .2s both}
-.portal .btn{animation:tv-fade .9s var(--tv-ease) 1.9s both}
+.portal .btn{animation:tv-fade .9s var(--tv-ease) 2.3s both}
+/* Once the title has gathered, a light passes through it once: its five pairs of letters (TR·AN·SV·ER·SE) take the
+   five worlds' colours one after another, like five doors lit in turn, and return to black. */
+@keyframes tv-pass{0%,100%{color:var(--ink)}35%,55%{color:var(--pass)}}
+.portal .tw{animation:tv-pass .8s var(--tv-ease) both}
+.portal .tw1{--pass:#3E6B48;animation-delay:1.95s}.portal .tw2{--pass:#2C4A6E;animation-delay:2.08s}.portal .tw3{--pass:#B85A36;animation-delay:2.21s}
+.portal .tw4{--pass:#B85676;animation-delay:2.34s}.portal .tw5{--pass:#A8842F;animation-delay:2.47s}
 .btn svg{transition:transform .25s var(--tv-ease)}
 .btn:hover svg,.btn:focus-visible svg{transform:translateX(4px)}
 .mv span{animation:tv-colour .45s var(--tv-ease) backwards}
