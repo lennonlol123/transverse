@@ -132,43 +132,6 @@ main{flex:1 1 auto}
 .world:hover img{transform:translateY(-3px);filter:saturate(1.08)}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 
-/* The journey (How it works): one picture of the whole structure. Static by default (complete, readable); where the
-   browser supports scroll-driven animation, scrolling plays it: the lives light in turn and the letter is written,
-   then the letter travels through the five doors. Scrolling back rewinds. No script (the page CSP allows none). */
-.journey-frame{overflow-x:auto}
-.journey-svg{display:block;width:100%;min-width:760px;height:auto}
-.journey-svg .jt-num{font:400 30px/1 var(--display)}
-.journey-svg .jt-life{font:700 15px/1 var(--body);letter-spacing:.06em;fill:#111}
-.journey-svg .jt-small{font:500 13px/1 var(--body);fill:#6B6B6B}
-.journey-svg .jt-eyebrow{font:700 12px/1 var(--body);letter-spacing:.2em;fill:#8A8A8A}
-.journey-svg .jlife circle{fill:#FFF;stroke:#111;stroke-width:1.5}
-.journey-svg .jd-art{opacity:.9}
-.journey-svg .jletter{transform:translate(262px,118px)}
-.journey>p{color:var(--sub)}
-@supports (animation-timeline: view()){
-  .journey{view-timeline-name:--journey}
-  .journey-svg .jlife,.journey-svg .jnote,.journey-svg .jend,.journey-svg .jletter,.journey-svg .jd-art{animation-timeline:--journey;animation-range:cover 28% cover 58%;animation-fill-mode:both;animation-timing-function:linear;animation-duration:auto}
-  .journey-svg .jlife1{animation-name:j-life1}.journey-svg .jlife2{animation-name:j-life2}.journey-svg .jlife3{animation-name:j-life3}.journey-svg .jlife4{animation-name:j-life4}
-  .journey-svg .jnote1{animation-name:j-note1}.journey-svg .jnote2{animation-name:j-note2}.journey-svg .jnote3{animation-name:j-note3}
-  .journey-svg .jend{animation-name:j-end}
-  .journey-svg .jletter{animation-name:j-travel}
-  .journey-svg .jd1 .jd-art{animation-name:j-door1}.journey-svg .jd2 .jd-art{animation-name:j-door2}.journey-svg .jd3 .jd-art{animation-name:j-door3}.journey-svg .jd4 .jd-art{animation-name:j-door4}.journey-svg .jd5 .jd-art{animation-name:j-door5}
-}
-@keyframes j-life1{0%{opacity:.2}4%,100%{opacity:1}}
-@keyframes j-life2{0%,11%{opacity:.2}15%,100%{opacity:1}}
-@keyframes j-life3{0%,22%{opacity:.2}26%,100%{opacity:1}}
-@keyframes j-life4{0%,33%{opacity:.2}37%,100%{opacity:1}}
-@keyframes j-note1{0%,6%{opacity:0}10%,100%{opacity:1}}
-@keyframes j-note2{0%,17%{opacity:0}21%,100%{opacity:1}}
-@keyframes j-note3{0%,28%{opacity:0}32%,100%{opacity:1}}
-@keyframes j-end{0%,40%{opacity:0}45%,100%{opacity:1}}
-@keyframes j-travel{0%,46%{opacity:0;transform:translate(150px,118px)}50%{opacity:1;transform:translate(150px,118px)}62%{transform:translate(375px,118px)}75%{transform:translate(600px,118px)}88%{transform:translate(825px,118px)}100%{opacity:1;transform:translate(1050px,118px)}}
-@keyframes j-door1{0%,100%{opacity:.9}}
-@keyframes j-door2{0%,60%{opacity:.15}63%,100%{opacity:.9}}
-@keyframes j-door3{0%,73%{opacity:.15}76%,100%{opacity:.9}}
-@keyframes j-door4{0%,86%{opacity:.15}89%,100%{opacity:.9}}
-@keyframes j-door5{0%,98%{opacity:.15}100%{opacity:.9}}
-
 /* Language switch. */
 .bar-right{display:flex;align-items:center;gap:24px}
 html[lang="zh-CN"] .hero p,html[lang="zh-CN"] .split p,html[lang="zh-CN"] .door p,html[lang="zh-CN"] .step p,html[lang="zh-CN"] .how-hero p{line-height:1.75}
