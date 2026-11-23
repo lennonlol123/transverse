@@ -226,3 +226,18 @@ body.tv-reveal.tv-rv-door.tv-rv-open.tv-rv-3 .tv-scene { clip-path:inset(0px 0px
 body.tv-reveal.tv-rv-door::before { opacity:0; }
 body.tv-reveal.tv-rv-door.tv-rv-open::before { opacity:1; transition:opacity .85s var(--tv-ease); }
 body.tv-reveal.tv-rv-door.tv-rv-open.tv-rv-3::before { opacity:0; transition:opacity .7s var(--tv-ease); }
+
+/* Between Encounters: the prompt sits above the answer field, the scene rests. */
+body[data-universe] .dialogue.tv-between { position:static!important; inset:auto!important; transform:none!important; width:auto!important;
+  max-height:min(46vh,420px)!important; overflow:auto; margin:0; padding:14px 18px; border:1px solid var(--tv-rule); border-left:3px solid var(--tv-accent);
+  border-radius:2px; background:#FFFFFF; box-shadow:none; color:var(--tv-ink); font:14px/1.6 var(--tv-font-mono); letter-spacing:0; }
+body[data-universe] .dialogue.tv-between.tv-arrive { animation:tv-rise .45s var(--tv-ease) .25s both; }
+body[data-universe] .tv-scene { transition:filter .6s var(--tv-ease); }
+body[data-universe][data-phase="note"] .tv-scene, body[data-universe][data-phase="pick"] .tv-scene { filter:saturate(.8) brightness(.9); }
+body[data-universe] .tv-ghost { position:absolute; z-index:1; object-fit:contain; object-position:center bottom; pointer-events:none;
+  animation:tv-leave .6s var(--tv-ease) both; }
+@keyframes tv-leave { from { opacity:1; transform:none; } to { opacity:0; transform:translateY(10px) scale(.98); } }
+body[data-universe] #inputArea .note-form { margin-top:0; }
+body[data-universe] .dialogue.tv-between { flex:0 0 auto; }
+body[data-universe] #inputArea:has(.tv-between) .note-form { flex:1 1 auto; min-height:0; }
+body[data-universe] #inputArea:has(.tv-between) .note-form .note-input { flex:1 1 auto; min-height:64px; }

@@ -51,7 +51,7 @@
 #thresholdOpen:hover{background:#FFF}
 #thresholdOpen:focus-visible{outline:2px solid #F2EFE8;outline-offset:3px}
 #thresholdOpen:disabled{opacity:.5;cursor:default}
-.th-leaf{transform-box:fill-box;transform-origin:right center;transform:scaleX(.9) skewY(1.2deg);transition:transform 1.4s var(--tv-ease)}
+.th-leaf{transform-box:fill-box;transform-origin:right center;transform:scaleX(.9) skewY(1.2deg);transition:transform 1s var(--tv-ease)}
 .th-spill{opacity:.8;transition:opacity 1.4s var(--tv-ease)}
 .threshold.is-open .th-leaf{transform:scaleX(.13) skewY(9deg)}
 .threshold.is-open .th-spill{opacity:1}
@@ -81,16 +81,16 @@
 .threshold.th-pre .th-shadow{transform:translateX(-800px);transition:none}
 .threshold.th-pre .th-floorshadow{transform:translateX(-640px);transition:none}
 .threshold.th-pre.th-walkin .th-walker,.threshold.th-pre.th-walkin .th-shadow,.threshold.th-pre.th-walkin .th-floorshadow{transform:none;transition:transform 2.2s var(--tv-ease)}
-.threshold.th-pre.th-walkin.is-open .th-walker{transform:translateX(610px);opacity:0;transition:transform 1.7s var(--tv-ease),opacity .5s var(--tv-ease) 1.3s}
-.threshold.th-pre.th-walkin.is-open .th-shadow{transform:translateX(760px);opacity:0;transition:transform 1.7s var(--tv-ease),opacity .5s var(--tv-ease) 1.3s}
-.threshold.th-pre.th-walkin.is-open .th-floorshadow{transform:translateX(610px);opacity:0;transition:transform 1.7s var(--tv-ease),opacity .5s var(--tv-ease) 1.3s}
+.threshold.th-pre.th-walkin.is-open .th-walker{transform:translateX(610px);opacity:0;transition:transform 1.2s var(--tv-ease),opacity .35s var(--tv-ease) .85s}
+.threshold.th-pre.th-walkin.is-open .th-shadow{transform:translateX(760px);opacity:0;transition:transform 1.2s var(--tv-ease),opacity .35s var(--tv-ease) .85s}
+.threshold.th-pre.th-walkin.is-open .th-floorshadow{transform:translateX(610px);opacity:0;transition:transform 1.2s var(--tv-ease),opacity .35s var(--tv-ease) .85s}
 .threshold.th-walking .th-bobber{animation:th-bob .42s var(--tv-ease) infinite alternate}
 @keyframes th-bob{from{transform:translateY(0)}to{transform:translateY(-4px)}}
 .th-tilt{transform-box:fill-box;transform-origin:50% 100%}
 .threshold.th-look .th-tilt{animation:th-look 1.5s var(--tv-ease) 1}
 @keyframes th-look{0%{transform:none}35%,70%{transform:rotate(4deg)}100%{transform:none}}
 .th-glowpulse{opacity:0}
-.threshold.th-look .th-glowpulse{animation:th-glow 1.5s var(--tv-ease) 1}
+.threshold.th-look .th-glowpulse{animation:th-glow .8s var(--tv-ease) 1}
 @keyframes th-glow{0%,100%{opacity:0}45%,70%{opacity:.9}}
 .th-seal{opacity:0;transform-box:fill-box;transform-origin:center;transform:scale(2.2)}
 .threshold.th-sealed .th-seal{opacity:1;transform:none;transition:transform .35s var(--tv-ease),opacity .2s var(--tv-ease)}
@@ -123,8 +123,8 @@
 .threshold.th-pre .th-walker{transform:translateX(-200px);opacity:0}
 .threshold.th-pre .th-shadow{transform:translateX(-250px);opacity:0}
 .threshold.th-pre .th-floorshadow{transform:translateX(-200px);opacity:0}
-.threshold.th-pre.th-walkin .th-walker,.threshold.th-pre.th-walkin .th-floorshadow{transform:none;opacity:1;transition:transform 2.2s var(--tv-ease),opacity 1.2s var(--tv-ease)}
-.threshold.th-pre.th-walkin .th-shadow{transform:none;opacity:.17;transition:transform 2.2s var(--tv-ease),opacity 1.2s var(--tv-ease)}
+.threshold.th-pre.th-walkin .th-walker,.threshold.th-pre.th-walkin .th-floorshadow{transform:none;opacity:1;transition:transform 1.2s var(--tv-ease),opacity .7s var(--tv-ease)}
+.threshold.th-pre.th-walkin .th-shadow{transform:none;opacity:.17;transition:transform 1.2s var(--tv-ease),opacity .7s var(--tv-ease)}
 .threshold.th-pre.th-walkin .th-floorshadow{opacity:.2}
 .threshold.th-walking .th-bobber{animation:none}
 .threshold.th-look .th-tilt{animation:none}

@@ -2,7 +2,7 @@
 (() => {
   'use strict';
   const VERSION = 'public-browser-demo-v1';
-  const INTERFACE = 'transverse-white-v4';
+  const INTERFACE = 'transverse-white-v5';
   const CONSENT = 'transverse-consent-1';
   const DB = 'transverse-v1';
   const PLAYED = 'tv-has-played-v1';
@@ -132,7 +132,7 @@
     const anim = box.animate([
       {left: r.left + 'px', top: r.top + 'px', width: r.width + 'px', height: r.height + 'px', borderWidth: '2px'},
       {left: (1078 * k + ox) + 'px', top: (280 * k + oy) + 'px', width: (162 * k) + 'px', height: (448 * k) + 'px', borderWidth: Math.max(3, 7 * k) + 'px'}],
-      {duration: 850, easing: 'cubic-bezier(.45,0,.25,1)', fill: 'forwards'});
+      {duration: 600, easing: 'cubic-bezier(.45,0,.25,1)', fill: 'forwards'});
     const skip = () => anim.finish();
     addEventListener('pointerdown', skip, {once: true}); addEventListener('keydown', skip, {once: true});
     return anim.finished.catch(() => {}).then(() => {
@@ -172,7 +172,7 @@
     void stage.getBoundingClientRect();
     if (first) { await wait(500); stage.classList.add('th-curtain-up'); await wait(1300); }
     stage.classList.add('th-walkin', 'th-walking');
-    await wait(2250);
+    await wait(1250);
     stage.classList.remove('th-walking');
   }
   // The doorway's rectangle on screen (stage viewBox 1440 × 900, xMidYMid slice; opening 1094–1224 × 298–726).
@@ -212,14 +212,14 @@
       document.getElementById('demoWelcome').classList.remove('tv-leaving');
     }
     await stageIn(stage, universe === 1 && !opts.morph);
-    if (crossed) { stage.classList.add('th-sealed'); await wait(900); }
-    stage.classList.add('th-look'); await wait(1500);
+    if (crossed) { stage.classList.add('th-sealed'); await wait(500); }
+    stage.classList.add('th-look'); await wait(800);
     stage.classList.add('th-ready');
     button.disabled = false; button.focus();
     await new Promise(resolve => { button.onclick = resolve; });
     button.disabled = true;
     stage.classList.add('is-open', 'th-walking');
-    await wait(1900);
+    await wait(1250);
     if (opts.until) await opts.until;      // the next Universe is computed while the stage plays
     // One shot from here into the Universe: once its first screen is drawn, the scene box opens out of the
     // doorway (skin-adapter fromDoor), and the stage is hidden behind it.

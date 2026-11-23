@@ -1,7 +1,8 @@
 /* Only opaque cosmetic coordinates and already-public labels enter this module.
- * Interface version: transverse-white-v4 (v2 = v1 + change-only motion, input held in place while computing;
+ * Interface version: transverse-white-v5 (v2 = v1 + change-only motion, input held in place while computing;
  * v3 = v2 + fixed panel heights, centred opponent, darker secondary text #716E68, Space Grotesk for buttons and labels;
- * v4 = v3 + a letterboxed reveal on the first Encounter of each Universe, input inert until the panels return).
+ * v4 = v3 + a letterboxed reveal on the first Encounter of each Universe, input inert until the panels return;
+ * v5 = v4 + between Encounters the prompt sits above the note field (same words), the opponent leaves, note field focused).
  * - Each Universe has one painting and one opponent figure. The same figure stands in
  *   every Encounter of that Universe, so appearance can never covary with a mechanism.
  * - Each card shows an abstract sign. Signs are bound to card NAMES (never to what a
@@ -34,7 +35,7 @@
   }
   // Trail mark: one per Encounter already played in this Episode. Neutral, the same everywhere.
   const MARK = 'data:image/svg+xml;base64,' + btoa('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40"><circle cx="20" cy="20" r="11" fill="#FFFFFF" fill-opacity=".92" stroke="#161616" stroke-width="3"/></svg>');
-  const INTERFACE = 'transverse-white-v4';
+  const INTERFACE = 'transverse-white-v5';
   let context = {universe:1, episode:1, encounter:0};
   const classes = [
     ['.bevel,.hud,.tray,.hud-side,.hud-turn', 'tv-panel'],
@@ -133,13 +134,22 @@
     const dialogue = document.getElementById('context');
     const journal = document.querySelector('.journal');
     const transcript = document.getElementById('transcript');
-    const inEncounter = document.body.dataset.phase === 'act';
+    const phase = document.body.dataset.phase;
+    const inEncounter = phase === 'act';
+    // Between Encounters (notes, choices) the same text sits right above the answer field, whole and
+    // readable, instead of over a small painting; the words are unchanged.
+    const between = phase === 'note' || phase === 'pick';
+    const tray = document.getElementById('inputArea');
     if (dialogue && journal && transcript) {
       dialogue.classList.toggle('tv-feedback', inEncounter);
+      dialogue.classList.toggle('tv-between', between);
       if (inEncounter && dialogue.parentElement !== journal) journal.insertBefore(dialogue, transcript);
-      if (!inEncounter && dialogue.parentElement !== document.getElementById('viewport')) document.getElementById('viewport').append(dialogue);
+      if (between && tray && dialogue.parentElement !== tray) tray.prepend(dialogue);
+      if (!inEncounter && !between && dialogue.parentElement !== document.getElementById('viewport')) document.getElementById('viewport').append(dialogue);
       dialogue.setAttribute('aria-label', inEncounter ? 'Latest feedback' : 'Context');
     }
+    endOfEncounter(phase);
+    focusNote(phase);
     const viewport = document.getElementById('viewport');
     if (viewport) {
       const value = 'url("' + world().scene + '")';
@@ -246,7 +256,7 @@
     };
     // Enter, see the world, the camera pulls back into the scene box, then the opponent arrives in it.
     const lead = door ? 850 : 450;                                     // the doorway opens to the world (or it fades in)
-    const pull = lead + 600;                                           // 600 ms to look at the world, no opponent
+    const pull = lead + 450;                                           // 450 ms to look at the world, no opponent
     const meet = pull + 700;                                           // 700 ms: the camera pulls back into the scene box
     requestAnimationFrame(() => requestAnimationFrame(() => {
       if (door) body.classList.add('tv-rv-open'); else body.classList.add('tv-rv-1');
@@ -346,6 +356,43 @@
     layer.querySelector('.tv-caption').textContent = camp || !context.encounter
       ? `Episode ${context.episode || 1}` : `Episode ${context.episode} · Encounter ${context.encounter}`;
   }
+  // The end of an Encounter: the opponent leaves (a copy of it fades and sinks where it stood, since the GUI
+  // hides the real one at once), the scene dims a little while notes are written, the text arrives.
+  let lastPhase = '', lastFigure = null;
+  function endOfEncounter(phase) {
+    const host = document.getElementById('idol'), scene = document.getElementById('viewport');
+    const img = host && !host.hidden && host.querySelector('img.tv-monster');
+    if (img && scene) {
+      const a = img.getBoundingClientRect(), b = scene.getBoundingClientRect();
+      if (a.width) lastFigure = {src: img.getAttribute('src'), left: a.left - b.left, top: a.top - b.top, width: a.width, height: a.height};
+    }
+    if (lastPhase === 'act' && (phase === 'note' || phase === 'pick') && lastFigure && scene && !REDUCED()) {
+      const ghost = document.createElement('img');
+      ghost.src = lastFigure.src; ghost.alt = ''; ghost.className = 'tv-ghost'; ghost.setAttribute('aria-hidden', 'true');
+      Object.assign(ghost.style, {left: lastFigure.left + 'px', top: lastFigure.top + 'px', width: lastFigure.width + 'px', height: lastFigure.height + 'px'});
+      scene.append(ghost);
+      ghost.addEventListener('animationend', () => ghost.remove(), {once: true});
+      const text = document.getElementById('context');
+      if (text) { text.classList.remove('tv-arrive'); void text.offsetWidth; text.classList.add('tv-arrive'); }
+    }
+    if (phase !== lastPhase) lastPhase = phase;
+  }
+  // The note field takes the focus when a note is asked for; Cmd/Ctrl + Enter submits it.
+  let focusedFor = null;
+  function focusNote(phase) {
+    const form = document.getElementById('noteForm'), input = document.getElementById('noteInput');
+    if (phase !== 'note' || !form || form.hidden || !input || revealing) { if (phase !== 'note') focusedFor = null; return; }
+    const prompt = (document.getElementById('context') || {}).textContent || '';
+    if (focusedFor === prompt) return;
+    focusedFor = prompt;
+    setTimeout(() => { if (!form.hidden && document.activeElement !== input) input.focus({preventScroll: true}); }, 60);
+  }
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Enter' && (event.metaKey || event.ctrlKey) && event.target && event.target.id === 'noteInput') {
+      const form = document.getElementById('noteForm');
+      if (form && !form.hidden) { event.preventDefault(); form.requestSubmit(); }
+    }
+  });
   function setContext(value) {
     if (!value || !Number.isInteger(value.universe) || value.universe < 1 || value.universe > 5) return;
     const {universe, episode, encounter} = value;
