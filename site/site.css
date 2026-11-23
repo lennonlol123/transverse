@@ -105,8 +105,8 @@ main{flex:1 1 auto}
 @keyframes tv-gather{from{letter-spacing:.22em;opacity:0}to{letter-spacing:.08em;opacity:1}}
 @keyframes tv-fade{from{opacity:0}to{opacity:1}}
 @keyframes tv-colour{from{color:var(--ink)}}
-.portal h1{animation:tv-gather .65s var(--tv-ease) both}
-.portal .btn{animation:tv-fade .45s var(--tv-ease) .7s both}
+.portal h1{animation:tv-gather 1.8s var(--tv-ease) .2s both}
+.portal .btn{animation:tv-fade .9s var(--tv-ease) 1.9s both}
 .btn svg{transition:transform .25s var(--tv-ease)}
 .btn:hover svg,.btn:focus-visible svg{transform:translateX(4px)}
 .mv span{animation:tv-colour .45s var(--tv-ease) both}
