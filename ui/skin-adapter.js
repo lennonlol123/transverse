@@ -14,7 +14,7 @@
  *      the engine's usual reply, so the card does not stall; the opponent is set off from the painting: own
  *      colours with a thin edge and soft halo, the painting softened and darkened at the edges behind it;
  *      after the letter of Universes I–IV the scene dims ("Universe N · End") and the stage follows by itself;
- * v10 = v9 + world accent colours taken from each painting (teal, graphite, vermilion, rose, brass), the same on
+ * v10 = v9 + one colour per world (forest green, night navy, seal vermilion, dusk rose, brass ochre), the same on
  *      the site, in the game and on the letter's seal).
  * - Each Universe has one painting and one opponent figure. The same figure stands in
  *   every Encounter of that Universe, so appearance can never covary with a mechanism.

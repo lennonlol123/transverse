@@ -16,11 +16,11 @@ body[data-universe] {
   --tv-font-mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
 }
 /* Accents follow the five colours of "Multiverse" on the welcome page. */
-body[data-universe="1"] { --tv-accent: #2F6F7E; }
-body[data-universe="2"] { --tv-accent: #64676B; }
-body[data-universe="3"] { --tv-accent: #B4462F; }
-body[data-universe="4"] { --tv-accent: #B9718A; }
-body[data-universe="5"] { --tv-accent: #94723F; }
+body[data-universe="1"] { --tv-accent: #3E6B48; }
+body[data-universe="2"] { --tv-accent: #2C4A6E; }
+body[data-universe="3"] { --tv-accent: #E8361C; }
+body[data-universe="4"] { --tv-accent: #B85676; }
+body[data-universe="5"] { --tv-accent: #A8842F; }
 
 body { background: var(--tv-ground); color: var(--tv-ink); font-family: var(--tv-font-body); }
 .tv-display { font-family: var(--tv-font-display); }
