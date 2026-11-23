@@ -208,8 +208,8 @@
     if (!REDUCED()) play({});
   }
   // The continuous shot from the threshold: the scene box, cut to the doorway's shape and laid exactly over the
-  // doorway, opens to the full letterboxed width while the stage goes dark; then the opponent (if the first
-  // screen has one), the camera pulls back into the scene box, the panels return. `door` = the doorway's screen
+  // doorway, opens to the full letterboxed width while the stage goes dark; a pause on the world, the camera pulls back
+  // into the scene box with the panels, and only then the opponent (if the first screen has one) arrives. `door` = the doorway's screen
   // rectangle; `opened()` is called once the stage is covered (the caller hides it there).
   function play({door = null, opened = () => {}}) {
     const scene = document.getElementById('viewport');
@@ -243,14 +243,17 @@
       if (input) input.inert = false;
       revealing = false; done();
     };
-    const lead = door ? 850 : 450;                                     // door: 0–850 ms the doorway opens to the world
-    const meet = opponent ? lead + 400 : lead;                         // then 400 ms for the opponent to appear
+    // Enter, see the world, the camera pulls back into the scene box, then the opponent arrives in it.
+    const lead = door ? 850 : 450;                                     // the doorway opens to the world (or it fades in)
+    const pull = lead + 600;                                           // 600 ms to look at the world, no opponent
+    const meet = pull + 700;                                           // 700 ms: the camera pulls back into the scene box
     requestAnimationFrame(() => requestAnimationFrame(() => {
       if (door) body.classList.add('tv-rv-open'); else body.classList.add('tv-rv-1');
-      at(lead, () => { open(); body.classList.add('tv-rv-2'); });
-      at(meet, () => body.classList.add('tv-rv-3'));                 // 700 ms: the camera pulls back into the scene box
-      at(meet + 700, () => body.classList.add('tv-rv-4'));           // 550 ms: panels return, then control
-      at(meet + 1300, end);
+      at(lead, open);
+      at(pull, () => body.classList.add('tv-rv-3'));
+      at(pull + 400, () => body.classList.add('tv-rv-4'));           // panels return as the camera settles
+      at(meet, () => body.classList.add('tv-rv-2'));                 // the opponent arrives in its place
+      at(meet + (opponent ? 550 : 150), end);
     }));
     addEventListener('pointerdown', end, true); addEventListener('keydown', end, true);
     return finished;

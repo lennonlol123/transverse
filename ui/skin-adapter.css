@@ -208,8 +208,8 @@ body.tv-reveal { overflow:hidden; }
 body.tv-reveal .tv-scene { position:relative; z-index:900; transform:translate(var(--rv-tx),var(--rv-ty)) scale(var(--rv-s)); opacity:0; transition:none; }
 body.tv-reveal.tv-rv-1 .tv-scene { opacity:1; transition:opacity .45s var(--tv-ease); }
 body.tv-reveal.tv-rv-3 .tv-scene { transform:none; transition:transform .7s var(--tv-ease), opacity .45s var(--tv-ease); }
-body.tv-reveal .tv-monster { opacity:0; transform:scale(.97); animation:none!important; }
-body.tv-reveal.tv-rv-2 .tv-monster { opacity:1; transform:none; transition:opacity .4s var(--tv-ease), transform .4s var(--tv-ease); }
+body.tv-reveal .tv-monster { opacity:0; transform:translateY(14px) scale(.97); animation:none!important; }
+body.tv-reveal.tv-rv-2 .tv-monster { opacity:1; transform:none; transition:opacity .5s var(--tv-ease), transform .5s var(--tv-ease); }
 body.tv-reveal .tv-caption, body.tv-reveal .tv-trail { opacity:0; }
 body.tv-reveal.tv-rv-4 .tv-caption, body.tv-reveal.tv-rv-4 .tv-trail { opacity:1; transition:opacity .4s var(--tv-ease); }
 body.tv-reveal :is(.topbar, .demo-navigation, .demo-details, .hud, .tray, .journal) { opacity:0; }
