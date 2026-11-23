@@ -154,7 +154,7 @@ body[data-universe] .tv-story[data-episode="3"] .tv-light { background:rgba(240,
 body[data-universe] .tv-story[data-episode="4"] .tv-light { background:rgba(70,80,140,.38); }
 body[data-universe] .tv-sky { position:absolute; width:24px; height:24px; border-radius:50%; z-index:3; top:14%; right:6%; }
 body[data-universe] .tv-story[data-episode="1"] .tv-sky { background:#F6C35B; top:34%; right:84%; box-shadow:0 0 0 6px rgba(246,195,91,.25); }
-body[data-universe] .tv-story[data-episode="2"] .tv-sky { background:#F8D774; top:10%; right:46%; box-shadow:0 0 0 6px rgba(248,215,116,.25); }
+body[data-universe] .tv-story[data-episode="2"] .tv-sky { background:#F8D774; top:11%; right:20%; box-shadow:0 0 0 6px rgba(248,215,116,.25); }
 body[data-universe] .tv-story[data-episode="3"] .tv-sky { background:#E8794A; top:46%; right:5%; box-shadow:0 0 0 6px rgba(232,121,74,.25); }
 body[data-universe] .tv-story[data-episode="4"] .tv-sky { background:#F3EED8; top:10%; right:8%; box-shadow:inset -8px -3px 0 0 rgba(0,0,0,.18); }
 body[data-universe] .idol { z-index:2; }
@@ -187,3 +187,17 @@ body[data-universe] #choices, body[data-universe] #choices:empty { display:flex!
 body[data-universe] #actionInput { flex:1 1 auto; min-height:0; }
 body[data-universe] .work-note { flex:1 1 auto; min-height:0; }
 body[data-universe] .work-note .note-input { flex:1 1 auto; min-height:44px; height:auto; resize:none; }
+
+/* Opponent placement and blending (2026-11-24, user: centred, better fused with the painting).
+ * The figure stands centred on the painting's ground, below the Episode light (so dawn, day,
+ * dusk and night tint it like the scene), with a soft contact shadow instead of a floating
+ * drop shadow, and a per-Universe grade towards the painting's own light. */
+body[data-universe] .idol, body[data-universe] .tv-scene .idol:not(.training-post) { left:50%; z-index:1; bottom:5%; height:84%; width:clamp(150px,34%,440px); }
+body[data-universe] .idol:not(.training-post)::before { z-index:-1; bottom:-1%; width:58%; height:7%;
+  background:radial-gradient(closest-side, rgba(0,0,0,.5), rgba(0,0,0,.18) 60%, rgba(0,0,0,0)); mix-blend-mode:multiply; }
+body[data-universe] .tv-monster { filter:none; }
+body[data-universe="1"] .tv-monster { filter:brightness(.84) saturate(.9) contrast(.97) drop-shadow(0 0 18px rgba(120,190,170,.18)); }
+body[data-universe="2"] .tv-monster { filter:brightness(.9) contrast(1.02); }
+body[data-universe="3"] .tv-monster { filter:sepia(.12) saturate(.88) brightness(.97); mix-blend-mode:multiply; }
+body[data-universe="4"] .tv-monster { filter:saturate(.92) brightness(.97) sepia(.06); }
+body[data-universe="5"] .tv-monster { filter:sepia(.14) saturate(.86) brightness(.9) contrast(.98); }

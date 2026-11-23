@@ -213,7 +213,12 @@
       const fresh = key !== prevEncounter;
       prevValues = values;
       const idol = document.querySelector('#idol img.tv-monster');
-      if (fresh && idol && prevEncounter) { idol.classList.remove('tv-enter'); void idol.offsetWidth; idol.classList.add('tv-enter'); }
+      // Play the arrival once per Encounter. The GUI re-inserts the figure host on every update, and a
+      // re-inserted element restarts its animation, so the class is dropped as soon as it has played.
+      if (fresh && idol && prevEncounter) {
+        idol.classList.remove('tv-enter'); void idol.offsetWidth; idol.classList.add('tv-enter');
+        idol.addEventListener('animationend', () => idol.classList.remove('tv-enter'), {once:true});
+      }
       if (fresh) prevHand = null;
       prevEncounter = key;
     }
