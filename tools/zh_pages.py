@@ -3,7 +3,11 @@
 The outer pages run no script (their CSP has no script-src), so the language is a second set of static pages,
 not a switch in the browser. Each page is the English page with an ordered list of exact replacements; a
 replacement that no longer matches stops the build, so an English edit cannot silently leave stale Chinese.
-The paper's title stays in English. Gameplay words follow the project's Chinese naming: a life is 世.
+
+Voice (2026-11-24, the user's call): keep it poetic — a traveller's register (启程, 一世, 初至 · 困顿 · 试探 ·
+封缄) — but tight: no padding, no word that mis-describes the game (the letter is carried through the door, not
+posted, so never 寄信). Consent and data text stays plain and exact.
+The paper's title stays in English. A life is 一世.
 """
 from pathlib import Path
 
@@ -15,54 +19,58 @@ COMMON = [
     ('alt="Westlake University"', 'alt="西湖大学"'),
 ]
 
+EN = lambda href: f'<span class="lang-toggle"><b>EN</b><a href="{href}" lang="zh-CN">中文</a></span>'
+ZH = lambda href: f'<span class="lang-toggle"><a href="{href}" lang="en">EN</a><b>中文</b></span>'
+
 PAGES = {
     'index.html': [
-        ('<span class="lang-toggle"><b>EN</b><a href="zh/" lang="zh-CN">中文</a></span>', '<span class="lang-toggle"><a href="../" lang="en">EN</a><b>中文</b></span>'),
+        (EN('zh/'), ZH('../')),
         ('>ENTER <svg', '>启程 <svg'),
     ],
     'welcome.html': [
         ('<a href="how-it-works.html">How it works</a><a href="#agents">For AI agents</a><a href="#lab">Lab</a></nav>',
-         '<a href="how-it-works.html">旅途须知</a><a href="#agents">遣智能体</a><a href="#lab">我们</a></nav>'),
-        ('<a class="btn small" href="enter.html">ENTER</a><span class="lang-toggle"><b>EN</b><a href="zh/welcome.html" lang="zh-CN">中文</a></span>', '<a class="btn small" href="enter.html">启程</a><span class="lang-toggle"><a href="../welcome.html" lang="en">EN</a><b>中文</b></span>'),
+         '<a href="how-it-works.html">旅途须知</a><a href="#agents">智能体</a><a href="#lab">我们</a></nav>'),
+        ('<a class="btn small" href="enter.html">ENTER</a>' + EN('zh/welcome.html'),
+         '<a class="btn small" href="enter.html">启程</a>' + ZH('../welcome.html')),
         ('<p>A research benchmark from Encode Lab. Take part by playing in the browser, or evaluate an agent.</p>',
-         '<p>一个关于学习、记忆与迁移的研究基准，来自 Encode Lab。你可以亲自穿过这些宇宙，也可以遣一位智能体代你前往。</p>'),
+         '<p>Encode Lab 的一项研究基准，关于学习、记忆与迁移。你可以亲自穿过这些宇宙，也可以让智能体替你远行。</p>'),
         ('<a class="btn solid" href="enter.html">ENTER</a><a class="btn" href="how-it-works.html">HOW IT WORKS</a>',
          '<a class="btn solid" href="enter.html">启程</a><a class="btn" href="how-it-works.html">旅途须知</a>'),
         ('<span class="eyebrow">For AI agents</span>\n      <h2>Evaluate an agent</h2>\n      <p>Submit an agent to be evaluated on a private set that is never released. You receive aggregate scores.</p>',
-         '<span class="eyebrow">遣智能体</span>\n      <h2>让它代你远行</h2>\n      <p>它将去往一组从不公开的世界。归来的，只有一份汇总的分数。</p>'),
-        ('>EVALUATE AN AGENT</a>', '>遣它前往</a>'),
+         '<span class="eyebrow">智能体</span>\n      <h2>让它替你远行</h2>\n      <p>它将去往一组从不公开的世界。归来的，只有一份汇总的分数。</p>'),
+        ('>EVALUATE AN AGENT</a>', '>送它启程</a>'),
         ('<span class="eyebrow">Made by</span>', '<span class="eyebrow">我们</span>'),
         ('<p>Westlake University. Your play supports our research on how people and machines learn. Taking part is voluntary and anonymous.</p>',
-         '<p>西湖大学。我们想知道，人与机器如何在陌生的世界里学会规则，又如何把所学带往他方。你的每一次游玩，都在回答这个问题。参与全凭自愿，不留姓名。</p>'),
+         '<p>西湖大学。我们想知道，人与机器如何在陌生的世界里学会规则，又如何把所学带往别处。参与全凭自愿，不留姓名。</p>'),
     ],
     'enter.html': [
         ('<title>Enter · TransVerse</title>', '<title>启程 · TransVerse</title>'),
-        ('<span class="bar-right"><a class="small-caps" href="welcome.html">Back</a><span class="lang-toggle"><b>EN</b><a href="zh/enter.html" lang="zh-CN">中文</a></span></span>',
-         '<span class="bar-right"><a class="small-caps" href="welcome.html">返回</a><span class="lang-toggle"><a href="../enter.html" lang="en">EN</a><b>中文</b></span></span>'),
+        ('<span class="bar-right"><a class="small-caps" href="welcome.html">Back</a>' + EN('zh/enter.html') + '</span>',
+         '<span class="bar-right"><a class="small-caps" href="welcome.html">返回</a>' + ZH('../enter.html') + '</span>'),
         ('<h1>Enter the multiverse</h1><p>One entrance. Two ways in.</p>', '<h1>推开多元宇宙之门</h1><p>一扇门，两条路。</p>'),
-        ('aria-label="Play as a human"', 'aria-label="以人类身份游玩"'),
+        ('aria-label="Play as a human"', 'aria-label="亲自启程"'),
         ('<span class="eyebrow">For humans</span><h2>Play</h2><p>Play in the browser. No account needed.</p>',
          '<span class="eyebrow">旅人</span><h2>亲自启程</h2><p>只需一个浏览器，无需账号。</p>'),
         ('<a class="btn solid" href="play/">START PLAYING</a>', '<a class="btn solid" href="../play/?lang=zh">启程</a>'),
         ('<p class="fine">Your moves and notes stay in your browser under a random ID. You can export them and decide whether to share them, and you can stop at any time. You will see the details before you start.</p>',
          '<p class="fine">你的操作和笔记以一个随机编号保存在你自己的浏览器里。你可以导出它们并自行决定是否分享，也可以随时停止。开始前你会看到详细说明。</p>'),
-        ('aria-label="Evaluate an AI agent"', 'aria-label="评测智能体"'),
+        ('aria-label="Evaluate an AI agent"', 'aria-label="送智能体启程"'),
         ('<span class="eyebrow">For AI agents</span><h2>Evaluate</h2><p>Connect an agent and run it on a private set that is never released. You receive aggregate scores.</p>',
-         '<span class="eyebrow">智能体</span><h2>遣它前往</h2><p>接入一位智能体，让它走过一组从不公开的世界。归来的，只有一份汇总的分数。</p>'),
+         '<span class="eyebrow">智能体</span><h2>送它启程</h2><p>接入一位智能体，让它走过一组从不公开的世界。归来的，只有一份汇总的分数。</p>'),
         ('>ACCESS OPENS SOON</span>', '>即将开放</span>'),
         ('<a class="plain-link" href="how-it-works.html#agents">How it works</a>', '<a class="plain-link" href="how-it-works.html#agents">旅途须知</a>'),
     ],
     'how-it-works.html': [
         ('<title>How it works · TransVerse</title>', '<title>旅途须知 · TransVerse</title>'),
         ('<span class="small-caps muted">How it works</span>', '<span class="small-caps muted">旅途须知</span>'),
-        ('<span class="bar-right"><a class="btn small" href="enter.html">ENTER</a><span class="lang-toggle"><b>EN</b><a href="zh/how-it-works.html" lang="zh-CN">中文</a></span></span>',
-         '<span class="bar-right"><a class="btn small" href="enter.html">启程</a><span class="lang-toggle"><a href="../how-it-works.html" lang="en">EN</a><b>中文</b></span></span>'),
+        ('<span class="bar-right"><a class="btn small" href="enter.html">ENTER</a>' + EN('zh/how-it-works.html') + '</span>',
+         '<span class="bar-right"><a class="btn small" href="enter.html">启程</a>' + ZH('../how-it-works.html') + '</span>'),
         ('<h1>Five universes.<br>Hidden rules.</h1>', '<h1>五个宇宙，<br>各有不言之律。</h1>'),
         ('<p>Every universe plays by rules nobody tells you. Find them by playing, write down what you learned, and carry it into the next world.</p>',
-         '<p>每个宇宙都藏着无人言说的规则。在游历中把它们找出来，写下所得，再带往下一个世界。</p>'),
+         '<p>没有人会告诉你规则。在游历中把它们找出来，写下所得，带往下一个世界。</p>'),
         ('aria-label="At a glance"', 'aria-label="一览"'),
         ('<span>universes to explore</span>', '<span>个宇宙，等你一一走过</span>'),
-        ('<span>lives to learn what is going on, four in each universe</span>', '<span>世轮回，每个宇宙四世，用来看清这里的道理</span>'),
+        ('<span>lives to learn what is going on, four in each universe</span>', '<span>世，每个宇宙四世，用来看清这里的道理</span>'),
         ('<span>letter that crosses into the next world</span>', '<span>封信，是你唯一能带过门的东西</span>'),
         ('aria-label="Universes"', 'aria-label="宇宙"'),
         ('<h2>Five universes</h2>', '<h2>五个宇宙</h2>'),
@@ -80,7 +88,7 @@ PAGES = {
         ('<h3>Test</h3><p>Form a hunch, try something different, and watch what changes.</p>',
          '<h3>试探</h3><p>心里有了猜想，就换一种走法，看看什么随之改变。</p>'),
         ('<h3>Write the letter</h3><p>Before you cross, write what you learned. In the next universe, it is all you take with you.</p>',
-         '<h3>寄信</h3><p>临行之前，把所学写成一封信。到了下一个宇宙，它是你唯一的行囊。</p>'),
+         '<h3>封缄</h3><p>临行之前，把所学写进一封信，封好。到了下一个宇宙，它是你唯一的行囊。</p>'),
         ('aria-label="Agents"', 'aria-label="智能体"'),
         ('<span class="eyebrow">For AI agents</span>', '<span class="eyebrow">智能体</span>'),
         ('<h2>Same worlds. Same rules. Same letter.</h2>', '<h2>同样的世界，同样的规则，同样的一封信。</h2>'),
