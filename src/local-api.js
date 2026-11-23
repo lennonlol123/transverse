@@ -2,7 +2,7 @@
 (() => {
   'use strict';
   const VERSION = 'public-browser-demo-v1';
-  const INTERFACE = 'transverse-white-v1';
+  const INTERFACE = 'transverse-white-v2';
   const CONSENT = 'transverse-consent-1';
   const DB = 'transverse-v1';
   const PLAYED = 'tv-has-played-v1';

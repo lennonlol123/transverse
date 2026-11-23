@@ -1,5 +1,5 @@
 /* Only opaque cosmetic coordinates and already-public labels enter this module.
- * Interface version: transverse-white-v1.
+ * Interface version: transverse-white-v2 (v2 = v1 + change-only motion, input held in place while computing).
  * - Each Universe has one painting and one opponent figure. The same figure stands in
  *   every Encounter of that Universe, so appearance can never covary with a mechanism.
  * - Each card shows an abstract sign. Signs are bound to card NAMES (never to what a
@@ -32,7 +32,7 @@
   }
   // Trail mark: one per Encounter already played in this Episode. Neutral, the same everywhere.
   const MARK = 'data:image/svg+xml;base64,' + btoa('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40"><circle cx="20" cy="20" r="11" fill="#FFFFFF" fill-opacity=".92" stroke="#161616" stroke-width="3"/></svg>');
-  const INTERFACE = 'transverse-white-v1';
+  const INTERFACE = 'transverse-white-v2';
   let context = {universe:1, episode:1, encounter:0};
   const classes = [
     ['.bevel,.hud,.tray,.hud-side,.hud-turn', 'tv-panel'],
@@ -146,14 +146,93 @@
     story(viewport);
     const host = document.getElementById('idol');
     if (host && !host.hidden && !host.classList.contains('training-post')) {
-      let image = host.querySelector('img.tv-monster');
-      if (!image || image.dataset.universe !== String(context.universe)) {
-        image = document.createElement('img'); image.className = 'tv-monster';
-        image.src = world().opponent; image.alt = ''; image.setAttribute('aria-hidden', 'true');
-        image.dataset.universe = String(context.universe); host.replaceChildren(image);
-      }
+      // One persistent, already-decoded image per Universe: the GUI redraws the figure host on
+      // every update, and a fresh <img> would blank for a frame.
+      const image = opponentImage();
+      if (host.firstChild !== image || host.childNodes.length !== 1) host.replaceChildren(image);
     }
     paintCards();
+    holdInput();
+    motion();
+  }
+  const opponents = {};
+  function opponentImage() {
+    const u = String(context.universe);
+    if (!opponents[u]) {
+      const image = document.createElement('img'); image.className = 'tv-monster';
+      image.src = world().opponent; image.alt = ''; image.setAttribute('aria-hidden', 'true'); image.decoding = 'sync';
+      image.dataset.universe = u; opponents[u] = image;
+    }
+    return opponents[u];
+  }
+
+  // While the engine computes the next state (a few hundred ms in the browser) the GUI swaps the
+  // whole input area for a WAIT row, and the scene jumps taller and back. Keep the area in place,
+  // unchanged and inert, until the next prompt arrives; the status lamp already says it is busy.
+  let held = null;
+  function holdInput() {
+    const waiting = document.getElementById('waiting');
+    const action = document.getElementById('actionInput'), note = document.getElementById('noteForm');
+    if (!waiting || !action || !note) return;
+    if (!waiting.hidden && action.hidden && note.hidden) {
+      if (!held && lastShown) { held = lastShown; held.classList.add('tv-hold'); held.inert = true; waiting.classList.add('tv-hold-wait'); }
+    } else if (held) {
+      held.classList.remove('tv-hold'); held.inert = false; held = null; waiting.classList.remove('tv-hold-wait');
+    }
+    if (!action.hidden) lastShown = action; else if (!note.hidden) lastShown = note;
+  }
+  let lastShown = null;
+
+  // Motion only marks change (hand-over rule 9): a value that changed, a card newly in hand,
+  // an opponent arriving, a new trail mark. The same quiet mark for every change, rising or
+  // falling, good or bad; nothing plays on a hit, a seal or a win.
+  const REDUCED = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const seen = new WeakSet();
+  let prevValues = null, prevHand = null, prevEncounter = '';
+  function motion() {
+    if (REDUCED) return;
+    const hud = document.getElementById('hud');
+    if (hud && !hud.hidden) {
+      const values = {}, nodes = {};
+      for (const node of hud.querySelectorAll('.slot')) {
+        const side = node.closest('.hud-you') ? 'you' : node.closest('.hud-them') ? 'them' : 'x';
+        const m = /^\s*([^=:\s]+)\s*[=:]\s*(.*)$/.exec(node.textContent || '');
+        if (!m) continue;
+        values[side + '|' + m[1]] = m[2].trim(); nodes[side + '|' + m[1]] = node;
+      }
+      const turn = hud.querySelector('.hud-turn-n');
+      if (turn) { values['turn'] = turn.textContent.trim(); nodes['turn'] = turn; }
+      const key = [context.universe, context.episode, context.encounter].join('|');
+      if (prevValues && key === prevEncounter) {
+        for (const [k, v] of Object.entries(values)) {
+          const node = nodes[k];
+          if (k in prevValues && prevValues[k] !== v && !seen.has(node)) { seen.add(node); node.classList.add('tv-changed'); }
+          else if (!(k in prevValues) && k !== 'turn' && !seen.has(node)) { seen.add(node); node.classList.add('tv-changed'); }
+        }
+      }
+      const fresh = key !== prevEncounter;
+      prevValues = values;
+      const idol = document.querySelector('#idol img.tv-monster');
+      if (fresh && idol && prevEncounter) { idol.classList.remove('tv-enter'); void idol.offsetWidth; idol.classList.add('tv-enter'); }
+      if (fresh) prevHand = null;
+      prevEncounter = key;
+    }
+    const cards = [...document.querySelectorAll('#choices .hand-card')];
+    if (cards.length && cards.some(c => !seen.has(c))) {
+      const names = cards.map(c => (c.querySelector('.card-name') || {}).textContent || '');
+      const before = {}; for (const n of prevHand || []) before[n] = (before[n] || 0) + 1;
+      let i = 0;
+      cards.forEach((card, k) => {
+        if (seen.has(card)) return; seen.add(card);
+        const n = names[k];
+        if (prevHand && before[n] > 0) { before[n]--; return; }
+        card.style.setProperty('--tv-delay', (i++ * 45) + 'ms'); card.classList.add('tv-drawn');
+      });
+      prevHand = names;
+    }
+    const marks = document.querySelectorAll('.tv-trail img');
+    const last = marks[marks.length - 1];
+    if (last && !seen.has(last)) { seen.add(last); if (marks.length > 0 && prevEncounter) last.classList.add('tv-drawn'); }
   }
   // Story layer, as in the research interface: trail of Encounters already played in this
   // Episode, the Episode light, and the Episode · Encounter caption. One opponent only.
