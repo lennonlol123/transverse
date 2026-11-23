@@ -28,4 +28,4 @@ Both files are unmodified copies from https://github.com/google/fonts (ofl/anton
 
 ## Traveller illustration
 
-- `ui/art/traveller.webp`: the threshold traveller, supplied by the project owner on 2026-11-24 (resized to 400 × 600 from the 1024 × 1536 original, otherwise unchanged).
+- `ui/art/traveller.webp`: the threshold traveller, drawn by the project team and polished with AI assistance (2026-11-24); resized to 400 × 600 from the 1024 × 1536 original, otherwise unchanged.
