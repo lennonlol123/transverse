@@ -175,6 +175,22 @@
     await wait(2250);
     stage.classList.remove('th-walking');
   }
+  // The doorway's rectangle on screen (stage viewBox 1440 × 900, xMidYMid slice; opening 1094–1224 × 298–726).
+  function doorway() {
+    const W = innerWidth, H = innerHeight, k = Math.max(W / 1440, H / 900);
+    const ox = (W - 1440 * k) / 2, oy = (H - 900 * k) / 2;
+    return {left: 1094 * k + ox, top: 298 * k + oy, right: 1224 * k + ox, bottom: 726 * k + oy};
+  }
+  // Wait until the game shows the given Universe (welcome closed, a screen drawn), at most 10 s.
+  async function drawn(universe) {
+    for (let i = 0; i < 100; i++) {
+      const b = document.body;
+      if (document.getElementById('demoWelcome').hidden && b.dataset.universe === String(universe)
+          && ['act', 'note', 'pick'].includes(b.dataset.phase)) { await new Promise(r => setTimeout(r, 120)); return true; }
+      await new Promise(r => setTimeout(r, 100));
+    }
+    return false;
+  }
   async function threshold(universe, opts = {}) {
     const stage = document.getElementById('threshold');
     if (!stage) return;
@@ -205,6 +221,10 @@
     stage.classList.add('is-open', 'th-walking');
     await wait(1900);
     if (opts.until) await opts.until;      // the next Universe is computed while the stage plays
+    // One shot from here into the Universe: once its first screen is drawn, the scene box opens out of the
+    // doorway (skin-adapter fromDoor), and the stage is hidden behind it.
+    const shown = await drawn(universe);
+    if (shown && window.TVSkins && TVSkins.fromDoor) await TVSkins.fromDoor(doorway(), universe, () => { stage.hidden = true; });
     stage.hidden = true;
     stage.classList.remove('th-walking');
   }

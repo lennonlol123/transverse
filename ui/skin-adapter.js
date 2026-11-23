@@ -196,41 +196,70 @@
   // never rebuilt), then the panels return. ~2.1 s; a click or a key ends it; off under reduced motion. Input
   // stays inert until the panels are back, so the step starts only when the player can act.
   let revealing = false;
+  const revealKey = universe => `tv-reveal-v1:${(window.TVLocal && window.TVLocal.runId && window.TVLocal.runId()) || 'local'}:${universe}`;
+  const seenReveal = universe => { try { return !!localStorage.getItem(revealKey(universe)); } catch (_) { return false; } };
+  const markReveal = universe => { try { localStorage.setItem(revealKey(universe), '1'); } catch (_) {} };
+  // Fallback when a Universe is entered without the door (a saved game continued): on its first Encounter.
   function reveal() {
-    if (revealing || context.episode !== 1 || context.encounter !== 1) return;
-    const host = document.getElementById('idol'), scene = document.getElementById('viewport');
-    if (!host || host.hidden || host.classList.contains('training-post') || !scene) return;
-    const run = (window.TVLocal && window.TVLocal.runId && window.TVLocal.runId()) || 'local';
-    const key = `tv-reveal-v1:${run}:${context.universe}`;
-    try { if (localStorage.getItem(key)) return; localStorage.setItem(key, '1'); } catch (_) {}
-    if (REDUCED()) return;
-    const r = scene.getBoundingClientRect();
-    if (!r.width || !r.height) return;
+    if (revealing || context.episode !== 1 || context.encounter !== 1 || seenReveal(context.universe)) return;
+    const host = document.getElementById('idol');
+    if (!host || host.hidden || host.classList.contains('training-post')) return;
+    markReveal(context.universe);
+    if (!REDUCED()) play({});
+  }
+  // The continuous shot from the threshold: the scene box, cut to the doorway's shape and laid exactly over the
+  // doorway, opens to the full letterboxed width while the stage goes dark; then the opponent (if the first
+  // screen has one), the camera pulls back into the scene box, the panels return. `door` = the doorway's screen
+  // rectangle; `opened()` is called once the stage is covered (the caller hides it there).
+  function play({door = null, opened = () => {}}) {
+    const scene = document.getElementById('viewport');
+    const r = scene && scene.getBoundingClientRect();
+    if (!r || !r.width || !r.height) { opened(); return Promise.resolve(); }
     const W = innerWidth, H = innerHeight, k = Math.min(W / r.width, H / r.height);   // contain: same composition at every size
+    const sw = r.width * k, sh = r.height * k, sl = (W - sw) / 2, st = (H - sh) / 2;
     const body = document.body, input = document.getElementById('inputArea');
+    const opponent = !!document.querySelector('#idol:not([hidden]):not(.training-post) img.tv-monster');
     revealing = true;
     body.style.setProperty('--rv-tx', (W / 2 - (r.left + r.width / 2)) + 'px');
     body.style.setProperty('--rv-ty', (H / 2 - (r.top + r.height / 2)) + 'px');
     body.style.setProperty('--rv-s', String(k));
+    if (door) {
+      const c = v => Math.max(0, v / k).toFixed(2) + 'px';
+      body.style.setProperty('--rv-clip', `inset(${c(door.top - st)} ${c(sl + sw - door.right)} ${c(st + sh - door.bottom)} ${c(door.left - sl)})`);
+    }
     body.classList.add('tv-reveal');
+    if (door) body.classList.add('tv-rv-door', 'tv-rv-1');
     if (input) input.inert = true;
     const timers = [];
     const at = (ms, fn) => timers.push(setTimeout(fn, ms));
+    let done;
+    const finished = new Promise(r => { done = r; });
+    let wasOpened = false;
+    const open = () => { if (!wasOpened) { wasOpened = true; opened(); } };
     const end = () => {
-      timers.forEach(clearTimeout);
+      timers.forEach(clearTimeout); open();
       removeEventListener('pointerdown', end, true); removeEventListener('keydown', end, true);
-      body.classList.remove('tv-reveal', 'tv-rv-1', 'tv-rv-2', 'tv-rv-3', 'tv-rv-4');
+      body.classList.remove('tv-reveal', 'tv-rv-door', 'tv-rv-open', 'tv-rv-1', 'tv-rv-2', 'tv-rv-3', 'tv-rv-4');
       if (input) input.inert = false;
-      revealing = false;
+      revealing = false; done();
     };
-    requestAnimationFrame(() => {
-      body.classList.add('tv-rv-1');                       // 0–450 ms: the world, full window, no opponent
-      at(450, () => body.classList.add('tv-rv-2'));        // 450–850: the opponent appears where it will stand
-      at(850, () => body.classList.add('tv-rv-3'));        // 850–1550: the camera pulls back into the scene box
-      at(1550, () => body.classList.add('tv-rv-4'));       // 1550–2100: panels return, then control
-      at(2150, end);
-    });
+    const lead = door ? 850 : 450;                                     // door: 0–850 ms the doorway opens to the world
+    const meet = opponent ? lead + 400 : lead;                         // then 400 ms for the opponent to appear
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      if (door) body.classList.add('tv-rv-open'); else body.classList.add('tv-rv-1');
+      at(lead, () => { open(); body.classList.add('tv-rv-2'); });
+      at(meet, () => body.classList.add('tv-rv-3'));                 // 700 ms: the camera pulls back into the scene box
+      at(meet + 700, () => body.classList.add('tv-rv-4'));           // 550 ms: panels return, then control
+      at(meet + 1300, end);
+    }));
     addEventListener('pointerdown', end, true); addEventListener('keydown', end, true);
+    return finished;
+  }
+  // Called by the threshold when the door has opened and the next Universe is ready on screen.
+  function fromDoor(door, universe, opened) {
+    markReveal(universe);
+    if (REDUCED() || revealing) { opened(); return Promise.resolve(); }
+    return play({door, opened});
   }
   function motion() {
     if (REDUCED()) return;
@@ -335,7 +364,7 @@
     if (!queued) { queued = true; queueMicrotask(() => { queued = false; decorate(); }); }
   }).observe(document.body, {childList:true, subtree:true, characterData:true});
   renameNode(document.body);
-  window.TVSkins = Object.freeze({setContext, observeHeader, decorate, interface:INTERFACE,
+  window.TVSkins = Object.freeze({setContext, observeHeader, decorate, interface:INTERFACE, fromDoor,
     applyCurrent:decorate, metadata:() => ({...context, interface:INTERFACE})});
   decorate();
 })();

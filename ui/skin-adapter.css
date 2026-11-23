@@ -219,3 +219,10 @@ body.tv-reveal.tv-rv-4 .journal { opacity:1; transition:opacity .4s var(--tv-eas
 body.tv-reveal::before { content:""; position:fixed; inset:0; z-index:899; background:#0E0E0D; opacity:0; pointer-events:none; }
 body.tv-reveal.tv-rv-1::before { opacity:1; transition:opacity .3s var(--tv-ease); }
 body.tv-reveal.tv-rv-3::before { opacity:0; transition:opacity .7s var(--tv-ease); }
+/* From the door: the scene starts cut to the doorway (no transition), over the still-visible stage. */
+body.tv-reveal.tv-rv-door .tv-scene { opacity:1; clip-path:var(--rv-clip); transition:none; }
+body.tv-reveal.tv-rv-door.tv-rv-open .tv-scene { clip-path:inset(0px 0px 0px 0px); transition:clip-path .85s var(--tv-ease); }
+body.tv-reveal.tv-rv-door.tv-rv-open.tv-rv-3 .tv-scene { clip-path:inset(0px 0px 0px 0px); transform:none; transition:transform .7s var(--tv-ease); }
+body.tv-reveal.tv-rv-door::before { opacity:0; }
+body.tv-reveal.tv-rv-door.tv-rv-open::before { opacity:1; transition:opacity .85s var(--tv-ease); }
+body.tv-reveal.tv-rv-door.tv-rv-open.tv-rv-3::before { opacity:0; transition:opacity .7s var(--tv-ease); }
