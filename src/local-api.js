@@ -110,8 +110,7 @@
   // Threshold stage: the story between Universes. Beats (each marks a change, none says how the game works):
   // the front curtain rises (first entrance only); the traveller walks on and stops; from Universe II on they
   // seal the letter with the colour of the Universe just left; they look at the letter; the gap of the door
-  // lights; the player opens the door and the traveller walks through. Patches on the cape and the doors
-  // standing upstage are the Universes already crossed. After Universe V: the finale.
+  // lights; the player opens the door and the traveller walks through. The doors standing upstage are the Universes already crossed. After Universe V: the finale.
   const ROMAN = ['I', 'II', 'III', 'IV', 'V'];
   const HUE = ['#4F8A5B', '#D2442A', '#3D6496', '#B8902F', '#2E86C8'];
   const SVGNS = 'http://www.w3.org/2000/svg';
@@ -136,16 +135,9 @@
     return g;
   }
   function journeyMarks(crossed, fresh) {
-    const past = document.getElementById('thPast'), patches = document.getElementById('thPatches');
-    past.replaceChildren(); patches.replaceChildren();
+    const past = document.getElementById('thPast');
+    past.replaceChildren();
     for (let u = 1; u <= crossed; u++) smallDoor(past, 120 + (u - 1) * 96, 640, 46, 120, u, 'th-past-door');
-    const spots = [[570, 704], [548, 726], [586, 734], [538, 700], [560, 684]];
-    for (let u = 1; u <= crossed; u++) {
-      const [x, y] = spots[u - 1];
-      const g = el('g', {class: 'th-patch' + (fresh && u === crossed ? ' th-new' : '')}, patches);
-      el('circle', {cx: x, cy: y, r: 6.5, fill: 'none', stroke: '#E9DFC8', 'stroke-width': 1, 'stroke-dasharray': '1.6 1.6', opacity: '.7'}, g);
-      el('path', {d: `M${x} ${y - 5} L${x + 1.6} ${y - 1.6} L${x + 5} ${y} L${x + 1.6} ${y + 1.6} L${x} ${y + 5} L${x - 1.6} ${y + 1.6} L${x - 5} ${y} L${x - 1.6} ${y - 1.6} Z`, fill: HUE[u - 1]}, g);
-    }
   }
   async function stageIn(stage, first) {
     stage.classList.remove('is-open', 'th-ready', 'th-walkin', 'th-walking', 'th-look', 'th-sealed', 'th-curtain-up', 'th-lit');
