@@ -1,6 +1,7 @@
 /* Only opaque cosmetic coordinates and already-public labels enter this module.
- * Interface version: transverse-white-v3 (v2 = v1 + change-only motion, input held in place while computing;
- * v3 = v2 + fixed panel heights, centred opponent, darker secondary text #716E68, Space Grotesk for buttons and labels).
+ * Interface version: transverse-white-v4 (v2 = v1 + change-only motion, input held in place while computing;
+ * v3 = v2 + fixed panel heights, centred opponent, darker secondary text #716E68, Space Grotesk for buttons and labels;
+ * v4 = v3 + a letterboxed reveal on the first Encounter of each Universe, input inert until the panels return).
  * - Each Universe has one painting and one opponent figure. The same figure stands in
  *   every Encounter of that Universe, so appearance can never covary with a mechanism.
  * - Each card shows an abstract sign. Signs are bound to card NAMES (never to what a
@@ -33,7 +34,7 @@
   }
   // Trail mark: one per Encounter already played in this Episode. Neutral, the same everywhere.
   const MARK = 'data:image/svg+xml;base64,' + btoa('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40"><circle cx="20" cy="20" r="11" fill="#FFFFFF" fill-opacity=".92" stroke="#161616" stroke-width="3"/></svg>');
-  const INTERFACE = 'transverse-white-v3';
+  const INTERFACE = 'transverse-white-v4';
   let context = {universe:1, episode:1, encounter:0};
   const classes = [
     ['.bevel,.hud,.tray,.hud-side,.hud-turn', 'tv-panel'],
@@ -190,6 +191,47 @@
   const REDUCED = () => (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) || document.documentElement.classList.contains('tv-reduced');
   const seen = new WeakSet();
   let prevValues = null, prevHand = null, prevEncounter = '';
+  // Cinematic reveal, once per Universe, on its first Encounter (Episode 1 · Encounter 1): the painting fills
+  // the window's width (letterboxed, so the composition never changes), the opponent appears in its place, the camera pulls back into the scene box (the same element,
+  // never rebuilt), then the panels return. ~2.1 s; a click or a key ends it; off under reduced motion. Input
+  // stays inert until the panels are back, so the step starts only when the player can act.
+  let revealing = false;
+  function reveal() {
+    if (revealing || context.episode !== 1 || context.encounter !== 1) return;
+    const host = document.getElementById('idol'), scene = document.getElementById('viewport');
+    if (!host || host.hidden || host.classList.contains('training-post') || !scene) return;
+    const run = (window.TVLocal && window.TVLocal.runId && window.TVLocal.runId()) || 'local';
+    const key = `tv-reveal-v1:${run}:${context.universe}`;
+    try { if (localStorage.getItem(key)) return; localStorage.setItem(key, '1'); } catch (_) {}
+    if (REDUCED()) return;
+    const r = scene.getBoundingClientRect();
+    if (!r.width || !r.height) return;
+    const W = innerWidth, H = innerHeight, k = Math.min(W / r.width, H / r.height);   // contain: same composition at every size
+    const body = document.body, input = document.getElementById('inputArea');
+    revealing = true;
+    body.style.setProperty('--rv-tx', (W / 2 - (r.left + r.width / 2)) + 'px');
+    body.style.setProperty('--rv-ty', (H / 2 - (r.top + r.height / 2)) + 'px');
+    body.style.setProperty('--rv-s', String(k));
+    body.classList.add('tv-reveal');
+    if (input) input.inert = true;
+    const timers = [];
+    const at = (ms, fn) => timers.push(setTimeout(fn, ms));
+    const end = () => {
+      timers.forEach(clearTimeout);
+      removeEventListener('pointerdown', end, true); removeEventListener('keydown', end, true);
+      body.classList.remove('tv-reveal', 'tv-rv-1', 'tv-rv-2', 'tv-rv-3', 'tv-rv-4');
+      if (input) input.inert = false;
+      revealing = false;
+    };
+    requestAnimationFrame(() => {
+      body.classList.add('tv-rv-1');                       // 0–450 ms: the world, full window, no opponent
+      at(450, () => body.classList.add('tv-rv-2'));        // 450–850: the opponent appears where it will stand
+      at(850, () => body.classList.add('tv-rv-3'));        // 850–1550: the camera pulls back into the scene box
+      at(1550, () => body.classList.add('tv-rv-4'));       // 1550–2100: panels return, then control
+      at(2150, end);
+    });
+    addEventListener('pointerdown', end, true); addEventListener('keydown', end, true);
+  }
   function motion() {
     if (REDUCED()) return;
     const hud = document.getElementById('hud');
@@ -221,6 +263,7 @@
         idol.addEventListener('animationend', () => idol.classList.remove('tv-enter'), {once:true});
       }
       if (fresh) prevHand = null;
+      if (fresh) reveal();
       prevEncounter = key;
     }
     const cards = [...document.querySelectorAll('#choices .hand-card')];

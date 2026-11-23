@@ -201,3 +201,21 @@ body[data-universe="2"] .tv-monster { filter:brightness(.9) contrast(1.02); }
 body[data-universe="3"] .tv-monster { filter:sepia(.12) saturate(.88) brightness(.97); mix-blend-mode:multiply; }
 body[data-universe="4"] .tv-monster { filter:saturate(.92) brightness(.97) sepia(.06); }
 body[data-universe="5"] .tv-monster { filter:sepia(.14) saturate(.86) brightness(.9) contrast(.98); }
+
+/* Cinematic reveal (first Encounter of each Universe; see reveal() in skin-adapter.js). The scene box is
+   scaled up to cover the window and eased back into place; nothing is rebuilt. */
+body.tv-reveal { overflow:hidden; }
+body.tv-reveal .tv-scene { position:relative; z-index:900; transform:translate(var(--rv-tx),var(--rv-ty)) scale(var(--rv-s)); opacity:0; transition:none; }
+body.tv-reveal.tv-rv-1 .tv-scene { opacity:1; transition:opacity .45s var(--tv-ease); }
+body.tv-reveal.tv-rv-3 .tv-scene { transform:none; transition:transform .7s var(--tv-ease), opacity .45s var(--tv-ease); }
+body.tv-reveal .tv-monster { opacity:0; transform:scale(.97); animation:none!important; }
+body.tv-reveal.tv-rv-2 .tv-monster { opacity:1; transform:none; transition:opacity .4s var(--tv-ease), transform .4s var(--tv-ease); }
+body.tv-reveal .tv-caption, body.tv-reveal .tv-trail { opacity:0; }
+body.tv-reveal.tv-rv-4 .tv-caption, body.tv-reveal.tv-rv-4 .tv-trail { opacity:1; transition:opacity .4s var(--tv-ease); }
+body.tv-reveal :is(.topbar, .demo-navigation, .demo-details, .hud, .tray, .journal) { opacity:0; }
+body.tv-reveal.tv-rv-4 :is(.topbar, .demo-navigation, .hud) { opacity:1; transition:opacity .4s var(--tv-ease); }
+body.tv-reveal.tv-rv-4 .tray { opacity:1; transition:opacity .4s var(--tv-ease) .12s; }
+body.tv-reveal.tv-rv-4 .journal { opacity:1; transition:opacity .4s var(--tv-ease) .24s; }
+body.tv-reveal::before { content:""; position:fixed; inset:0; z-index:899; background:#0E0E0D; opacity:0; pointer-events:none; }
+body.tv-reveal.tv-rv-1::before { opacity:1; transition:opacity .3s var(--tv-ease); }
+body.tv-reveal.tv-rv-3::before { opacity:0; transition:opacity .7s var(--tv-ease); }
