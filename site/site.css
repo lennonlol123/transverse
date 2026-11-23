@@ -132,6 +132,18 @@ main{flex:1 1 auto}
 .world:hover img{transform:translateY(-3px);filter:saturate(1.08)}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 
+/* Five universes (How it works): where the browser supports scroll-driven animation, the paintings start pale and
+   grey and take their colour one after another as the list scrolls by, I to V. Otherwise they are simply in colour. */
+@supports (animation-timeline: view()){
+  .worlds{view-timeline-name:--worlds}
+  .world img{animation:w-colour linear both;animation-timeline:--worlds;animation-duration:auto}
+  .world:nth-child(1) img{animation-range:cover 8% cover 24%}
+  .world:nth-child(2) img{animation-range:cover 16% cover 32%}
+  .world:nth-child(3) img{animation-range:cover 24% cover 40%}
+  .world:nth-child(4) img{animation-range:cover 32% cover 48%}
+  .world:nth-child(5) img{animation-range:cover 40% cover 56%}
+}
+@keyframes w-colour{from{filter:grayscale(1) contrast(.8) brightness(1.12)}to{filter:none}}
 /* Language switch. */
 .bar-right{display:flex;align-items:center;gap:24px}
 html[lang="zh-CN"] .hero p,html[lang="zh-CN"] .split p,html[lang="zh-CN"] .door p,html[lang="zh-CN"] .step p,html[lang="zh-CN"] .how-hero p{line-height:1.75}
