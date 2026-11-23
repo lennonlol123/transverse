@@ -172,7 +172,50 @@
     past.replaceChildren();
     // The poster shows no past doors; the label in the corner counts the Universes.
   }
+  // The door leaf, hinged at the right jamb, swings OUTWARD (toward us). Seen from the stage's centre, a point of
+  // the leaf brought nearer by z is scaled by F / (F − z) about the vanishing point, so the free edge grows and,
+  // past a right angle, passes in front of the jamb. AJAR shows a crack of the next Universe's light.
+  const AJAR = 20 * Math.PI / 180, PEEK = 27 * Math.PI / 180, OPEN = 94 * Math.PI / 180;
+  let leafAngle = AJAR, leafRun = 0;
+  function setLeaf(theta) {
+    leafAngle = theta;
+    const face = document.getElementById('thLeaf'); if (!face) return;
+    const HX = 1224, W = 130, VX = 720, VY = 560, F = 1400;
+    const at = d => { const s = F / (F - d * Math.sin(theta)); return {x: VX + (HX - d * Math.cos(theta) - VX) * s, s}; };
+    const free = at(W), knob = at(W - 14), y = (v, k) => VY + (v - VY) * k;
+    face.setAttribute('points', `${free.x},${y(392, free.s)} ${HX},392 ${HX},830 ${free.x},${y(830, free.s)}`);
+    const shade = Math.min(1, Math.max(0, (theta - AJAR) / (OPEN - AJAR)));   // turning away from the light
+    face.setAttribute('fill', `rgb(${214 - 30 * shade},${210 - 30 * shade},${203 - 30 * shade})`);
+    const edge = document.getElementById('thLeafEdge');
+    edge.setAttribute('x1', free.x); edge.setAttribute('x2', free.x); edge.setAttribute('y1', y(392, free.s)); edge.setAttribute('y2', y(830, free.s));
+    const k = document.getElementById('thKnob');
+    k.setAttribute('cx', knob.x); k.setAttribute('cy', y(618, knob.s)); k.setAttribute('opacity', theta > 80 * Math.PI / 180 ? 0 : 1);
+  }
+  function ease(t) {                                   // cubic-bezier(.45,0,.25,1), the site's one easing
+    let u = t;
+    for (let i = 0; i < 8; i++) {
+      const x = 3 * (1 - u) ** 2 * u * .45 + 3 * (1 - u) * u * u * .25 + u ** 3 - t;
+      const dx = 3 * (1 - u) ** 2 * .45 + 6 * (1 - u) * u * (.25 - .45) + 3 * u * u * (1 - .25);
+      if (Math.abs(x) < 1e-5 || !dx) break; u = Math.min(1, Math.max(0, u - x / dx));
+    }
+    return 3 * (1 - u) * u * u + u ** 3;
+  }
+  function swingLeaf(to, ms) {
+    const from = leafAngle, run = ++leafRun;
+    if (REDUCE() || !ms) { setLeaf(to); return Promise.resolve(); }
+    return new Promise(resolve => {
+      const t0 = performance.now();
+      const step = now => {
+        if (run !== leafRun) return resolve();
+        const t = Math.min(1, (now - t0) / ms);
+        setLeaf(from + (to - from) * ease(t));
+        if (t < 1) requestAnimationFrame(step); else resolve();
+      };
+      requestAnimationFrame(step);
+    });
+  }
   async function stageIn(stage, first) {
+    leafRun++; setLeaf(AJAR);
     stage.classList.remove('is-open', 'th-ready', 'th-walkin', 'th-walking', 'th-look', 'th-sealed', 'th-curtain-up', 'th-lit');
     stage.classList.toggle('th-curtain-down', first);
     stage.classList.add('th-pre');
@@ -224,8 +267,12 @@
     stage.classList.add('th-look'); await wait(800);
     stage.classList.add('th-ready');
     button.disabled = false; button.focus();
+    button.onmouseenter = () => { if (!button.disabled) swingLeaf(PEEK, 380); };
+    button.onmouseleave = () => { if (!button.disabled) swingLeaf(AJAR, 380); };
     await new Promise(resolve => { button.onclick = resolve; });
     button.disabled = true;
+    button.onmouseenter = button.onmouseleave = null;
+    swingLeaf(OPEN, 1000);
     stage.classList.add('is-open', 'th-walking');
     await wait(1250);
     if (opts.until) await opts.until;      // the next Universe is computed while the stage plays

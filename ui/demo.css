@@ -51,16 +51,14 @@
 #thresholdOpen:hover{background:#FFF}
 #thresholdOpen:focus-visible{outline:2px solid #F2EFE8;outline-offset:3px}
 #thresholdOpen:disabled{opacity:.5;cursor:default}
-.th-leaf{transform-box:fill-box;transform-origin:right center;transform:scaleX(.9) skewY(1.2deg);transition:transform 1s var(--tv-ease)}
 .th-spill{opacity:.8;transition:opacity 1.4s var(--tv-ease)}
-.threshold.is-open .th-leaf{transform:scaleX(.13) skewY(9deg)}
 .threshold.is-open .th-spill{opacity:1}
 .threshold[data-next="1"] .th-spill-a{stop-color:#7CC3B6;stop-opacity:.7}.threshold[data-next="1"] .th-spill-b{stop-color:#7CC3B6;stop-opacity:0}
 .threshold[data-next="2"] .th-spill-a{stop-color:#E6E6E2;stop-opacity:.7}.threshold[data-next="2"] .th-spill-b{stop-color:#E6E6E2;stop-opacity:0}
 .threshold[data-next="3"] .th-spill-a{stop-color:#EFE3C2;stop-opacity:.75}.threshold[data-next="3"] .th-spill-b{stop-color:#EFE3C2;stop-opacity:0}
 .threshold[data-next="4"] .th-spill-a{stop-color:#F0B892;stop-opacity:.7}.threshold[data-next="4"] .th-spill-b{stop-color:#F0B892;stop-opacity:0}
 .threshold[data-next="5"] .th-spill-a{stop-color:#C9A974;stop-opacity:.7}.threshold[data-next="5"] .th-spill-b{stop-color:#C9A974;stop-opacity:0}
-@media(prefers-reduced-motion:reduce){.th-leaf,.th-spill{transition:none}}
+@media(prefers-reduced-motion:reduce){.th-spill{transition:none}}
 @media(max-width:650px){.th-ui{padding:18px 16px 28px}}
 .threshold[data-next="1"] .th-glow{fill:#A8E6D8}.threshold[data-next="2"] .th-glow{fill:#F2F2EE}.threshold[data-next="3"] .th-glow{fill:#F6EBCB}
 .threshold[data-next="4"] .th-glow{fill:#FFD0AE}.threshold[data-next="5"] .th-glow{fill:#E8CB95}
@@ -149,9 +147,16 @@ html.tv-reduced *,html.tv-reduced *::before,html.tv-reduced *::after{animation:n
 .th-sub{font:500 13px/1 "Space Grotesk","Helvetica Neue",sans-serif;letter-spacing:.26em;color:#6E6A63}
 .th-bottom{justify-content:space-between;align-items:center}
 .th-where{font:500 14px/1 "Space Grotesk","Helvetica Neue",sans-serif;letter-spacing:.2em;color:#4A4640}
-#thresholdOpen{font:500 14px/1 "Space Grotesk","Helvetica Neue",sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#3E3A35;background:none;border:0;padding:10px 0;cursor:pointer;border-bottom:1px solid transparent;transition:border-color .25s var(--tv-ease)}
-#thresholdOpen:hover,#thresholdOpen:focus-visible{background:none;border-bottom-color:#3E3A35;outline:none}
-#thresholdOpen:disabled{opacity:.35}
+/* The one thing to press: the door's own dark, with an arrow; hovering it eases the door open a crack. */
+#thresholdOpen{display:inline-flex;align-items:center;gap:14px;font:600 14px/1 "Space Grotesk","Helvetica Neue","PingFang SC","Noto Sans SC",sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#F4F1EA;background:#2E2B28;border:0;border-radius:2px;padding:16px 22px 16px 26px;cursor:pointer;box-shadow:0 10px 24px -18px rgba(30,26,22,.6);transition:background .25s var(--tv-ease)}
+#thresholdOpen::after{content:"\2192";letter-spacing:0;font-size:17px;transition:transform .25s var(--tv-ease)}
+#thresholdOpen:hover,#thresholdOpen:focus-visible{background:#46423C;outline:none}
+#thresholdOpen:hover::after,#thresholdOpen:focus-visible::after{transform:translateX(4px)}
+#thresholdOpen:focus-visible{box-shadow:0 0 0 2px #ECE9E3,0 0 0 4px #2E2B28}
+#thresholdOpen:disabled{opacity:.35;cursor:default}
+#thresholdOpen:disabled::after{transform:none}
+/* Top-right corner, above the door: a block at the bottom would cover the door on most screen shapes. */
+@media(min-width:651px){#thresholdOpen{position:absolute;top:28px;right:32px}}
 .th-end{color:#F2EFE8}
 
 /* Chinese and developer controls. */

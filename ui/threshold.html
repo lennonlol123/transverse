@@ -34,12 +34,14 @@
         <image id="thNextArt" href="" x="960" y="392" width="400" height="438" preserveAspectRatio="xMidYMid slice"/>
       </g>
       <rect class="th-glow" x="1092" y="394" width="12" height="434" filter="url(#thSoft)" opacity=".9"/>
-      <g class="th-leaf">
-        <rect x="1094" y="392" width="130" height="438" fill="#D6D2CB"/>
-        <rect x="1094" y="392" width="3" height="438" fill="#C4BFB6"/>
-        <circle cx="1108" cy="618" r="4.5" fill="#5E5A55"/>
-      </g>
       <path d="M1090 830 V388 H1228 V830" fill="none" stroke="#5E5A55" stroke-width="8"/>
+      <!-- The leaf opens outward, toward us, on hinges at the right jamb: in front of the frame, and its free edge
+           grows as it comes nearer (local-api.js sets the points; a fixed perspective from the stage's centre). -->
+      <g class="th-leaf">
+        <polygon id="thLeaf" points="1114,386 1224,392 1224,830 1114,839" fill="#D6D2CB"/>
+        <line id="thLeafEdge" x1="1114" y1="386" x2="1114" y2="839" stroke="#BDB7AD" stroke-width="3"/>
+        <circle id="thKnob" cx="1128" cy="620" r="4.5" fill="#5E5A55"/>
+      </g>
     </g>
 
     <!-- Finale: the five doors of the journey side by side, behind the shadow and the traveller. Filled when all five Universes are crossed. -->
