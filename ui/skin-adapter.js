@@ -12,7 +12,8 @@
  * v9 = v8 + the next opponent waits until the note is filed and enters once (no second entrance after the
  *      first-Encounter reveal); an overflowing prompt on the sheet opens at its question; filing leg 1 covers
  *      the engine's usual reply, so the card does not stall; the opponent is set off from the painting: own
- *      colours with a thin edge and soft halo, the painting softened and darkened at the edges behind it).
+ *      colours with a thin edge and soft halo, the painting softened and darkened at the edges behind it;
+ *      after the letter of Universes I–IV the scene dims ("Universe N · End") and the stage follows by itself).
  * - Each Universe has one painting and one opponent figure. The same figure stands in
  *   every Encounter of that Universe, so appearance can never covary with a mechanism.
  * - Each card shows an abstract sign. Signs are bound to card NAMES (never to what a
@@ -287,6 +288,7 @@
   }
   // Called by the threshold when the door has opened and the next Universe is ready on screen.
   function fromDoor(door, universe, opened) {
+    document.body.classList.remove('tv-closing');
     markReveal(universe);
     if (REDUCED() || revealing) { opened(); return Promise.resolve(); }
     return play({door, opened});
@@ -617,6 +619,7 @@
   function setContext(value) {
     if (!value || !Number.isInteger(value.universe) || value.universe < 1 || value.universe > 5) return;
     const {universe, episode, encounter, part} = value;
+    if (universe !== context.universe) document.body.classList.remove('tv-closing');
     context = {...context, universe, ...(episode ? {episode} : {}), ...(encounter != null ? {encounter} : {}), ...(part ? {part} : {})};
     decorate();
   }
@@ -637,7 +640,20 @@
     if (!queued) { queued = true; queueMicrotask(() => { queued = false; decorate(); }); }
   }).observe(document.body, {childList:true, subtree:true, characterData:true});
   renameNode(document.body);
-  window.TVSkins = Object.freeze({setContext, observeHeader, decorate, interface:INTERFACE, fromDoor,
+  // For the page: resolves once no note is filing (at most 4 s).
+  function settled() {
+    const t0 = performance.now();
+    return new Promise(resolve => { const tick = () => (!filing && !holding) || performance.now() - t0 > 4000 ? resolve() : setTimeout(tick, 50); tick(); });
+  }
+  // The close of a Universe after its letter: the scene dims, as if night fell; the caption says it has ended.
+  function closeUniverse(universe) {
+    const caption = document.querySelector('.tv-caption');
+    if (caption) caption.textContent = `Universe ${universe} · End`;
+    if (REDUCED()) return new Promise(r => setTimeout(r, 300));
+    document.body.classList.add('tv-closing');
+    return new Promise(r => setTimeout(r, 1700));
+  }
+  window.TVSkins = Object.freeze({setContext, observeHeader, decorate, interface:INTERFACE, fromDoor, settled, closeUniverse,
     applyCurrent:decorate, metadata:() => ({...context, interface:INTERFACE})});
   decorate();
 })();

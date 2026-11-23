@@ -204,6 +204,8 @@ body[data-universe][data-phase="act"] .tv-scene:has(#idol:not([hidden]):not(.tra
 /* Universe II is dark on fog: the fog behind the figure lifts instead of darkening. */
 body[data-universe="2"] .tv-scene::before { background-image:radial-gradient(ellipse 30% 55% at 50% 52%, rgba(232,232,226,.28) 0%, rgba(232,232,226,0) 70%), radial-gradient(ellipse 46% 62% at 50% 58%, rgba(0,0,0,0) 45%, rgba(0,0,0,.3) 100%), var(--tv-scene-art); }
 @media (prefers-reduced-motion:reduce) { body[data-universe] .tv-scene::before { transition:none; } }
+/* The close of a Universe after its letter: the scene dims slowly, as if night fell. */
+body[data-universe].tv-closing .tv-scene { filter:brightness(.32) saturate(.55)!important; transition:filter 1.6s var(--tv-ease)!important; }
 
 /* Cinematic reveal (first Encounter of each Universe; see reveal() in skin-adapter.js). The scene box is
    scaled up to cover the window and eased back into place; nothing is rebuilt. */

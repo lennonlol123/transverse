@@ -261,6 +261,9 @@
       stage.classList.remove('th-fadein');
       opts.morph.classList.add('tv-morph-out'); setTimeout(() => opts.morph.remove(), 600);
       document.getElementById('demoWelcome').classList.remove('tv-leaving');
+    } else if (opts.fade) {
+      stage.classList.add('th-fadein'); stage.hidden = false; void stage.getBoundingClientRect();
+      stage.classList.remove('th-fadein');
     }
     await stageIn(stage, universe === 1 && !opts.morph);
     if (crossed) { stage.classList.add('th-sealed'); await wait(500); }
@@ -311,6 +314,29 @@
     stage.hidden = true;
     stage.classList.remove('th-finale-mode', 'th-curtain-down');
   }
+  // On to the next Universe: the threshold plays while the next Universe is computed behind it.
+  let crossing = false;
+  async function nextUniverse(opts = {}) {
+    if (busy || crossing || !snapshot?.complete || game.universe >= 5) return;
+    crossing = true;
+    try {
+      const candidate = {...game, universe:game.universe+1, actions:[], baseline:snapshot.files,
+        history:[...game.history,{universe:game.universe,actions:game.actions}]};
+      let ready; const until = new Promise(r => { ready = r; });
+      threshold(candidate.universe, {until, fade: !!opts.fade});
+      await launch(false, candidate); ready();
+    } finally { crossing = false; }
+  }
+  // After the letter of Universes I–IV there is no screen to wait on: once the letter has filed into the Record,
+  // the Universe closes (its scene dims) and the stage between Universes fades in. The door is the pause.
+  // (A saved game reopened after its letter still offers the run bar's Continue button.)
+  async function autoCross() {
+    const universe = game.universe;
+    if (window.TVSkins && TVSkins.settled) await TVSkins.settled();
+    if (window.TVSkins && TVSkins.closeUniverse) await TVSkins.closeUniverse(universe);
+    if (!snapshot?.complete || game.universe !== universe || stopped) return;
+    nextUniverse({fade: true});
+  }
   window.TVStage = {threshold, finale};
   window.TVLocal = {
     runId: () => game?.runId || null,
@@ -334,6 +360,7 @@
         busy = true;
         try {
           await run({...game, actions:[...game.actions,String(body.value)]});
+          if (snapshot?.complete && game.universe < 5) setTimeout(autoCross, 0);   // the letter is written: on to the door
           return {ok:true};
         } finally { busy = false; }
       }
@@ -411,13 +438,6 @@
     };
     document.getElementById('demoContinue').onclick = () => launch();
     document.getElementById('demoBackup').onclick = () => { try { exportSave(); } catch(e) { notice(e.message); } };
-    document.getElementById('demoNext').onclick = async () => {
-      if (busy || !snapshot?.complete || game.universe >= 5) return;
-      const candidate = {...game, universe:game.universe+1, actions:[], baseline:snapshot.files,
-        history:[...game.history,{universe:game.universe,actions:game.actions}]};
-      let ready; const until = new Promise(r => { ready = r; });
-      threshold(candidate.universe, {until});
-      await launch(false, candidate); ready();
-    };
+    document.getElementById('demoNext').onclick = () => nextUniverse();
   });
 })();
