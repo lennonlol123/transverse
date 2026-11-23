@@ -127,3 +127,5 @@ html[lang="zh-CN"] h1,html[lang="zh-CN"] h2,html[lang="zh-CN"] h3{font-weight:70
 .lang-toggle a{color:#8A8A8A;text-decoration:none;padding-bottom:4px}
 .lang-toggle a:hover{color:var(--ink)}
 .lang-corner{position:fixed;top:26px;right:32px;z-index:5}
+/* Pages cached from an earlier release still carry a bare .lang-switch link: keep it in the corner too. */
+.lang-switch{position:fixed;top:26px;right:32px;z-index:5;font-size:13px;font-weight:700;letter-spacing:.12em;color:#8A8A8A;text-decoration:none}

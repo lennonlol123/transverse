@@ -21,6 +21,13 @@ def main():
     import sys; sys.path.insert(0, str(ROOT / "tools"))
     import zh_pages
     zh_pages.build(ROOT / "site", DIST)       # Chinese outer pages: dist/zh/
+    # Cache-busting for the outer pages' stylesheet: a page and its stylesheet always come from one release.
+    css_hash = hashlib.sha256((DIST / "site.css").read_bytes()).hexdigest()[:10]
+    for page in [*DIST.glob("*.html"), *(DIST / "zh").glob("*.html")]:
+        text = page.read_text()
+        for href in ('href="site.css"', 'href="../site.css"'):
+            text = text.replace(href, href[:-1] + f'?v={css_hash}"')
+        page.write_text(text)
     files = {}
     for p in sorted((ROOT / "engine").rglob("*")):
         if p.suffix not in (".py", ".json") or "__pycache__" in p.parts:
