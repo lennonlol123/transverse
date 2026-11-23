@@ -110,7 +110,17 @@ main{flex:1 1 auto}
 .portal .btn{animation:tv-fade .9s var(--tv-ease) 1.9s both}
 .btn svg{transition:transform .25s var(--tv-ease)}
 .btn:hover svg,.btn:focus-visible svg{transform:translateX(4px)}
-.mv span{animation:tv-colour .45s var(--tv-ease) both}
+.mv span{animation:tv-colour .45s var(--tv-ease) backwards}
+/* Each piece of "Multiverse" holds its world: on hover the colour gives way to that world's painting inside the letters. */
+.mv span{background-size:cover;background-position:center;-webkit-background-clip:text;background-clip:text;transition:color .5s var(--tv-ease)}
+.mv1{background-image:url(assets/mv-u1.webp)}.mv2{background-image:url(assets/mv-u2.webp)}.mv3{background-image:url(assets/mv-u3.webp)}.mv4{background-image:url(assets/mv-u4.webp)}.mv5{background-image:url(assets/mv-u5.webp)}
+.mv span:hover{color:transparent}
+/* ENTER's door: on hover it swings open (hinge on the right, as in the game) onto the five worlds' colours. */
+.door-icon .d1{fill:#3E6B48}.door-icon .d2{fill:#2C4A6E}.door-icon .d3{fill:#E8361C}.door-icon .d4{fill:#B85676}.door-icon .d5{fill:#A8842F}
+.door-leaf{fill:currentColor;transform-box:fill-box;transform-origin:right center;transition:transform .45s var(--tv-ease)}
+.btn .door-knob{fill:#FFF}.btn.solid .door-knob{fill:var(--ink)}
+.btn:hover .door-leaf,.btn:focus-visible .door-leaf{transform:scaleX(.16)}
+.btn:hover svg.door-icon,.btn:focus-visible svg.door-icon{transform:none}
 .mv .mv1{animation-delay:.35s}.mv .mv2{animation-delay:.44s}.mv .mv3{animation-delay:.53s}.mv .mv4{animation-delay:.62s}.mv .mv5{animation-delay:.71s}
 .world img{transition:transform .35s var(--tv-ease),filter .35s var(--tv-ease)}
 .world:hover img{transform:translateY(-3px);filter:saturate(1.08)}
