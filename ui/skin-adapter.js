@@ -1,9 +1,12 @@
 /* Only opaque cosmetic coordinates and already-public labels enter this module.
- * Interface version: transverse-white-v6 (v2 = v1 + change-only motion, input held in place while computing;
+ * Interface version: transverse-white-v7 (v2 = v1 + change-only motion, input held in place while computing;
  * v3 = v2 + fixed panel heights, centred opponent, darker secondary text #716E68, Space Grotesk for buttons and labels;
  * v4 = v3 + a letterboxed reveal on the first Encounter of each Universe, input inert until the panels return;
  * v5 = v4 + between Encounters the prompt sits above the note field (same words), the opponent leaves, note field focused;
- * v6 = v5 + notes between Encounters are written on a record sheet that unfolds from the Record and files back).
+ * v6 = v5 + notes between Encounters are written on a record sheet that unfolds from the Record and files back;
+ * v7 = v6 + the end of an Encounter is staggered (opponent leaves 0–350 ms, sheet unfolds 200–700 ms, field focused
+ *      at ~560 ms), the sheet files as a folding frame whose words fade first, and the new Record entry appears
+ *      when the sheet arrives; lighter sheet shadow).
  * - Each Universe has one painting and one opponent figure. The same figure stands in
  *   every Encounter of that Universe, so appearance can never covary with a mechanism.
  * - Each card shows an abstract sign. Signs are bound to card NAMES (never to what a
@@ -36,7 +39,7 @@
   }
   // Trail mark: one per Encounter already played in this Episode. Neutral, the same everywhere.
   const MARK = 'data:image/svg+xml;base64,' + btoa('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40"><circle cx="20" cy="20" r="11" fill="#FFFFFF" fill-opacity=".92" stroke="#161616" stroke-width="3"/></svg>');
-  const INTERFACE = 'transverse-white-v6';
+  const INTERFACE = 'transverse-white-v7';
   let context = {universe:1, episode:1, encounter:0};
   const classes = [
     ['.bevel,.hud,.tray,.hud-side,.hud-turn', 'tv-panel'],
@@ -384,7 +387,7 @@
   // Record into the middle of the stage, and when it is submitted it folds into a thin card and slides back
   // into the Record. The working note during an Encounter stays the plain field it is. Same words, same
   // field, same submission; only where and how the field is shown changes.
-  let sheetFor = null, sheetToken = 0;
+  let sheetFor = null, sheetToken = 0, filing = null;
   function sheet(phase) {
     const tray = document.getElementById('inputArea'), journal = document.querySelector('.journal');
     const form = document.getElementById('noteForm');
@@ -394,8 +397,10 @@
     if (form.classList.contains('tv-hold') || !document.getElementById('waiting').hidden) return;
     const visible = phase === 'note' && !form.hidden;
     if (!visible) {
+      if (filing) return;                             // the sheet is still on its way into the Record
       if (document.body.dataset.sheet) delete document.body.dataset.sheet;
-      if (tray.classList.contains('tv-filed') || tray.getAnimations().length) { tray.classList.remove('tv-filed'); tray.getAnimations().forEach(x => x.cancel()); }
+      const running = tray.getAnimations({subtree: true});
+      if (tray.classList.contains('tv-filed') || running.length) { tray.classList.remove('tv-filed'); running.forEach(x => x.cancel()); }
       sheetFor = null; sheetToken++; return;
     }
     const prompt = (document.getElementById('context') || {}).textContent || '';
@@ -406,30 +411,56 @@
     sheetFor = prompt;
     const token = ++sheetToken;
     tray.classList.remove('tv-filed');
-    tray.getAnimations().forEach(x => x.cancel());
+    tray.getAnimations({subtree: true}).forEach(x => x.cancel());
     if (REDUCED() || !journal) return;
     requestAnimationFrame(() => {
       if (token !== sheetToken || !document.body.dataset.sheet || form.hidden || form.classList.contains('tv-hold')) return;
       const J = journal.getBoundingClientRect(), T = tray.getBoundingClientRect();
       if (!T.width || !T.height) return;
+      // Unfolds 200–700 ms after the Encounter ends, so the opponent's exit (0–350 ms) has its own moment.
       tray.animate([
         {transformOrigin: 'top left', opacity: .2, transform: `translate(${J.left - T.left}px, ${J.top + 60 - T.top}px) scale(${Math.min(1, J.width / T.width)}, ${40 / T.height})`},
-        {transformOrigin: 'top left', opacity: 1, transform: 'none'}], {duration: 520, easing: 'cubic-bezier(.45,0,.25,1)'});
+        {transformOrigin: 'top left', opacity: 1, transform: 'none'}], {duration: 500, delay: 200, fill: 'backwards', easing: 'cubic-bezier(.45,0,.25,1)'});
     });
   }
   document.addEventListener('submit', event => {
     const tray = document.getElementById('inputArea'), journal = document.querySelector('.journal');
     if (event.target.id !== 'noteForm' || !document.body.dataset.sheet || !tray || !journal || REDUCED()) return;
     sheetToken++;                                   // a pending unfold must not play over the filing
-    tray.getAnimations().forEach(x => x.cancel());
-    const J = journal.getBoundingClientRect(), T = tray.getBoundingClientRect();
-    const filing = tray.animate([
+    tray.getAnimations({subtree: true}).forEach(x => x.cancel());
+    const T = tray.getBoundingClientRect();
+    // It lands where the new entry will appear: just below the last entry, inside the visible Record.
+    const record = document.getElementById('transcript'), last = record && record.lastElementChild;
+    const R = (record || journal).getBoundingClientRect(), L = last ? last.getBoundingClientRect() : null;
+    const landY = Math.max(R.top + 8, Math.min(R.bottom - 38, L && L.height ? L.bottom + 4 : R.top + 8));
+    // The words leave first (0–160 ms); then only the paper's frame folds and travels, so nothing is squashed.
+    const fade = [{opacity: 1}, {opacity: 0}], quick = {duration: 160, easing: 'ease-out', fill: 'forwards'};
+    for (const child of tray.children) child.animate(fade, quick);
+    try { tray.animate(fade, {...quick, pseudoElement: '::before'}); } catch (_) {}
+    holdRecord(true);
+    filing = tray.animate([
       {transformOrigin: 'top left', opacity: 1, transform: 'none'},
-      {transformOrigin: 'top left', opacity: .9, offset: .45, transform: `translate(0px, ${T.height * .45}px) scale(1, .08)`},
-      {transformOrigin: 'top left', opacity: 0, transform: `translate(${J.left + 16 - T.left}px, ${J.top + 64 - T.top}px) scale(${(J.width - 32) / T.width}, ${30 / T.height})`}],
-      {duration: 480, easing: 'cubic-bezier(.45,0,.25,1)', fill: 'forwards'});
-    filing.finished.then(() => tray.classList.add('tv-filed')).catch(() => {});
+      {transformOrigin: 'top left', opacity: .95, offset: .45, transform: `translate(0px, ${T.height * .45}px) scale(1, .08)`},
+      {transformOrigin: 'top left', opacity: .35, transform: `translate(${R.left + 16 - T.left}px, ${landY - T.top}px) scale(${(R.width - 32) / T.width}, ${30 / T.height})`}],
+      {duration: 480, delay: 100, easing: 'cubic-bezier(.45,0,.25,1)', fill: 'forwards'});
+    const done = () => { filing = null; tray.classList.add('tv-filed'); holdRecord(false); decorate(); };
+    filing.finished.then(done, done);
   }, true);
+  // While the sheet travels, Record entries that arrive wait; they appear as it lands, where it lands.
+  let holding = false, holdTimer = 0;
+  function holdRecord(on) {
+    const record = document.getElementById('transcript');
+    holding = on; clearTimeout(holdTimer);
+    if (on) { holdTimer = setTimeout(() => holdRecord(false), 1500); return; }
+    if (record) for (const item of record.querySelectorAll('.tv-held')) {
+      item.classList.remove('tv-held'); item.classList.add('tv-landed');
+      item.addEventListener('animationend', () => item.classList.remove('tv-landed'), {once: true});
+    }
+  }
+  new MutationObserver(list => {
+    if (!holding) return;
+    for (const m of list) for (const node of m.addedNodes) if (node.classList && node.classList.contains('transcript-item')) node.classList.add('tv-held');
+  }).observe(document.getElementById('transcript') || document.body, {childList: true});
   // The note field takes the focus when a note is asked for; Cmd/Ctrl + Enter submits it.
   let focusedFor = null;
   function focusNote(phase) {
@@ -438,7 +469,9 @@
     const prompt = (document.getElementById('context') || {}).textContent || '';
     if (focusedFor === prompt) return;
     focusedFor = prompt;
-    setTimeout(() => { if (!form.hidden && document.activeElement !== input) input.focus({preventScroll: true}); }, 60);
+    // On the record sheet, once the paper has mostly unfolded; elsewhere at once.
+    const wait = document.body.dataset.sheet && !REDUCED() ? 560 : 60;
+    setTimeout(() => { if (!form.hidden && document.activeElement !== input) input.focus({preventScroll: true}); }, wait);
   }
   document.addEventListener('keydown', event => {
     if (event.key === 'Enter' && (event.metaKey || event.ctrlKey) && event.target && event.target.id === 'noteInput') {
