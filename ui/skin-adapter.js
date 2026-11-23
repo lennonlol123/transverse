@@ -224,6 +224,8 @@
   // Fallback when a Universe is entered without the door (a saved game continued): on its first Encounter.
   function reveal() {
     if (revealing || context.episode !== 1 || context.encounter !== 1 || seenReveal(context.universe)) return;
+    const stage = document.getElementById('threshold');
+    if (stage && !stage.hidden) return;                 // the door will bring this Universe in (fromDoor)
     const host = document.getElementById('idol');
     if (!host || host.hidden || host.classList.contains('training-post')) return;
     markReveal(context.universe);
@@ -348,7 +350,8 @@
     let layer = viewport.querySelector(':scope > .tv-story');
     if (!layer) {
       layer = document.createElement('div'); layer.className = 'tv-story'; layer.setAttribute('aria-hidden', 'true');
-      for (const name of ['tv-light', 'tv-sky', 'tv-trail', 'tv-caption']) {
+      // No sun/moon marker (2026-11-24, user: no light-dot anchor in the paintings); the Episode light stays.
+      for (const name of ['tv-light', 'tv-trail', 'tv-caption']) {
         const part = document.createElement('div'); part.className = name; layer.append(part);
       }
       viewport.prepend(layer);
@@ -358,7 +361,7 @@
     const passed = camp ? 0 : Math.max(0, Math.min(7, (context.encounter || 1) - 1));
     const title = document.getElementById('empty');
     const idle = Boolean(title && !title.hidden);
-    const key = [context.universe, context.episode, context.encounter, camp, idle].join('|');
+    const key = [context.universe, context.episode, context.encounter, context.part, camp, idle].join('|');
     if (key === storyKey) return;
     storyKey = key;
     layer.hidden = idle;
@@ -367,8 +370,8 @@
     layer.querySelector('.tv-trail').replaceChildren(...Array.from({length: passed}, () => {
       const mark = document.createElement('img'); mark.src = MARK; mark.alt = ''; return mark;
     }));
-    layer.querySelector('.tv-caption').textContent = camp || !context.encounter
-      ? `Episode ${context.episode || 1}` : `Episode ${context.episode} · Encounter ${context.encounter}`;
+    layer.querySelector('.tv-caption').textContent = context.part === 'letter' ? 'Letter' : context.part === 'camp' ? 'Camp'
+      : camp || !context.encounter ? `Episode ${context.episode || 1}` : `Episode ${context.episode} · Encounter ${context.encounter}`;
   }
   // The end of an Encounter: the opponent leaves (a copy of it fades and sinks where it stood, since the GUI
   // hides the real one at once), the scene dims a little while notes are written, the text arrives.
@@ -613,15 +616,16 @@
   });
   function setContext(value) {
     if (!value || !Number.isInteger(value.universe) || value.universe < 1 || value.universe > 5) return;
-    const {universe, episode, encounter} = value;
-    context = {...context, universe, ...(episode ? {episode} : {}), ...(encounter != null ? {encounter} : {})};
+    const {universe, episode, encounter, part} = value;
+    context = {...context, universe, ...(episode ? {episode} : {}), ...(encounter != null ? {encounter} : {}), ...(part ? {part} : {})};
     decorate();
   }
   function observeHeader(text) {
-    const match = /^World (\d+), (?:Life (\d+)|Camp|Letter)\s*$/m.exec(text || '');
+    const match = /^World (\d+), (?:Life (\d+)|(Camp)|(Letter))\s*$/m.exec(text || '');
     if (match) {
       const universe = Number(match[1]);
-      if (universe >= 1 && universe <= 5) setContext({universe, episode:Number(match[2] || 1)});
+      const part = match[3] ? 'camp' : match[4] ? 'letter' : 'life';
+      if (universe >= 1 && universe <= 5) setContext({universe, episode:Number(match[2] || 1), part});
     }
   }
   let queued = false;
