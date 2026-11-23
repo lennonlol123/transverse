@@ -14,6 +14,7 @@
         <feColorMatrix type="matrix" values="0 0 0 0 .282  0 0 0 0 .263  0 0 0 0 .243  0 0 0 1 0"/><feGaussianBlur stdDeviation="2.6"/>
       </filter>
       <clipPath id="thDoorway"><rect x="1094" y="392" width="130" height="438"/></clipPath>
+      <radialGradient id="thWash" cx="1160" cy="610" r="980" gradientUnits="userSpaceOnUse"><stop offset="0" class="th-wash-a"/><stop offset=".55" class="th-wash-m"/><stop offset="1" class="th-wash-b"/></radialGradient>
     </defs>
 
     <!-- Wall and floor. -->
@@ -21,8 +22,10 @@
     <rect x="0" y="830" width="1440" height="70" fill="#D8D3CA"/>
     <path d="M0 830 H1440" stroke="#BDB7AD" stroke-width="1.5"/>
     <ellipse cx="560" cy="842" rx="300" ry="34" fill="url(#thPool)"/>
+    <!-- When the door opens, the next Universe's light washes over the wall and the floor. -->
+    <rect class="th-wash" x="0" y="0" width="1440" height="900" fill="url(#thWash)"/>
 
-    <!-- Kept for the script (crossed Universes); the poster shows none of them. -->
+    <!-- The Universes already crossed: small closed doors along the wall, framed in each world's colour. -->
     <g id="thPast" class="th-past"></g>
 
     <!-- The door: a dark outline; its only colour is the next Universe's light at the gap. -->

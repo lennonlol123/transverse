@@ -167,10 +167,17 @@
     el('path', {d: `M${x - 4} ${base} V${base - h - 4} H${x + w + 4} V${base}`, fill: 'none', stroke: '#5E5A55', 'stroke-width': 6}, g);
     return g;
   }
+  // The Universes already crossed stand along the wall as small closed doors, each framed in its world's colour
+  // with a little of its painting inside. The one just left appears as the letter is sealed (the only change).
   function journeyMarks(crossed, fresh) {
     const past = document.getElementById('thPast');
     past.replaceChildren();
-    // The poster shows no past doors; the label in the corner counts the Universes.
+    for (let u = 1; u <= crossed; u++) {
+      const g = smallDoor(past, 70 + (u - 1) * 92, 830, 60, 186, u, 'th-pdoor');
+      g.querySelector('path').setAttribute('stroke', HUE[u - 1]);
+      g.querySelector('path').setAttribute('stroke-width', '4');
+      if (fresh && u === crossed) g.classList.add('th-pdoor-new');
+    }
   }
   // The door leaf, hinged at the right jamb, swings OUTWARD (toward us). Seen from the stage's centre, a point of
   // the leaf brought nearer by z is scaled by F / (F − z) about the vanishing point, so the free edge grows and,

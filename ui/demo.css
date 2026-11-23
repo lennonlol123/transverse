@@ -140,7 +140,21 @@ html.tv-reduced *,html.tv-reduced *::before,html.tv-reduced *::after{animation:n
 
 /* Minimal stage poster: light wall, dark ink, labels in the four corners, the door opened by a word. */
 .threshold{background:#ECE9E3}
-.th-past{display:none}
+.th-past{display:inline}
+.th-pdoor .th-pdoor-art{opacity:.34}
+.th-pdoor .th-pdoor-glow{opacity:.55}
+.th-pdoor.th-pdoor-new{opacity:0;transition:opacity 1.1s var(--tv-ease)}
+.threshold.th-sealed .th-pdoor.th-pdoor-new{opacity:1}
+/* The next world's light on the wall and floor once the door is open. */
+.th-wash{opacity:0;transition:opacity 1.3s var(--tv-ease) .15s;pointer-events:none}
+.threshold.is-open .th-wash{opacity:1}
+.th-wash-b{stop-opacity:0}
+.threshold[data-next="1"] .th-wash-a{stop-color:#7CC3B6;stop-opacity:.55}.threshold[data-next="1"] .th-wash-m{stop-color:#7CC3B6;stop-opacity:.2}.threshold[data-next="1"] .th-wash-b{stop-color:#7CC3B6}
+.threshold[data-next="2"] .th-wash-a{stop-color:#8A8D92;stop-opacity:.45}.threshold[data-next="2"] .th-wash-m{stop-color:#8A8D92;stop-opacity:.18}.threshold[data-next="2"] .th-wash-b{stop-color:#8A8D92}
+.threshold[data-next="3"] .th-wash-a{stop-color:#E9C9A0;stop-opacity:.6}.threshold[data-next="3"] .th-wash-m{stop-color:#E9C9A0;stop-opacity:.22}.threshold[data-next="3"] .th-wash-b{stop-color:#E9C9A0}
+.threshold[data-next="4"] .th-wash-a{stop-color:#F2A99B;stop-opacity:.6}.threshold[data-next="4"] .th-wash-m{stop-color:#F2A99B;stop-opacity:.24}.threshold[data-next="4"] .th-wash-b{stop-color:#F2A99B}
+.threshold[data-next="5"] .th-wash-a{stop-color:#C9A974;stop-opacity:.6}.threshold[data-next="5"] .th-wash-m{stop-color:#C9A974;stop-opacity:.22}.threshold[data-next="5"] .th-wash-b{stop-color:#C9A974}
+@media(prefers-reduced-motion:reduce){.th-wash,.th-pdoor.th-pdoor-new{transition:none}}
 .th-ui{color:#4A4640}
 .th-top{flex-direction:column;align-items:flex-start;justify-content:flex-start;gap:10px}
 .th-mark{font:500 20px/1 "Space Grotesk","Helvetica Neue",sans-serif;letter-spacing:.32em;color:#3E3A35}
