@@ -12,10 +12,10 @@
 
   // data-i18n keys (static markup; may hold <strong>).
   const KEYS = {
-    how: '玩法说明',
-    before: '开始之前',
-    taking: '参与说明',
-    intro: 'TransVerse 是西湖大学 Encode Lab 的研究基准。你可以在这个页面里直接用浏览器玩。',
+    how: '旅途须知',
+    before: '启程之前',
+    taking: '写在出发前',
+    intro: 'TransVerse 是西湖大学 Encode Lab 的一项研究基准。在这里，你可以用浏览器亲自走一趟。出发之前，请读一读下面几件事。',
     kept: '<strong>保存哪些内容。</strong>你的操作、你写的笔记，以及开始和保存的时间。这个游玩版本只把它们保存在你的浏览器里，不会发送给我们；你可以导出一份，自行决定是否分享。',
     anon: '<strong>匿名。</strong>每次游玩会得到一个随机编号。我们不收集姓名、账号或联系方式。请不要在笔记里写姓名或其他能识别身份的信息。',
     vol: '<strong>自愿。</strong>你可以随时停止。重新开始会覆盖这里保存的游玩。',
@@ -25,18 +25,18 @@
     continue: '继续存档',
     'export-save': '导出存档',
     foot: '第一次开始时会下载游戏运行环境（约 20 MB）。建议使用台式机或笔记本电脑的浏览器。',
-    finish: '五个宇宙都已完成。请导出存档保留一份。',
+    finish: '五个宇宙都已走过。记得导出存档，留下这段旅程。',
     run: '编号',
     iface: '界面版本',
     local: '仅保存在本浏览器',
   };
   // Whole phrases (dynamic labels, notices, the GUI's own labels and status lamp).
   const PHRASES = {
-    'Start playing': '开始游戏', 'New playthrough': '重新开始', 'Continue': '继续', 'Show': '展开', 'Hide': '收起',
+    'Start playing': '启程', 'New playthrough': '重新开始', 'Continue': '继续', 'Show': '展开', 'Hide': '收起',
     'Motion: on': '动效：开', 'Motion: reduced': '动效：减弱',
-    'Open the door': '推开门', 'BETWEEN UNIVERSES': '宇宙之间',
-    'The journey ends here': '旅程到此结束', 'Thank you for travelling through the five universes.': '感谢你穿越这五个宇宙。',
-    'Export your record': '导出记录', 'Back to the start': '回到首页', 'Back to the game': '回到游戏',
+    'Open the door': '推门', 'BETWEEN UNIVERSES': '两界之间',
+    'The journey ends here': '旅程在此落幕', 'Thank you for travelling through the five universes.': '谢谢你，走过这五个宇宙。',
+    'Export your record': '带走这段旅程', 'Back to the start': '回到起点', 'Back to the game': '回到游戏',
     'Preparing your game… The first load downloads the browser runtime.': '正在准备游戏……第一次加载需要下载浏览器运行环境。',
     'Progress saved. You may close this tab or continue.': '进度已保存。你可以关闭页面，或继续游玩。',
     'Save downloaded to your device.': '存档已下载到你的设备。',
@@ -52,8 +52,8 @@
   const t = text => (lang === 'zh' && Object.prototype.hasOwnProperty.call(PHRASES, text)) ? PHRASES[text] : text;
   const fmt = {
     position: (run, u) => lang === 'zh' ? `${run} · 宇宙 ${u} / 5 · 共 4 世` : `${run} · Universe ${u} of 5 · Episodes 4`,
-    next: u => lang === 'zh' ? `前往宇宙 ${u}` : `Continue to Universe ${u}`,
-    where: u => lang === 'zh' ? `宇宙 0${u} / 05` : `UNIVERSE 0${u} / 05`,
+    next: u => lang === 'zh' ? `前往第${'一二三四五'[u - 1]}宇宙` : `Continue to Universe ${u}`,
+    where: u => lang === 'zh' ? `第${'一二三四五'[u - 1]}宇宙 · 共五` : `UNIVERSE 0${u} / 05`,
   };
   function apply(root = document) {
     if (lang !== 'zh') return;
