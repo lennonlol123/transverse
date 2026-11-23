@@ -121,7 +121,7 @@
   // seal the letter with the colour of the Universe just left; they look at the letter; the gap of the door
   // lights; the player opens the door and the traveller walks through. The doors standing upstage are the Universes already crossed. After Universe V: the finale.
   const ROMAN = ['I', 'II', 'III', 'IV', 'V'];
-  const HUE = ['#3E6B48', '#2C4A6E', '#E8361C', '#B85676', '#A8842F'];   // one colour per world, as on the site
+  const HUE = ['#3E6B48', '#2C4A6E', '#B85A36', '#B85676', '#A8842F'];   // one colour per world, as on the site
   const SVGNS = 'http://www.w3.org/2000/svg';
   // Reduced motion: the system setting, or the player's own switch under SHOW (kept in this browser).
   const MOTION_KEY = 'tv-motion';

@@ -43,8 +43,8 @@ main{flex:1 1 auto}
 .hero h1{max-width:1100px;font-size:clamp(40px,6.4vw,72px);line-height:1.04;letter-spacing:.02em}
 .hero p{max-width:560px;font-size:19px;color:var(--sub)}
 .row{display:flex;flex-wrap:wrap;gap:14px}
-.mv{white-space:nowrap}/* One colour per world (2026-11-24, palette C): the original muted set reordered to fit the worlds — forest green, night navy, seal vermilion, dusk rose (new), brass ochre. */
-.mv1{color:#3E6B48}.mv2{color:#2C4A6E}.mv3{color:#E8361C}.mv4{color:#B85676}.mv5{color:#A8842F}
+.mv{white-space:nowrap}/* One colour per world (2026-11-24, palette C): the original muted set reordered to fit the worlds — forest green, night navy, warm sienna (the pigment of this painting style), dusk rose, brass ochre. */
+.mv1{color:#3E6B48}.mv2{color:#2C4A6E}.mv3{color:#B85A36}.mv4{color:#B85676}.mv5{color:#A8842F}
 .split{padding:56px 0 72px;border-top:1px solid var(--rule);display:flex;flex-wrap:wrap;gap:48px}
 .split>div{min-width:0;display:flex;flex-direction:column;gap:16px}
 .split h2{font-size:40px;letter-spacing:.04em}
@@ -116,7 +116,7 @@ main{flex:1 1 auto}
 .mv1{background-image:url(assets/mv-u1.webp)}.mv2{background-image:url(assets/mv-u2.webp)}.mv3{background-image:url(assets/mv-u3.webp)}.mv4{background-image:url(assets/mv-u4.webp)}.mv5{background-image:url(assets/mv-u5.webp)}
 .mv span:hover{color:transparent}
 /* ENTER's door: on hover it swings open (hinge on the right, as in the game) onto the five worlds' colours. */
-.door-icon .d1{fill:#3E6B48}.door-icon .d2{fill:#2C4A6E}.door-icon .d3{fill:#E8361C}.door-icon .d4{fill:#B85676}.door-icon .d5{fill:#A8842F}
+.door-icon .d1{fill:#3E6B48}.door-icon .d2{fill:#2C4A6E}.door-icon .d3{fill:#B85A36}.door-icon .d4{fill:#B85676}.door-icon .d5{fill:#A8842F}
 .door-leaf{fill:currentColor;transform-box:fill-box;transform-origin:right center;transition:transform .45s var(--tv-ease)}
 .btn .door-knob{fill:#FFF}.btn.solid .door-knob{fill:var(--ink)}
 .btn:hover .door-leaf,.btn:focus-visible .door-leaf{transform:scaleX(.16)}

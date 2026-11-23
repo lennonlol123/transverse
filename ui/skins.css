@@ -18,7 +18,7 @@ body[data-universe] {
 /* Accents follow the five colours of "Multiverse" on the welcome page. */
 body[data-universe="1"] { --tv-accent: #3E6B48; }
 body[data-universe="2"] { --tv-accent: #2C4A6E; }
-body[data-universe="3"] { --tv-accent: #E8361C; }
+body[data-universe="3"] { --tv-accent: #B85A36; }
 body[data-universe="4"] { --tv-accent: #B85676; }
 body[data-universe="5"] { --tv-accent: #A8842F; }
 
