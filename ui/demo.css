@@ -27,12 +27,12 @@
 .demo-feet img{height:36px;width:auto}
 .demo-feet span{font-size:12px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:#6B6B6B}
 /* Run bar: the research interface's run-information strip, under the title bar. */
-.demo-navigation{flex:none;min-height:34px;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:0 0 0 2px;background:#FFFFFF;color:#8A877F;border-bottom:1px solid #F1EFEA;font:12px/1.4 ui-monospace,"SF Mono",Menlo,Consolas,monospace;letter-spacing:.06em;text-transform:uppercase;margin-top:-14px}
+.demo-navigation{flex:none;min-height:34px;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:0 0 0 2px;background:#FFFFFF;color:#716E68;border-bottom:1px solid #F1EFEA;font:12px/1.4 ui-monospace,"SF Mono",Menlo,Consolas,monospace;letter-spacing:.06em;text-transform:uppercase;margin-top:-14px}
 .demo-nav-actions{display:flex;gap:8px}
-.demo-navigation button{font:500 11px/1 "Helvetica Neue",Helvetica,Arial,sans-serif;letter-spacing:.2em;text-transform:uppercase;padding:7px 12px;background:#FFF;border:1px solid #DAD7D0;color:#161616;cursor:pointer;border-radius:2px}
+.demo-navigation button{font:500 11px/1 "Space Grotesk","Helvetica Neue",Helvetica,Arial,sans-serif;letter-spacing:.2em;text-transform:uppercase;padding:7px 12px;background:#FFF;border:1px solid #DAD7D0;color:#161616;cursor:pointer;border-radius:2px}
 .demo-navigation button:hover{border-color:#161616}
 #demoNext{background:#161616;color:#FFF;border-color:#161616}
-.demo-details{flex:none;display:flex;flex-wrap:wrap;gap:6px 28px;padding:2px 2px 8px;margin-top:-10px;font:12px/1.4 ui-monospace,"SF Mono",Menlo,Consolas,monospace;color:#8A877F}
+.demo-details{flex:none;display:flex;flex-wrap:wrap;gap:6px 28px;padding:2px 2px 8px;margin-top:-10px;font:12px/1.4 ui-monospace,"SF Mono",Menlo,Consolas,monospace;color:#716E68}
 .demo-details b{font-weight:500;color:#161616}
 .shell>.setup{display:none!important}
 @media(max-width:650px){.demo-head,.demo-feet{padding:16px}.demo-card{padding:40px 16px}.demo-navigation{flex-wrap:wrap;padding:6px 0}}
@@ -116,3 +116,14 @@
 .th-end-actions button,.th-end-actions a{font:700 13px/1 "Space Grotesk","Helvetica Neue",sans-serif;letter-spacing:.2em;text-transform:uppercase;padding:15px 26px;border:2px solid #F2EFE8;background:transparent;color:#F2EFE8;text-decoration:none;cursor:pointer}
 .th-end-actions button:first-child{background:#F2EFE8;color:#111}
 @media(prefers-reduced-motion:reduce){.threshold *{animation:none!important;transition:none!important}}
+
+/* 2026-11-24 review: with one still image a hop and a body tilt read as a paper cut-out moving.
+   Until walk-cycle frames exist: a short glide on with a fade, no hop, no tilt; the letter's light does the looking. */
+.threshold.th-pre .th-walker{transform:translateX(-200px);opacity:0}
+.threshold.th-pre .th-shadow{transform:translateX(-250px);opacity:0}
+.threshold.th-pre .th-floorshadow{transform:translateX(-200px);opacity:0}
+.threshold.th-pre.th-walkin .th-walker,.threshold.th-pre.th-walkin .th-floorshadow{transform:none;opacity:1;transition:transform 2.2s cubic-bezier(.2,.6,.3,1),opacity 1.2s ease}
+.threshold.th-pre.th-walkin .th-shadow{transform:none;opacity:.17;transition:transform 2.2s cubic-bezier(.2,.6,.3,1),opacity 1.2s ease}
+.threshold.th-pre.th-walkin .th-floorshadow{opacity:.2}
+.threshold.th-walking .th-bobber{animation:none}
+.threshold.th-look .th-tilt{animation:none}

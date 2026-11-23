@@ -55,7 +55,7 @@ main{flex:1 1 auto}
 .gate-head h1{font-size:clamp(44px,7vw,72px);letter-spacing:.04em}
 .gate-head p{color:var(--sub)}
 .doors{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:28px}
-.door{border:2px solid var(--ink);border-radius:20px;padding:clamp(28px,4vw,40px);display:flex;flex-direction:column;gap:22px}
+.door{border:1px solid var(--ink);border-radius:0;padding:clamp(28px,4vw,44px);display:flex;flex-direction:column;gap:22px}
 .door h2{font-size:48px;letter-spacing:.04em}
 .door p{color:var(--sub)}
 .door .go{display:flex;flex-direction:column;gap:12px;margin-top:auto;align-items:flex-start}
@@ -73,9 +73,9 @@ main{flex:1 1 auto}
 .section{padding:72px 0 24px;display:flex;flex-direction:column;gap:28px}
 .section h2{font-size:40px;letter-spacing:.04em}
 .section>p{max-width:640px;color:var(--sub)}
-.worlds{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:20px}
+.worlds{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,360px),1fr));gap:24px 20px}
 .world{display:flex;flex-direction:column;gap:12px;margin:0}
-.world img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:2px;background:#EEE}
+.world img{width:100%;aspect-ratio:3/1;object-fit:cover;object-position:center 60%;border-radius:0;background:#EEE}
 .world figcaption{display:flex;flex-direction:column;gap:2px}
 .world figcaption span:first-child{font-size:12px;font-weight:700;letter-spacing:.2em;color:var(--mute)}
 .world figcaption span:last-child{font-weight:500}
@@ -85,7 +85,7 @@ main{flex:1 1 auto}
 .step span{font:400 28px/1 var(--display);color:var(--mute)}
 .step h3{font-size:30px;letter-spacing:.03em}
 .step p{color:var(--sub)}
-.agents{margin:48px 0 80px;padding:40px;border:2px solid var(--ink);border-radius:20px;display:flex;flex-direction:column;gap:14px}
+.agents{margin:48px 0 80px;padding:40px;border:1px solid var(--ink);border-radius:0;display:flex;flex-direction:column;gap:14px}
 .agents h2{font-size:clamp(30px,4vw,44px);letter-spacing:.03em}
 .agents p{color:var(--sub);max-width:640px}
 
