@@ -174,3 +174,16 @@ body[data-universe] .tv-monster.tv-enter { animation:tv-arrive .7s cubic-bezier(
 body[data-universe] .tv-light { transition:background-color 1.2s ease; }
 body[data-universe] .transcript-item:last-child { animation:tv-rise .25s ease-out both; }
 @media (prefers-reduced-motion:reduce) { body[data-universe] .tv-changed, body[data-universe] .tv-drawn, body[data-universe] .tv-enter, body[data-universe] .transcript-item:last-child { animation:none!important; } }
+
+/* Fixed proportions (2026-11-24, user: sizes must be fixed; scene a little larger). The scene no
+ * longer takes "whatever is left": its height depends on the window only, so a status line that
+ * appears or a hand that empties never resizes the painting. The working note takes the rest. */
+body[data-universe] .stage { justify-content:flex-start; }
+body[data-universe] .tv-scene { flex:0 0 auto; height:clamp(240px, calc(100dvh - 546px), 600px); min-height:0; }
+body[data-universe] .hud { flex:0 0 auto; height:114px; min-height:114px; align-items:stretch; }
+body[data-universe] .hud-side, body[data-universe] .hud-turn { min-height:0; overflow:hidden; }
+body[data-universe] .tray { flex:1 1 auto; min-height:0; }
+body[data-universe] #choices, body[data-universe] #choices:empty { display:flex!important; flex:0 0 auto; height:152px; min-height:152px; }
+body[data-universe] #actionInput { flex:1 1 auto; min-height:0; }
+body[data-universe] .work-note { flex:1 1 auto; min-height:0; }
+body[data-universe] .work-note .note-input { flex:1 1 auto; min-height:44px; height:auto; resize:none; }
