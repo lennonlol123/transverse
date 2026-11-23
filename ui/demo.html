@@ -1,23 +1,30 @@
 <section id="demoWelcome" class="demo-welcome" aria-labelledby="demoTitle">
-  <header class="demo-head"><a class="demo-mark" href="../">TRANSVERSE</a><a class="demo-link" href="../how-it-works.html">How it works</a></header>
+  <header class="demo-head"><a class="demo-mark" href="../">TRANSVERSE</a><span class="demo-head-links"><a class="demo-link" id="demoLang" href="?lang=zh">中文</a><a class="demo-link" href="../how-it-works.html" data-i18n="how">How it works</a></span></header>
   <div class="demo-card">
-    <p class="demo-eyebrow">Before you start</p>
-    <h1 id="demoTitle">Taking part</h1>
-    <p>TransVerse is a research benchmark from Encode Lab, Westlake University. This page lets you play it in your browser.</p>
+    <p class="demo-eyebrow" data-i18n="before">Before you start</p>
+    <h1 id="demoTitle" data-i18n="taking">Taking part</h1>
+    <p data-i18n="intro">TransVerse is a research benchmark from Encode Lab, Westlake University. This page lets you play it in your browser.</p>
     <ul class="demo-facts">
-      <li><strong>What is kept.</strong> The moves you make, the notes you write, and when you started and saved. This play version keeps them only in this browser. Nothing is sent to us; you can export a copy and decide whether to share it.</li>
-      <li><strong>Anonymous.</strong> Your playthrough gets a random ID. No name, account or contact details are asked for. Please keep names and other identifying details out of your notes.</li>
-      <li><strong>Voluntary.</strong> You can stop at any time. A new playthrough replaces the one saved here.</li>
+      <li data-i18n="kept"><strong>What is kept.</strong> The moves you make, the notes you write, and when you started and saved. This play version keeps them only in this browser. Nothing is sent to us; you can export a copy and decide whether to share it.</li>
+      <li data-i18n="anon"><strong>Anonymous.</strong> Your playthrough gets a random ID. No name, account or contact details are asked for. Please keep names and other identifying details out of your notes.</li>
+      <li data-i18n="vol"><strong>Voluntary.</strong> You can stop at any time. A new playthrough replaces the one saved here.</li>
+      <li data-i18n="lang-note" class="demo-zh-only" hidden></li>
     </ul>
     <form id="demoConsent" class="demo-consent">
-      <label><input type="checkbox" id="demoAdult" required> I am 18 or older.</label>
-      <label><input type="checkbox" id="demoAgree" required> I have read the above and agree to take part.</label>
+      <label><input type="checkbox" id="demoAdult" required> <span data-i18n="adult">I am 18 or older.</span></label>
+      <label><input type="checkbox" id="demoAgree" required> <span data-i18n="agree">I have read the above and agree to take part.</span></label>
     </form>
-    <div class="demo-buttons"><button id="demoNew" type="button" disabled>Start playing</button><button id="demoContinue" type="button" hidden>Continue saved game</button><button id="demoBackup" type="button">Export saved game</button></div>
+    <div class="demo-buttons"><button id="demoNew" type="button" disabled>Start playing</button><button id="demoContinue" type="button" hidden data-i18n="continue">Continue saved game</button><button id="demoBackup" type="button" data-i18n="export-save">Export saved game</button></div>
     <p id="demoMessage" role="status" aria-live="polite"></p>
-    <p class="demo-foot">The first start downloads the game runtime (about 20 MB). A desktop or laptop browser is recommended.</p>
+    <p class="demo-foot" data-i18n="foot">The first start downloads the game runtime (about 20 MB). A desktop or laptop browser is recommended.</p>
+    <div id="devBox" class="demo-dev" hidden>
+      <p class="demo-eyebrow">Developer</p>
+      <p class="demo-dev-note">Start any Universe directly (from its Episode 1). Developer runs are marked DEV in the run ID and in exports, and an empty letter stands in for the Universe before.</p>
+      <div class="demo-dev-row"><label>Universe <select id="devUniverse"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select></label>
+        <label><input type="checkbox" id="devSkip" checked> Skip the door</label><button id="devStart" type="button">Start developer run</button></div>
+    </div>
   </div>
   <footer class="demo-feet"><img src="../assets/westlake_logo_two_line.png" alt="Westlake University"><span>Encode Lab</span></footer>
 </section>
-<nav class="demo-navigation" aria-label="Run"><span id="demoPosition">Five Universes</span><span id="demoFinish" hidden>All five Universes complete. Export your save to keep a copy.</span><span class="demo-nav-actions"><button id="demoNext" type="button" hidden>Continue</button><button id="demoShow" type="button" aria-expanded="false" aria-controls="demoDetails">Show</button></span></nav>
-<div id="demoDetails" class="demo-details" hidden><span>Run <b id="demoRunId">–</b></span><span>Interface <b id="demoInterface">transverse-white-v6</b></span><span>Saved in this browser only</span><button id="demoMotion" type="button" class="demo-motion">Motion: on</button></div>
+<nav class="demo-navigation" aria-label="Run"><span id="demoPosition">Five Universes</span><span id="demoFinish" hidden data-i18n="finish">All five Universes complete. Export your save to keep a copy.</span><span class="demo-nav-actions"><button id="demoNext" type="button" hidden>Continue</button><button id="demoShow" type="button" aria-expanded="false" aria-controls="demoDetails">Show</button></span></nav>
+<div id="demoDetails" class="demo-details" hidden><span><span data-i18n="run">Run</span> <b id="demoRunId">–</b></span><span><span data-i18n="iface">Interface</span> <b id="demoInterface">transverse-white-v6</b></span><span data-i18n="local">Saved in this browser only</span><button id="demoMotion" type="button" class="demo-motion">Motion: on</button><button id="demoLangSwitch" type="button" class="demo-motion">中文</button><span id="devJump" class="demo-dev-jump" hidden>DEV <select id="devJumpUniverse"><option value="1">U1</option><option value="2">U2</option><option value="3">U3</option><option value="4">U4</option><option value="5">U5</option></select><button id="devJumpGo" type="button" class="demo-motion">Go</button></span></div>

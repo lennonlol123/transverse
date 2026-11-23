@@ -153,3 +153,16 @@ html.tv-reduced *,html.tv-reduced *::before,html.tv-reduced *::after{animation:n
 #thresholdOpen:hover,#thresholdOpen:focus-visible{background:none;border-bottom-color:#3E3A35;outline:none}
 #thresholdOpen:disabled{opacity:.35}
 .th-end{color:#F2EFE8}
+
+/* Chinese and developer controls. */
+.demo-welcome,.demo-buttons button,.th-ui,.demo-navigation,.demo-details{font-family:"Space Grotesk","Helvetica Neue",Helvetica,Arial,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans SC",sans-serif}
+.demo-head-links{display:flex;gap:24px;align-items:center}
+.demo-dev{margin-top:28px;padding:18px 20px;border:1px dashed #B9B2A6;background:#FBFAF7}
+.demo-dev-note{font-size:13px;color:#6B6B6B;margin:0 0 12px}
+.demo-dev-row{display:flex;flex-wrap:wrap;gap:16px;align-items:center;font-size:14px}
+.demo-dev-row select{width:auto;min-height:0;padding:4px 8px;font:inherit}
+.demo-dev-row input{width:16px;height:16px;min-height:0;margin:0 6px 0 0}
+#devStart{font:700 12px/1 "Space Grotesk","Helvetica Neue",sans-serif;letter-spacing:.16em;text-transform:uppercase;padding:10px 14px;background:#111;color:#FFF;border:0;cursor:pointer}
+.demo-dev-jump{display:inline-flex;gap:6px;align-items:center;color:#B0412E}
+.demo-dev-jump[hidden]{display:none!important}
+.demo-dev-jump select{width:auto;min-height:0;padding:2px 6px;font:inherit}

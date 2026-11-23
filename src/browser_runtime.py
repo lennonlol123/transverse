@@ -84,6 +84,22 @@ def step(payload):
     modelrun.urllib.request.urlopen = no_network
     modelrun._api_key = lambda *args: "human"
     game._READY["gui_worker"] = True
+    # Developer mode only: start a later Universe without playing the earlier ones. The engine reads the
+    # previous Universe's letter before it starts; a clearly marked empty letter stands in for it. Players
+    # never take this path (their Universes follow in order with the real letter).
+    if payload.get("dev") is True and universe > 1:
+        prev_id = raw["worlds"][universe - 2]["id"]
+        letter = modelrun._letter_path("human-Player", game.ap.SEED, f"human-Player-{prev_id}")
+        if not letter.exists():
+            letter.parent.mkdir(parents=True, exist_ok=True)
+            letter.write_text(json.dumps(dict(
+                engine=modelrun.ENGINE_VERSION, run_id=f"human-Player-{prev_id}", carry="layered", lives=4,
+                letter="(Developer mode: this Universe was started directly; no letter was carried.)",
+                developer_stub=True,
+                participant_text=dict(text="minimal", world_index=universe - 1),
+                layered=dict(version=game.pt.LAYERED_VERSION if hasattr(game, "pt") else "layered-memory-v2-note600-2026-11-10",
+                             surface=raw["worlds"][universe - 2].get("surface", {}).get("name", "A"),
+                             world_index=universe - 1))))
     events, cursor = [], 0
 
     def send(event):

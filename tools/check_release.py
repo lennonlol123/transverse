@@ -21,8 +21,9 @@ def main():
     assert 'transverse-white-v6' in html, 'interface version marker missing'
     for page in ['index.html', 'welcome.html', 'how-it-works.html', 'enter.html']:
         assert (ROOT / 'dist' / page).is_file(), page
+        assert (ROOT / 'dist' / 'zh' / page).is_file(), 'zh/' + page
     # Rule 6 of the hand-over: no venue, submission or results on the public pages.
-    for page in (ROOT / 'dist').glob('*.html'):
+    for page in [*(ROOT / 'dist').glob('*.html'), *(ROOT / 'dist' / 'zh').glob('*.html')]:
         text = page.read_text().lower()
         for word in ('cvpr', 'submission', 'under review'):
             assert word not in text, (page.name, word)

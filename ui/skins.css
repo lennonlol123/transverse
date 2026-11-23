@@ -11,7 +11,7 @@ body[data-universe] {
   --tv-sub: #716E68;
   --tv-rule: #E7E5E0;
   --tv-rule-soft: #F1EFEA;
-  --tv-font-body: "Space Grotesk", "Helvetica Neue", Helvetica, Arial, system-ui, sans-serif;
+  --tv-font-body: "Space Grotesk", "Helvetica Neue", Helvetica, Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", system-ui, sans-serif;
   --tv-font-display: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
   --tv-font-mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
 }

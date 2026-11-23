@@ -168,6 +168,7 @@
     paintCards();
     holdInput();
     motion();
+    if (window.TVi18n) TVi18n.chrome();
   }
   const opponents = {};
   function opponentImage() {

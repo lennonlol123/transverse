@@ -18,6 +18,9 @@ def main():
     OUT.mkdir(parents=True)
     # Outer pages (portal, welcome, how it works, gate) are plain static files.
     shutil.copytree(ROOT / "site", DIST, dirs_exist_ok=True, ignore=shutil.ignore_patterns(".DS_Store"))
+    import sys; sys.path.insert(0, str(ROOT / "tools"))
+    import zh_pages
+    zh_pages.build(ROOT / "site", DIST)       # Chinese outer pages: dist/zh/
     files = {}
     for p in sorted((ROOT / "engine").rglob("*")):
         if p.suffix not in (".py", ".json") or "__pycache__" in p.parts:
@@ -50,7 +53,8 @@ def main():
     assert '__TV_' not in adapter
     marker = "  <script>\n    'use strict';\n    const $"
     assert marker in html
-    html = html.replace(marker, '<script>' + adapter + '</script><script src="src/local-api.js"></script>\n' + marker, 1)
+    i18n = (ROOT / 'ui/i18n.js').read_text()
+    html = html.replace(marker, '<script>' + i18n + '</script><script>' + adapter + '</script><script src="src/local-api.js"></script>\n' + marker, 1)
     old = """    async function request(path, body) {
       const opts = { cache:'no-store', headers:{'X-AGII-Token':token}, signal:AbortSignal.timeout(10000) };
       if (body !== undefined) { opts.method = 'POST'; opts.headers['Content-Type'] = 'application/json'; opts.body = JSON.stringify(body); }

@@ -12,7 +12,11 @@
   };
   const readFlag = () => { try { return localStorage.getItem(PLAYED) === '1'; } catch (_) { return false; } };
   const writeFlag = () => { try { localStorage.setItem(PLAYED, '1'); } catch (_) {} };
-  const notice = text => { const el = document.getElementById('demoMessage'); if (el) el.textContent = text; };
+  const I18N = window.TVi18n || {lang: 'en', t: x => x, fmt: null, apply() {}, switchTo() {}};
+  const T = text => I18N.t(text);
+  const notice = text => { const el = document.getElementById('demoMessage'); if (el) el.textContent = T(text); };
+  // Developer mode (play/?dev=1): start any Universe directly; runs are marked DEV everywhere.
+  const DEV = new URLSearchParams(location.search).has('dev');
   let game = null, snapshot = null, stopped = false, busy = false, worker = null, serial = 0;
   const waiters = new Map();
   const storage = new Promise((resolve, reject) => {
@@ -50,15 +54,16 @@
     }
     return new Promise((resolve, reject) => { const id = ++serial; waiters.set(id, {resolve,reject}); worker.postMessage({id,payload}); });
   }
-  function payload(value = game) { return {universe:value.universe, actions:value.actions, baseline:value.baseline}; }
+  function payload(value = game) { return {universe:value.universe, actions:value.actions, baseline:value.baseline, ...(value.dev ? {dev:true} : {})}; }
   function sync() {
     document.getElementById('demoContinue').hidden = !game;
-    document.getElementById('demoNew').textContent = game ? 'New playthrough' : 'Start playing';
+    document.getElementById('demoNew').textContent = T(game ? 'New playthrough' : 'Start playing');
     const next = document.getElementById('demoNext');
     next.hidden = !snapshot?.complete || game?.universe === 5;
-    next.textContent = game ? 'Continue to Universe ' + (game.universe + 1) : 'Continue';
+    next.textContent = game ? (I18N.fmt ? I18N.fmt.next(game.universe + 1) : 'Continue to Universe ' + (game.universe + 1)) : T('Continue');
     const position = document.getElementById('demoPosition');
-    position.textContent = game ? `${game.runId || 'TV-LOCAL'} · Universe ${game.universe} of 5 · Episodes 4` : 'TransVerse';
+    position.textContent = game ? (I18N.fmt ? I18N.fmt.position(game.runId || 'TV-LOCAL', game.universe) : `${game.runId || 'TV-LOCAL'} · Universe ${game.universe} of 5 · Episodes 4`) : 'TransVerse';
+    const jump = document.getElementById('devJump'); if (jump) jump.hidden = !(DEV || game?.dev);
     document.getElementById('demoRunId').textContent = game?.runId || '–';
     document.getElementById('demoInterface').textContent = game?.interface || INTERFACE;
     document.getElementById('demoFinish').hidden = !(snapshot?.complete && game?.universe === 5);
@@ -76,14 +81,14 @@
   }
   async function launch(newGame = false, explicitCandidate = null, confirmed = false) {
     if (busy) return;
-    if (newGame && game && !confirmed && !confirm('Start a new playthrough? This replaces the saved playthrough on this browser. Export it first if you want to keep it.')) return;
+    if (newGame && game && !confirmed && !confirm(T('Start a new playthrough? This replaces the saved playthrough on this browser. Export it first if you want to keep it.'))) return;
     busy = true;
     try {
       const fresh = () => {
         const firstPlaythrough = !game && !readFlag();
         writeFlag();
         return {version:VERSION, interface:INTERFACE, runId:newRunId(), firstPlaythrough,
-          consent:{version:CONSENT, adult:true, agreed:true, at:new Date().toISOString()},
+          consent:{version:CONSENT, adult:true, agreed:true, at:new Date().toISOString()}, lang:I18N.lang,
           universe:1, actions:[], baseline:{}, history:[], startedAt:new Date().toISOString()};
       };
       const candidate = explicitCandidate || (newGame || !game ? fresh() : game);
@@ -198,7 +203,7 @@
     document.getElementById('thEnd').hidden = true;
     document.getElementById('thFinale').replaceChildren();
     stage.dataset.next = String(universe);
-    document.getElementById('thresholdTitle').textContent = `UNIVERSE 0${universe} / 05`;
+    document.getElementById('thresholdTitle').textContent = I18N.fmt ? I18N.fmt.where(universe) : `UNIVERSE 0${universe} / 05`;
     document.getElementById('thNextArt').setAttribute('href', `art/u${universe}-scene.webp`);
     document.getElementById('thSeal').setAttribute('fill', crossed ? HUE[crossed - 1] : 'none');
     journeyMarks(crossed, true);
@@ -232,7 +237,7 @@
     if (!stage) return;
     stage.classList.add('th-finale-mode');
     stage.dataset.next = '5';
-    document.getElementById('thresholdTitle').textContent = 'UNIVERSE 05 / 05';
+    document.getElementById('thresholdTitle').textContent = I18N.fmt ? I18N.fmt.where(5) : 'UNIVERSE 05 / 05';
     document.getElementById('thSeal').setAttribute('fill', HUE[4]);
     journeyMarks(5, false);
     const doors = document.getElementById('thFinale');
@@ -301,23 +306,50 @@
     adult.onchange = gate; agree.onchange = gate; gate();
     document.getElementById('demoNew').onclick = async () => {
       if (!(adult.checked && agree.checked)) return;
-      if (game && !confirm('Start a new playthrough? This replaces the saved playthrough on this browser. Export it first if you want to keep it.')) return;
+      if (game && !confirm(T('Start a new playthrough? This replaces the saved playthrough on this browser. Export it first if you want to keep it.'))) return;
       const box = await morph(document.getElementById('demoNew'));
       let ready; const until = new Promise(r => { ready = r; });
       threshold(1, {morph: box || null, until});
       await launch(true, null, true); ready();
     };
     const motionButton = document.getElementById('demoMotion');
-    const showMotion = () => { motionButton.textContent = 'Motion: ' + (motionOff() ? 'reduced' : 'on'); };
+    const showMotion = () => { motionButton.textContent = T('Motion: ' + (motionOff() ? 'reduced' : 'on')); };
     motionButton.onclick = () => {
       try { localStorage.setItem(MOTION_KEY, motionOff() ? 'on' : 'off'); } catch (_) {}
       document.documentElement.classList.toggle('tv-reduced', motionOff()); showMotion();
     };
     showMotion();
+    // Language: the consent page link and the SHOW panel button switch between English and Chinese.
+    const other = I18N.lang === 'zh' ? 'en' : 'zh';
+    for (const id of ['demoLang', 'demoLangSwitch']) {
+      const el = document.getElementById(id); if (!el) continue;
+      el.textContent = other === 'zh' ? '中文' : 'EN';
+      el.onclick = event => { event.preventDefault(); I18N.switchTo(other); };
+    }
+    document.getElementById('demoShow').textContent = T('Show');
+    document.querySelector('.demo-head .demo-link[href="../how-it-works.html"]')?.setAttribute('href', I18N.lang === 'zh' ? '../zh/how-it-works.html' : '../how-it-works.html');
+    document.querySelector('.demo-head .demo-mark')?.setAttribute('href', I18N.lang === 'zh' ? '../zh/' : '../');
+    // Developer mode.
+    const devRun = async (universe, skipDoor) => {
+      if (busy) return;
+      if (game && !confirm(T('Start a new playthrough? This replaces the saved playthrough on this browser. Export it first if you want to keep it.'))) return;
+      const bytes = new Uint8Array(4); crypto.getRandomValues(bytes);
+      const candidate = {version:VERSION, interface:INTERFACE, runId:'DEV-' + [...bytes].map(b => b.toString(16).padStart(2, '0')).join('').toUpperCase(),
+        dev:true, firstPlaythrough:false, consent:null, lang:I18N.lang, universe, actions:[], baseline:{}, history:[], startedAt:new Date().toISOString()};
+      if (skipDoor) { await launch(true, candidate, true); return; }
+      let ready; const until = new Promise(r => { ready = r; });
+      threshold(universe, {until});
+      await launch(true, candidate, true); ready();
+    };
+    if (DEV) {
+      document.getElementById('devBox').hidden = false;
+      document.getElementById('devStart').onclick = () => devRun(Number(document.getElementById('devUniverse').value), document.getElementById('devSkip').checked);
+    }
+    document.getElementById('devJumpGo').onclick = () => devRun(Number(document.getElementById('devJumpUniverse').value), true);
     document.getElementById('demoShow').onclick = event => {
       const details = document.getElementById('demoDetails');
       details.hidden = !details.hidden;
-      event.currentTarget.textContent = details.hidden ? 'Show' : 'Hide';
+      event.currentTarget.textContent = T(details.hidden ? 'Show' : 'Hide');
       event.currentTarget.setAttribute('aria-expanded', String(!details.hidden));
     };
     document.getElementById('demoContinue').onclick = () => launch();
