@@ -64,3 +64,9 @@
 .threshold[data-next="1"] .th-glow{fill:#A8E6D8}.threshold[data-next="2"] .th-glow{fill:#F2F2EE}.threshold[data-next="3"] .th-glow{fill:#F6EBCB}
 .threshold[data-next="4"] .th-glow{fill:#FFD0AE}.threshold[data-next="5"] .th-glow{fill:#E8CB95}
 .th-glow{transition:opacity 1.4s ease}.threshold.is-open .th-glow{opacity:0}
+/* Entering: when the door opens, the traveller walks to it (the one change this page shows). */
+.th-walker,.th-shadow,.th-floorshadow{transition:transform 1.7s cubic-bezier(.45,.05,.4,1),opacity .5s ease 1.3s}
+.threshold.is-open .th-walker{transform:translateX(610px);opacity:0}
+.threshold.is-open .th-shadow{transform:translateX(760px);opacity:0}
+.threshold.is-open .th-floorshadow{transform:translateX(610px);opacity:0}
+@media(prefers-reduced-motion:reduce){.th-walker,.th-shadow,.th-floorshadow{transition:none}}

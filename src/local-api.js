@@ -120,7 +120,7 @@
         button.disabled = true;
         stage.classList.add('is-open');
         const reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
-        setTimeout(() => { stage.hidden = true; resolve(); }, reduce ? 0 : 1500);
+        setTimeout(() => { stage.hidden = true; resolve(); }, reduce ? 0 : 1900);
       };
     });
   }
