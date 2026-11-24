@@ -275,6 +275,17 @@
     await stageIn(stage, universe === 1 && !opts.morph);
     if (crossed) { stage.classList.add('th-sealed'); await wait(500); }
     stage.classList.add('th-look'); await wait(800);
+    // The door opens only onto a world that is ready: if the next Universe (or, on a first visit, the game itself)
+    // is still loading, say so quietly where the button will be, and wait here rather than behind an open door.
+    if (opts.until) {
+      let settled = false; opts.until.then(() => { settled = true; }, () => { settled = true; });
+      await new Promise(r => setTimeout(r, 0));
+      if (!settled) {
+        const note = document.getElementById('thWait'); note.hidden = false;
+        await opts.until.catch(() => {});
+        note.hidden = true;
+      }
+    }
     stage.classList.add('th-ready');
     button.disabled = false; button.focus();
     button.onmouseenter = () => { if (!button.disabled) swingLeaf(PEEK, 380); };
@@ -284,8 +295,8 @@
     button.onmouseenter = button.onmouseleave = null;
     swingLeaf(OPEN, 1000);
     stage.classList.add('is-open', 'th-walking');
-    await wait(1250);
-    if (opts.until) await opts.until;      // the next Universe is computed while the stage plays
+    await wait(750);                       // the world opens as the traveller reaches the doorway
+    if (opts.until) await opts.until;      // already settled before the door could be opened
     // One shot from here into the Universe: once its first screen is drawn, the scene box opens out of the
     // doorway (skin-adapter fromDoor), and the stage is hidden behind it.
     const shown = await drawn(universe);

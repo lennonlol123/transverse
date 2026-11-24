@@ -274,16 +274,16 @@
       revealing = false; done();
     };
     // Enter, see the world, the camera pulls back into the scene box, then the opponent arrives in it.
-    const lead = door ? 850 : 450;                                     // the doorway opens to the world (or it fades in)
-    const pull = lead + 450;                                           // 450 ms to look at the world, no opponent
-    const meet = pull + 700;                                           // 700 ms: the camera pulls back into the scene box
+    const lead = door ? 650 : 450;                                     // the doorway opens to the world (or it fades in)
+    const pull = lead + 250;                                           // a moment to look at the world, no opponent
+    const meet = pull + 600;                                           // 600 ms: the camera pulls back into the scene box
     requestAnimationFrame(() => requestAnimationFrame(() => {
       if (door) body.classList.add('tv-rv-open'); else body.classList.add('tv-rv-1');
       at(lead, open);
       at(pull, () => body.classList.add('tv-rv-3'));
       at(pull + 400, () => body.classList.add('tv-rv-4'));           // panels return as the camera settles
       at(meet, () => body.classList.add('tv-rv-2'));                 // the opponent arrives in its place
-      at(meet + (opponent ? 550 : 150), end);
+      at(meet + (opponent ? 450 : 150), end);
     }));
     addEventListener('pointerdown', end, true); addEventListener('keydown', end, true);
     return finished;

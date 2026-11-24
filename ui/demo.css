@@ -169,6 +169,10 @@ html.tv-reduced *,html.tv-reduced *::before,html.tv-reduced *::after{animation:n
 #thresholdOpen:focus-visible{box-shadow:0 0 0 2px #ECE9E3,0 0 0 4px #2E2B28}
 #thresholdOpen:disabled{opacity:.35;cursor:default}
 #thresholdOpen:disabled::after{transform:none}
+.th-wait{font:500 13px/1 "Space Grotesk","Helvetica Neue","PingFang SC","Noto Sans SC",sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#6E6A63}
+@media(min-width:651px){.th-wait{position:absolute;top:44px;right:32px;animation:tv-th-wait .6s var(--tv-ease) both}}
+@keyframes tv-th-wait{from{opacity:0}to{opacity:1}}
+.th-wait[hidden]{display:none}
 /* Top-right corner, above the door: a block at the bottom would cover the door on most screen shapes. */
 @media(min-width:651px){#thresholdOpen{position:absolute;top:28px;right:32px}}
 .th-end{color:#F2EFE8}

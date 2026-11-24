@@ -34,7 +34,7 @@
   const PHRASES = {
     'Start playing': '启程', 'New playthrough': '重新开始', 'Continue': '继续', 'Show': '展开', 'Hide': '收起',
     'Motion: on': '动效：开', 'Motion: reduced': '动效：减弱',
-    'Open the door': '推门', 'BETWEEN UNIVERSES': '两界之间',
+    'Open the door': '推门', 'BETWEEN UNIVERSES': '两界之间', 'Preparing the next world…': '下一个世界，正在铺展……', 'Preparing the next universe…': '下一个世界，正在铺展……',
     'The journey ends here': '旅程在此落幕', 'Thank you for travelling through the five universes.': '谢谢你，走过这五个宇宙。',
     'Export your record': '带走这段旅程', 'Back to the start': '回到起点', 'Back to the game': '回到游戏',
     'Preparing your game… The first load downloads the browser runtime.': '正在准备游戏……第一次加载需要下载浏览器运行环境。',
@@ -62,7 +62,7 @@
       const zh = KEYS[el.dataset.i18n];
       if (zh && el.dataset.i18nDone !== '1') { el.innerHTML = zh; el.dataset.i18nDone = '1'; el.hidden = false; }
     }
-    for (const el of root.querySelectorAll('.th-sub, #thresholdOpen, .th-end h2, .th-end p, #thExport, .th-end-actions a, #thClose')) {
+    for (const el of root.querySelectorAll('.th-sub, #thresholdOpen, #thWait, .th-end h2, .th-end p, #thExport, .th-end-actions a, #thClose')) {
       const zh = t(el.textContent.trim());
       if (zh !== el.textContent.trim()) el.textContent = zh;
     }

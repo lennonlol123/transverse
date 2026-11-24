@@ -212,9 +212,9 @@ body[data-universe].tv-closing .tv-scene { filter:brightness(.32) saturate(.55)!
 body.tv-reveal { overflow:hidden; }
 body.tv-reveal .tv-scene { position:relative; z-index:900; transform:translate(var(--rv-tx),var(--rv-ty)) scale(var(--rv-s)); opacity:0; transition:none; }
 body.tv-reveal.tv-rv-1 .tv-scene { opacity:1; transition:opacity .45s var(--tv-ease); }
-body.tv-reveal.tv-rv-3 .tv-scene { transform:none; transition:transform .7s var(--tv-ease), opacity .45s var(--tv-ease); }
+body.tv-reveal.tv-rv-3 .tv-scene { transform:none; transition:transform .6s var(--tv-ease), opacity .45s var(--tv-ease); }
 body.tv-reveal .idol > * { opacity:0; transform:translateY(14px) scale(.97); animation:none!important; }
-body.tv-reveal.tv-rv-2 .idol > * { opacity:1; transform:none; transition:opacity .5s var(--tv-ease), transform .5s var(--tv-ease); }
+body.tv-reveal.tv-rv-2 .idol > * { opacity:1; transform:none; transition:opacity .45s var(--tv-ease), transform .45s var(--tv-ease); }
 body.tv-reveal .tv-caption, body.tv-reveal .tv-trail { opacity:0; }
 body.tv-reveal.tv-rv-4 .tv-caption, body.tv-reveal.tv-rv-4 .tv-trail { opacity:1; transition:opacity .4s var(--tv-ease); }
 body.tv-reveal :is(.topbar, .demo-navigation, .demo-details, .hud, .tray, .journal) { opacity:0; }
@@ -226,11 +226,11 @@ body.tv-reveal.tv-rv-1::before { opacity:1; transition:opacity .3s var(--tv-ease
 body.tv-reveal.tv-rv-3::before { opacity:0; transition:opacity .7s var(--tv-ease); }
 /* From the door: the scene starts cut to the doorway (no transition), over the still-visible stage. */
 body.tv-reveal.tv-rv-door .tv-scene { opacity:1; clip-path:var(--rv-clip); transition:none; }
-body.tv-reveal.tv-rv-door.tv-rv-open .tv-scene { clip-path:inset(0px 0px 0px 0px); transition:clip-path .85s var(--tv-ease); }
-body.tv-reveal.tv-rv-door.tv-rv-open.tv-rv-3 .tv-scene { clip-path:inset(0px 0px 0px 0px); transform:none; transition:transform .7s var(--tv-ease); }
+body.tv-reveal.tv-rv-door.tv-rv-open .tv-scene { clip-path:inset(0px 0px 0px 0px); transition:clip-path .65s var(--tv-ease); }
+body.tv-reveal.tv-rv-door.tv-rv-open.tv-rv-3 .tv-scene { clip-path:inset(0px 0px 0px 0px); transform:none; transition:transform .6s var(--tv-ease); }
 body.tv-reveal.tv-rv-door::before { opacity:0; }
-body.tv-reveal.tv-rv-door.tv-rv-open::before { opacity:1; transition:opacity .85s var(--tv-ease); }
-body.tv-reveal.tv-rv-door.tv-rv-open.tv-rv-3::before { opacity:0; transition:opacity .7s var(--tv-ease); }
+body.tv-reveal.tv-rv-door.tv-rv-open::before { opacity:1; transition:opacity .65s var(--tv-ease); }
+body.tv-reveal.tv-rv-door.tv-rv-open.tv-rv-3::before { opacity:0; transition:opacity .6s var(--tv-ease); }
 
 /* Between Encounters: the prompt sits above the answer field, the scene rests. */
 body[data-universe] .dialogue.tv-between { position:static!important; inset:auto!important; transform:none!important; width:auto!important;
