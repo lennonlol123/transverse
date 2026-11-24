@@ -199,7 +199,7 @@ body[data-universe="4"] .tv-monster { filter:contrast(1.05) saturate(1.06) drop-
 body[data-universe] .tv-scene { overflow:hidden; }
 body[data-universe] .tv-scene::before { content:""; position:absolute; inset:-8px; z-index:0; pointer-events:none; opacity:0;
   background-image:radial-gradient(ellipse 46% 62% at 50% 58%, rgba(0,0,0,0) 40%, rgba(0,0,0,.34) 100%), var(--tv-scene-art);
-  background-size:cover; background-position:center; filter:blur(2.4px) saturate(.82); transition:opacity .6s var(--tv-ease); }
+  background-size:cover; background-position:center; filter:blur(1.2px) saturate(.85); transition:opacity .6s var(--tv-ease); }
 body[data-universe][data-phase="act"] .tv-scene:has(#idol:not([hidden]):not(.training-post) img.tv-monster)::before { opacity:1; }
 /* Universe II is dark on fog: the fog behind the figure lifts instead of darkening. */
 body[data-universe="2"] .tv-scene::before { background-image:radial-gradient(ellipse 30% 55% at 50% 52%, rgba(232,232,226,.28) 0%, rgba(232,232,226,0) 70%), radial-gradient(ellipse 46% 62% at 50% 58%, rgba(0,0,0,0) 45%, rgba(0,0,0,.3) 100%), var(--tv-scene-art); }
