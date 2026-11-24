@@ -17,7 +17,7 @@ The game runs the study's own map pack `engine/data/pack_v3c1_v7hard4.json` and 
   bar (`demo.html`, `demo.css`), one painting and one opponent per Universe (`art/`), and the
   research display-term table (`display-terms.json`).
 - `engine/`, `src/`, `vendor/`: the original Python engine running in the browser (Pyodide).
-- Interface version marker: `transverse-white-v10` (shown under SHOW, written into exports).
+- Interface version marker: `transverse-white-v11` (shown under SHOW, written into exports).
 
 ## Local preview
 

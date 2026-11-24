@@ -51,7 +51,8 @@
   };
   const t = text => (lang === 'zh' && Object.prototype.hasOwnProperty.call(PHRASES, text)) ? PHRASES[text] : text;
   const fmt = {
-    position: (run, u) => lang === 'zh' ? `${run} · 宇宙 ${u} / 5 · 共 4 世` : `${run} · Universe ${u} of 5 · Episodes 4`,
+    // As in the research interface: the current Universe and the Episodes, not the total number of Universes.
+    position: (run, u) => lang === 'zh' ? `${run} · 宇宙 ${u} · 共 4 世` : `${run} · Universe ${u} · Episodes 4`,
     next: u => lang === 'zh' ? `前往第${'一二三四五'[u - 1]}宇宙` : `Continue to Universe ${u}`,
     where: u => lang === 'zh' ? `第${'一二三四五'[u - 1]}宇宙 · 共五` : `UNIVERSE 0${u} / 05`,
   };

@@ -2,7 +2,7 @@
 (() => {
   'use strict';
   const VERSION = 'public-browser-demo-v1';
-  const INTERFACE = 'transverse-white-v10';
+  const INTERFACE = 'transverse-white-v11';
   const CONSENT = 'transverse-consent-1';
   const DB = 'transverse-v1';
   const PLAYED = 'tv-has-played-v1';
@@ -66,7 +66,7 @@
     next.hidden = !snapshot?.complete || game?.universe === 5;
     next.textContent = game ? (I18N.fmt ? I18N.fmt.next(game.universe + 1) : 'Continue to Universe ' + (game.universe + 1)) : T('Continue');
     const position = document.getElementById('demoPosition');
-    position.textContent = game ? (I18N.fmt ? I18N.fmt.position(game.runId || 'TV-LOCAL', game.universe) : `${game.runId || 'TV-LOCAL'} · Universe ${game.universe} of 5 · Episodes 4`) : 'TransVerse';
+    position.textContent = game ? (I18N.fmt ? I18N.fmt.position(game.runId || 'TV-LOCAL', game.universe) : `${game.runId || 'TV-LOCAL'} · Universe ${game.universe} · Episodes 4`) : 'TransVerse';
     const jump = document.getElementById('devJump'); if (jump) jump.hidden = !(DEV || game?.dev);
     document.getElementById('demoRunId').textContent = game?.runId || '–';
     document.getElementById('demoInterface').textContent = game?.interface || INTERFACE;
